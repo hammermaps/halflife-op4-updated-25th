@@ -72,11 +72,15 @@ bool WeaponsResource::HasAmmo(WEAPON* p)
 void WeaponsResource::LoadWeaponSprites(WEAPON* pWeapon)
 {
 	int i, iRes;
-
-	if (ScreenWidth < 640)
-		iRes = 320;
-	else
+    
+    if (cl_2k_resolution->value > 0 && ScreenWidth > 2560 && ScreenHeight > 1600)
+		iRes = 2560;
+	else if (cl_hd_resolution->value > 0 && ScreenWidth >= 1280 && ScreenHeight > 720)
+		iRes = 1280;
+	else if (ScreenWidth >= 640)
 		iRes = 640;
+	else
+		iRes = 320;
 
 	char sz[256];
 
@@ -323,16 +327,17 @@ bool CHudAmmo::VidInit()
 	// If we've already loaded weapons, let's get new sprites
 	gWR.LoadAllWeaponSprites();
 
-	if (ScreenWidth >= 640)
-	{
-		giABWidth = 20;
-		giABHeight = 4;
-	}
-	else
-	{
-		giABWidth = 10;
-		giABHeight = 2;
-	}
+    int nScale = 1;
+
+	if (cl_2k_resolution->value > 0 && ScreenWidth > 2560 && ScreenHeight > 1600)
+		nScale = 4;
+	else if (cl_hd_resolution->value > 0 && ScreenWidth >= 1280 && ScreenHeight > 720)
+		nScale = 3;
+	else if (ScreenWidth >= 640)
+		nScale = 2;
+
+	giABWidth = 10 * nScale;
+	giABHeight = 2 * nScale;
 
 	return true;
 }
@@ -638,7 +643,8 @@ bool CHudAmmo::MsgFunc_WeaponList(const char* pszName, int iSize, void* pbuf)
 
 	WEAPON Weapon;
 
-	strcpy(Weapon.szName, READ_STRING());
+    strncpy(Weapon.szName, READ_STRING(), MAX_WEAPON_NAME);
+	Weapon.szName[sizeof(Weapon.szName) - 1] = '\0';
 	Weapon.iAmmoType = (int)READ_CHAR();
 
 	Weapon.iMax1 = READ_BYTE();
@@ -655,6 +661,27 @@ bool CHudAmmo::MsgFunc_WeaponList(const char* pszName, int iSize, void* pbuf)
 	Weapon.iId = READ_CHAR();
 	Weapon.iFlags = READ_BYTE();
 	Weapon.iClip = 0;
+	
+	if (Weapon.iId < 0 || Weapon.iId >= MAX_WEAPONS)
+		return false;
+
+	if (Weapon.iSlot < 0 || Weapon.iSlot >= MAX_WEAPON_SLOTS + 1)
+		return false;
+
+	if (Weapon.iSlotPos < 0 || Weapon.iSlotPos >= MAX_WEAPON_POSITIONS + 1)
+		return false;
+
+	if (Weapon.iAmmoType < -1 || Weapon.iAmmoType >= MAX_AMMO_TYPES)
+		return false;
+
+	if (Weapon.iAmmo2Type < -1 || Weapon.iAmmo2Type >= MAX_AMMO_TYPES)
+		return false;
+
+	if (Weapon.iAmmoType >= 0 && Weapon.iMax1 == 0)
+		return false;
+
+	if (Weapon.iAmmo2Type >= 0 && Weapon.iMax2 == 0)
+		return false;
 
 	gWR.AddWeapon(&Weapon);
 
@@ -671,56 +698,6 @@ void CHudAmmo::SlotInput(int iSlot)
 		return;
 
 	gWR.SelectSlot(iSlot, false, 1);
-}
-
-void CHudAmmo::UserCmd_Slot1()
-{
-	SlotInput(0);
-}
-
-void CHudAmmo::UserCmd_Slot2()
-{
-	SlotInput(1);
-}
-
-void CHudAmmo::UserCmd_Slot3()
-{
-	SlotInput(2);
-}
-
-void CHudAmmo::UserCmd_Slot4()
-{
-	SlotInput(3);
-}
-
-void CHudAmmo::UserCmd_Slot5()
-{
-	SlotInput(4);
-}
-
-void CHudAmmo::UserCmd_Slot6()
-{
-	SlotInput(5);
-}
-
-void CHudAmmo::UserCmd_Slot7()
-{
-	SlotInput(6);
-}
-
-void CHudAmmo::UserCmd_Slot8()
-{
-	SlotInput(7);
-}
-
-void CHudAmmo::UserCmd_Slot9()
-{
-	SlotInput(8);
-}
-
-void CHudAmmo::UserCmd_Slot10()
-{
-	SlotInput(9);
 }
 
 void CHudAmmo::UserCmd_Close()
@@ -826,10 +803,9 @@ void CHudAmmo::UserCmd_PrevWeapon()
 
 bool CHudAmmo::Draw(float flTime)
 {
-	int a, x, y, r, g, b;
-	int AmmoWidth;
+	int x, y, r, g, b;
 
-	if (!gHUD.HasSuit())
+    if (!gHUD.HasSuit())
 		return true;
 
 	if ((gHUD.m_iHideHUDDisplay & (HIDEHUD_WEAPONS | HIDEHUD_ALL)) != 0)
@@ -856,9 +832,9 @@ bool CHudAmmo::Draw(float flTime)
 
 	int iFlags = DHN_DRAWZERO; // draw 0 values
 
-	AmmoWidth = gHUD.GetSpriteRect(gHUD.m_HUD_number_0).right - gHUD.GetSpriteRect(gHUD.m_HUD_number_0).left;
+	int AmmoWidth = gHUD.GetSpriteRect(gHUD.m_HUD_number_0).right - gHUD.GetSpriteRect(gHUD.m_HUD_number_0).left;
 
-	a = (int)V_max(MIN_ALPHA, m_fFade);
+	int a = (int)V_max(MIN_ALPHA, m_fFade);
 
 	if (m_fFade > 0)
 		m_fFade -= (gHUD.m_flTimeDelta * 20);
@@ -878,6 +854,7 @@ bool CHudAmmo::Draw(float flTime)
 
 	// Does this weapon have a clip?
 	y = ScreenHeight - gHUD.m_iFontHeight - gHUD.m_iFontHeight / 2;
+	y += (int)(gHUD.m_iFontHeight * 0.2f);
 
 	// Does weapon have any ammo at all?
 	if (m_pWeapon->iAmmoType > 0)
@@ -1266,17 +1243,17 @@ iCount is the number of items in the pList
 client_sprite_t* GetSpriteList(client_sprite_t* pList, const char* psz, int iRes, int iCount)
 {
 	if (!pList)
-		return NULL;
+		return nullptr;
 
 	int i = iCount;
 	client_sprite_t* p = pList;
 
 	while (0 != i--)
 	{
-		if ((0 == strcmp(psz, p->szName)) && (p->iRes == iRes))
+		if ((p->iRes == iRes) && (!strcmp(psz, p->szName)))
 			return p;
 		p++;
 	}
 
-	return NULL;
+	return nullptr;
 }

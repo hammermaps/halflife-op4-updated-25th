@@ -110,10 +110,13 @@ typedef void (CBaseEntity::*USEPTR)(CBaseEntity* pActivator, CBaseEntity* pCalle
 #define CLASS_ALIEN_BIOWEAPON 13		 // hornets and snarks.launched by the alien menace
 #define CLASS_HUMAN_MILITARY_FRIENDLY 14 // Opposing Force friendlies
 #define CLASS_ALIEN_RACE_X 15
+#define CLASS_VEHICLE 16
 #define CLASS_CTFITEM 30
+
 #define CLASS_BARNACLE 99 // special because no one pays attention to it, and it eats a wide cross-section of creatures.
 
 class CBaseEntity;
+class CBaseToggle;
 class CBaseMonster;
 class CBasePlayerItem;
 class CSquadMonster;
@@ -196,6 +199,7 @@ public:
 	virtual int BloodColor() { return DONT_BLEED; }
 	virtual void TraceBleed(float flDamage, Vector vecDir, TraceResult* ptr, int bitsDamageType);
 	virtual bool IsTriggered(CBaseEntity* pActivator) { return true; }
+    virtual CBaseToggle* MyTogglePointer(void) { return NULL; }
 	virtual CBaseMonster* MyMonsterPointer() { return NULL; }
 	virtual CSquadMonster* MySquadMonsterPointer() { return NULL; }
 	virtual COFSquadTalkMonster* MySquadTalkMonsterPointer() { return nullptr; }
@@ -586,10 +590,19 @@ public:
 	void AngularMove(Vector vecDestAngle, float flSpeed);
 	void EXPORT AngularMoveDone();
 	bool IsLockedByMaster();
+    virtual CBaseToggle* MyTogglePointer(void) { return this; }
 
 	static float AxisValue(int flags, const Vector& angles);
 	static void AxisDir(entvars_t* pev);
 	static float AxisDelta(int flags, const Vector& angle1, const Vector& angle2);
+		
+    void PlaySentence(const char* pszSentence, float duration, float volume, float attenuation);
+protected:
+    virtual void PlaySentenceCore(const char* pszSentence, float duration, float volume, float attenuation);
+public:
+    virtual void PlayScriptedSentence(const char* pszSentence, float duration, float volume, float attenuation, bool bConcurrent, CBaseEntity* pListener);
+    virtual void SentenceStop();
+    virtual bool IsAllowedToSpeak() { return false; }
 
 	string_t m_sMaster; // If this button has a master switch, this is the targetname.
 						// A master switch must be of the multisource type. If all
@@ -679,6 +692,7 @@ public:
 	static TYPEDESCRIPTION m_SaveData[];
 	// Buttons that don't take damage can be IMPULSE used
 	int ObjectCaps() override { return (CBaseToggle::ObjectCaps() & ~FCAP_ACROSS_TRANSITION) | (pev->takedamage ? 0 : FCAP_IMPULSE_USE); }
+    virtual bool IsAllowedToSpeak() { return true; }
 
 	bool m_fStayPushed; // button stays pushed in until touched again?
 	bool m_fRotating;	// a rotating button?  default is a sliding button.

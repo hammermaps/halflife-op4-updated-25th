@@ -722,6 +722,8 @@ void HUD_WeaponsPostThink(local_state_s* from, local_state_s* to, usercmd_t* cmd
 
 	// Which buttsons chave changed
 	buttonsChanged = (player.m_afButtonLast ^ cmd->buttons); // These buttons have changed this frame
+    player.pev->v_angle = cmd->viewangles;
+    player.pev->origin = from->client.origin;
 
 	// Debounced button codes for pressed/released
 	// The changed ones still down are "pressed"

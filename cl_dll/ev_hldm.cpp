@@ -75,6 +75,7 @@ float EV_HLDM_PlayTextureSound(int idx, pmtrace_t* ptr, float* vecSrc, float* ve
 {
 	// hit the world, try to play sound based on texture material type
 	char chTextureType = CHAR_TEX_CONCRETE;
+    cl_entity_t *cl_entity = NULL;
 	float fvol;
 	float fvolbar;
 	const char* rgsz[4];
@@ -93,12 +94,7 @@ float EV_HLDM_PlayTextureSound(int idx, pmtrace_t* ptr, float* vecSrc, float* ve
 	chTextureType = 0;
 
 	// Player
-	if (entity >= 1 && entity <= gEngfuncs.GetMaxClients())
-	{
-		// hit body
-		chTextureType = CHAR_TEX_FLESH;
-	}
-	else if (entity == 0)
+    if ( entity == 0 )
 	{
 		// get texture from entity or world (world is ent(0))
 		pTextureName = (char*)gEngfuncs.pEventAPI->EV_TraceTexture(ptr->ent, vecSrc, vecEnd);
@@ -127,6 +123,20 @@ float EV_HLDM_PlayTextureSound(int idx, pmtrace_t* ptr, float* vecSrc, float* ve
 			chTextureType = PM_FindTextureType(szbuffer);
 		}
 	}
+    else
+    {
+        // JoshA: Look up the entity and find the EFLAG_FLESH_SOUND flag.
+        // This broke at some point then TF:C added prediction.
+        //
+        // It used to use Classify of pEntity->Classify() != CLASS_NONE && pEntity->Classify() != CLASS_MACHINE
+        // to determine what sound to play, but that's server side and isn't available on the client
+        // and got lost in the translation to that.
+        // Now the server will replicate that state via an eflag.
+        cl_entity = gEngfuncs.GetEntityByIndex( entity );
+
+        if ( cl_entity && !!( cl_entity->curstate.eflags & EFLAG_FLESH_SOUND ) )
+            chTextureType = CHAR_TEX_FLESH;
+    }
 
 	switch (chTextureType)
 	{
@@ -369,9 +379,8 @@ void EV_HLDM_FireBullets(int idx, float* forward, float* right, float* up, int c
 {
 	int i;
 	pmtrace_t tr;
-	int iShot;
 
-	for (iShot = 1; iShot <= cShots; iShot++)
+    for (int iShot = 1; iShot <= cShots; iShot++)
 	{
 		Vector vecDir, vecEnd;
 
@@ -411,7 +420,18 @@ void EV_HLDM_FireBullets(int idx, float* forward, float* right, float* up, int c
 		gEngfuncs.pEventAPI->EV_SetSolidPlayers(idx - 1);
 
 		gEngfuncs.pEventAPI->EV_SetTraceHull(2);
-		gEngfuncs.pEventAPI->EV_PlayerTrace(vecSrc, vecEnd, PM_STUDIO_BOX, -1, &tr);
+
+
+        // JoshA: Changed from PM_STUDIO_BOX to PM_NORMAL in prediction code as otherwise if you hit an NPC or player's
+        // bounding box but not one of their hitboxes, the shot won't hit on the server but it will
+        // play a hit sound on the client and not make a decal (as if it hit the NPC/player).
+        // We should mirror the way the server does the test here as close as possible.
+        //
+        // I initially thought I was just fixing some stupid Half-Life bug but no,
+        // this is *the* root cause of all the ghost shot bad prediction bugs in Half-Life Deathmatch!
+        //
+        // Also... CStrike was always using PM_NORMAL for all of these so it didn't have the problem.
+        gEngfuncs.pEventAPI->EV_PlayerTrace( vecSrc, vecEnd, PM_NORMAL, -1, &tr );
 
 		EV_HLDM_CheckTracer(idx, vecSrc, tr.endpos, forward, right, iBulletType, iTracerFreq, tracerCount);
 
@@ -470,27 +490,25 @@ void EV_HLDM_FireBullets(int idx, float* forward, float* right, float* up, int c
 //======================
 void EV_FireGlock1(event_args_t* args)
 {
-	int idx;
-	Vector origin;
+    Vector origin;
 	Vector angles;
 	Vector velocity;
-	bool empty;
 
-	Vector ShellVelocity;
+    Vector ShellVelocity;
 	Vector ShellOrigin;
-	int shell;
-	Vector vecSrc, vecAiming;
+    
+    Vector vecSrc, vecAiming;
 	Vector up, right, forward;
 
-	idx = args->entindex;
+	int idx = args->entindex;
 	VectorCopy(args->origin, origin);
 	VectorCopy(args->angles, angles);
 	VectorCopy(args->velocity, velocity);
 
-	empty = 0 != args->bparam1;
+	bool empty = 0 != args->bparam1;
 	AngleVectors(angles, forward, right, up);
 
-	shell = gEngfuncs.pEventAPI->EV_FindModelIndex("models/shell.mdl"); // brass shell
+	int shell = gEngfuncs.pEventAPI->EV_FindModelIndex("models/shell.mdl"); // brass shell
 
 	if (EV_IsLocal(idx))
 	{
@@ -620,25 +638,24 @@ void EV_FireShotGunDouble(event_args_t* args)
 
 void EV_FireShotGunSingle(event_args_t* args)
 {
-	int idx;
-	Vector origin;
+    Vector origin;
 	Vector angles;
 	Vector velocity;
 
 	Vector ShellVelocity;
 	Vector ShellOrigin;
-	int shell;
-	Vector vecSrc, vecAiming;
+    
+    Vector vecSrc, vecAiming;
 	Vector up, right, forward;
 
-	idx = args->entindex;
+	int idx = args->entindex;
 	VectorCopy(args->origin, origin);
 	VectorCopy(args->angles, angles);
 	VectorCopy(args->velocity, velocity);
 
 	AngleVectors(angles, forward, right, up);
 
-	shell = gEngfuncs.pEventAPI->EV_FindModelIndex("models/shotgunshell.mdl"); // brass shell
+	int shell = gEngfuncs.pEventAPI->EV_FindModelIndex("models/shotgunshell.mdl"); // brass shell
 
 	if (EV_IsLocal(idx))
 	{
@@ -919,7 +936,7 @@ void EV_FireGauss(event_args_t* args)
 		gEngfuncs.pEventAPI->EV_SetSolidPlayers(idx - 1);
 
 		gEngfuncs.pEventAPI->EV_SetTraceHull(2);
-		gEngfuncs.pEventAPI->EV_PlayerTrace(vecSrc, vecDest, PM_STUDIO_BOX, -1, &tr);
+		gEngfuncs.pEventAPI->EV_PlayerTrace(vecSrc, vecDest, PM_NORMAL, -1, &tr);
 
 		gEngfuncs.pEventAPI->EV_PopPMStates();
 
@@ -1038,7 +1055,7 @@ void EV_FireGauss(event_args_t* args)
 					gEngfuncs.pEventAPI->EV_SetSolidPlayers(idx - 1);
 
 					gEngfuncs.pEventAPI->EV_SetTraceHull(2);
-					gEngfuncs.pEventAPI->EV_PlayerTrace(start, vecDest, PM_STUDIO_BOX, -1, &beam_tr);
+					gEngfuncs.pEventAPI->EV_PlayerTrace(start, vecDest, PM_NORMAL, -1, &beam_tr);
 
 					if (0 == beam_tr.allsolid)
 					{
@@ -1047,7 +1064,7 @@ void EV_FireGauss(event_args_t* args)
 
 						// trace backwards to find exit point
 
-						gEngfuncs.pEventAPI->EV_PlayerTrace(beam_tr.endpos, tr.endpos, PM_STUDIO_BOX, -1, &beam_tr);
+						gEngfuncs.pEventAPI->EV_PlayerTrace(beam_tr.endpos, tr.endpos, PM_NORMAL, -1, &beam_tr);
 
 						VectorSubtract(beam_tr.endpos, tr.endpos, delta);
 
@@ -1180,12 +1197,11 @@ void EV_FireCrossbow2(event_args_t* args)
 	Vector up, right, forward;
 	pmtrace_t tr;
 
-	int idx;
-	Vector origin;
+    Vector origin;
 	Vector angles;
 	Vector velocity;
 
-	idx = args->entindex;
+	int idx = args->entindex;
 	VectorCopy(args->origin, origin);
 	VectorCopy(args->angles, angles);
 
@@ -1214,7 +1230,7 @@ void EV_FireCrossbow2(event_args_t* args)
 	// Now add in all of the players.
 	gEngfuncs.pEventAPI->EV_SetSolidPlayers(idx - 1);
 	gEngfuncs.pEventAPI->EV_SetTraceHull(2);
-	gEngfuncs.pEventAPI->EV_PlayerTrace(vecSrc, vecEnd, PM_STUDIO_BOX, -1, &tr);
+	gEngfuncs.pEventAPI->EV_PlayerTrace(vecSrc, vecEnd, PM_NORMAL, -1, &tr);
 
 	//We hit something
 	if (tr.fraction < 1.0)
@@ -1266,10 +1282,9 @@ void EV_FireCrossbow2(event_args_t* args)
 //TODO: Fully predict the fliying bolt.
 void EV_FireCrossbow(event_args_t* args)
 {
-	int idx;
-	Vector origin;
+    Vector origin;
 
-	idx = args->entindex;
+	int idx = args->entindex;
 	VectorCopy(args->origin, origin);
 
 	gEngfuncs.pEventAPI->EV_PlaySound(idx, origin, CHAN_WEAPON, "weapons/xbow_fire1.wav", 1, ATTN_NORM, 0, 93 + gEngfuncs.pfnRandomLong(0, 0xF));
@@ -1295,10 +1310,9 @@ void EV_FireCrossbow(event_args_t* args)
 //======================
 void EV_FireRpg(event_args_t* args)
 {
-	int idx;
-	Vector origin;
+    Vector origin;
 
-	idx = args->entindex;
+	int idx = args->entindex;
 	VectorCopy(args->origin, origin);
 
 	gEngfuncs.pEventAPI->EV_PlaySound(idx, origin, CHAN_WEAPON, "weapons/rocketfire1.wav", 0.9, ATTN_NORM, 0, PITCH_NORM);
@@ -1338,12 +1352,11 @@ void EV_EgonFlareCallback(struct tempent_s* ent, float frametime, float currentt
 
 void EV_EgonFire(event_args_t* args)
 {
-	int idx, iFireMode;
-	Vector origin;
+    Vector origin;
 
-	idx = args->entindex;
+	int idx = args->entindex;
 	VectorCopy(args->origin, origin);
-	iFireMode = args->iparam2;
+	int iFireMode = args->iparam2;
 	bool iStartup = 0 != args->bparam1;
 
 
@@ -1398,7 +1411,7 @@ void EV_EgonFire(event_args_t* args)
 			gEngfuncs.pEventAPI->EV_SetSolidPlayers(idx - 1);
 
 			gEngfuncs.pEventAPI->EV_SetTraceHull(2);
-			gEngfuncs.pEventAPI->EV_PlayerTrace(vecSrc, vecEnd, PM_STUDIO_BOX, -1, &tr);
+			gEngfuncs.pEventAPI->EV_PlayerTrace(vecSrc, vecEnd, PM_NORMAL, -1, &tr);
 
 			gEngfuncs.pEventAPI->EV_PopPMStates();
 
@@ -1438,10 +1451,9 @@ void EV_EgonFire(event_args_t* args)
 
 void EV_EgonStop(event_args_t* args)
 {
-	int idx;
-	Vector origin;
+    Vector origin;
 
-	idx = args->entindex;
+	int idx = args->entindex;
 	VectorCopy(args->origin, origin);
 
 	gEngfuncs.pEventAPI->EV_StopSound(idx, CHAN_STATIC, EGON_SOUND_RUN);

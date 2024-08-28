@@ -40,6 +40,7 @@ cvar_t teamlist = {"mp_teamlist", "hgrunt;scientist", FCVAR_SERVER};
 cvar_t teamoverride = {"mp_teamoverride", "1"};
 cvar_t defaultteam = {"mp_defaultteam", "0"};
 cvar_t allowmonsters = {"mp_allowmonsters", "0", FCVAR_SERVER};
+cvar_t sv_pushable_fixed_tick_fudge = { "sv_pushable_fixed_tick_fudge", "15" };
 
 cvar_t allow_spectators = {"allow_spectators", "0.0", FCVAR_SERVER}; // 0 prevents players from being spectators
 
@@ -51,6 +52,7 @@ cvar_t sv_allowbunnyhopping = {"sv_allowbunnyhopping", "0", FCVAR_SERVER};
 cvar_t* g_psv_gravity = NULL;
 cvar_t* g_psv_aim = NULL;
 cvar_t* g_footsteps = NULL;
+cvar_t	*g_psv_allow_autoaim = NULL;
 cvar_t* g_psv_cheats = nullptr;
 
 //Macros to make skill cvars easier to define
@@ -625,7 +627,8 @@ void GameDLLInit()
 	g_psv_aim = CVAR_GET_POINTER("sv_aim");
 	g_footsteps = CVAR_GET_POINTER("mp_footsteps");
 	g_psv_cheats = CVAR_GET_POINTER("sv_cheats");
-
+    g_psv_allow_autoaim = CVAR_GET_POINTER( "sv_allow_autoaim" );
+    
 	if (!SV_InitServer())
 	{
 		g_engfuncs.pfnServerPrint("Error initializing server\n");

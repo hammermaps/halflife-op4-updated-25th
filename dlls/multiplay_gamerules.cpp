@@ -28,6 +28,7 @@
 #include "voice_gamemgr.h"
 #include "hltv.h"
 #include "UserMessages.h"
+#include "trains.h"
 
 #include "ctf/ctfplay_gamerules.h"
 
@@ -122,7 +123,7 @@ void CHalfLifeMultiplay::RefreshSkillData()
 	gSkillData.plrDmg9MM = 12;
 
 	// 357 Round
-	gSkillData.plrDmg357 = 40;
+	gSkillData.plrDmg357 = 50;
 
 	// MP5 Round
 	gSkillData.plrDmgMP5 = 12;
@@ -701,16 +702,27 @@ int CHalfLifeMultiplay::IPointsForKill(CBasePlayer* pAttacker, CBasePlayer* pKil
 //=========================================================
 void CHalfLifeMultiplay::PlayerKilled(CBasePlayer* pVictim, entvars_t* pKiller, entvars_t* pInflictor)
 {
+    CBasePlayer* peKiller = nullptr;
+    CBaseEntity* ktmp = CBaseEntity::Instance( pKiller );
+    if ( ktmp && ( ktmp->Classify() == CLASS_PLAYER ) )
+        peKiller = (CBasePlayer*)ktmp;
+    else if ( ktmp && ( ktmp->Classify() == CLASS_VEHICLE ) )
+    {
+        CBasePlayer* pDriver = ( (CFuncVehicle*)ktmp )->m_pDriver;
+        if ( pDriver != nullptr)
+        {
+            peKiller = pDriver;
+            ktmp = pDriver;
+            pKiller = pDriver->pev;
+        }
+    }
+    
 	DeathNotice(pVictim, pKiller, pInflictor);
 
 	pVictim->m_iDeaths += 1;
 
 
 	FireTargets("game_playerdie", pVictim, pVictim, USE_TOGGLE, 0);
-	CBasePlayer* peKiller = NULL;
-	CBaseEntity* ktmp = CBaseEntity::Instance(pKiller);
-	if (ktmp && (ktmp->Classify() == CLASS_PLAYER))
-		peKiller = (CBasePlayer*)ktmp;
 
 	if (pVictim->pev == pKiller)
 	{ // killed self
@@ -1470,7 +1482,8 @@ bool ReloadMapCycleFile(char* filename, mapcycle_t* cycle)
 			if (strlen(com_token) <= 0)
 				break;
 
-			strcpy(szMap, com_token);
+		    strncpy( szMap, com_token, sizeof( szMap ) );
+		    szMap[ sizeof( szMap ) - 1 ] = '\0';
 
 			// Any more tokens on this line?
 			if (COM_TokenWaiting(pFileList))
@@ -1479,7 +1492,8 @@ bool ReloadMapCycleFile(char* filename, mapcycle_t* cycle)
 				if (strlen(com_token) > 0)
 				{
 					hasbuffer = true;
-					strcpy(szBuffer, com_token);
+				    strncpy( szBuffer, com_token, sizeof( szBuffer ) );
+				    szBuffer[ sizeof( szBuffer ) - 1 ] = '\0';
 				}
 			}
 

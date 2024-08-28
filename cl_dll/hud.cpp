@@ -90,6 +90,8 @@ cvar_t* cl_rollangle = nullptr;
 cvar_t* cl_rollspeed = nullptr;
 cvar_t* cl_bobtilt = nullptr;
 cvar_t* r_decals = nullptr;
+cvar_t* cl_hd_resolution = nullptr;
+cvar_t* cl_2k_resolution = nullptr;
 
 void ShutdownInput();
 
@@ -385,9 +387,9 @@ void CHud::Init()
 	m_iFOV = 0;
 	setNightVisionState(false);
 
-	CVAR_CREATE("zoom_sensitivity_ratio", "1.2", 0);
-	CVAR_CREATE("cl_autowepswitch", "1", FCVAR_ARCHIVE | FCVAR_USERINFO);
-	default_fov = CVAR_CREATE("default_fov", "90", FCVAR_ARCHIVE);
+    CVAR_CREATE( "zoom_sensitivity_ratio", "1.2", FCVAR_ARCHIVE );
+    CVAR_CREATE( "cl_autowepswitch", "1", FCVAR_USERINFO|FCVAR_ARCHIVE );
+    default_fov = CVAR_CREATE( "default_fov", "90", FCVAR_ARCHIVE );
 	m_pCvarStealMouse = CVAR_CREATE("hud_capturemouse", "1", FCVAR_ARCHIVE);
 	m_pCvarDraw = CVAR_CREATE("hud_draw", "1", FCVAR_ARCHIVE);
 	cl_lw = gEngfuncs.pfnGetCvarPointer("cl_lw");
@@ -395,6 +397,8 @@ void CHud::Init()
 	cl_rollspeed = CVAR_CREATE("cl_rollspeed", "200", FCVAR_ARCHIVE);
 	cl_bobtilt = CVAR_CREATE("cl_bobtilt", "0", FCVAR_ARCHIVE);
 	r_decals = gEngfuncs.pfnGetCvarPointer("r_decals");
+    cl_hd_resolution = CVAR_CREATE("cl_hd_resolution", "1", FCVAR_ARCHIVE);
+    cl_2k_resolution = CVAR_CREATE("cl_2k_resolution", "1", FCVAR_ARCHIVE);
 
 	m_pSpriteList = NULL;
 
@@ -435,6 +439,9 @@ void CHud::Init()
 
 	m_Menu.Init();
 
+    gEngfuncs.pfnClientCmd("richpresence_gamemode\n"); // reset
+    gEngfuncs.pfnClientCmd("richpresence_update\n");
+    
 	MsgFunc_ResetHUD(0, 0, NULL);
 }
 
@@ -488,10 +495,14 @@ void CHud::VidInit()
 	m_hsprLogo = 0;
 	m_hsprCursor = 0;
 
-	if (ScreenWidth < 640)
-		m_iRes = 320;
-	else
-		m_iRes = 640;
+    if (cl_2k_resolution->value > 0 && ScreenWidth > 2560 && ScreenHeight > 1600)
+        m_iRes = 2560;
+    else if (cl_hd_resolution->value > 0 && ScreenWidth >= 1280 && ScreenHeight > 720)
+        m_iRes = 1280;
+    else if (ScreenWidth >= 640)
+        m_iRes = 640;
+    else
+        m_iRes = 320;
 
 	// Only load this once
 	if (!m_pSpriteList)

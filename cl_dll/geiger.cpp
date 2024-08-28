@@ -63,15 +63,19 @@ bool CHudGeiger::MsgFunc_Geiger(const char* pszName, int iSize, void* pbuf)
 
 bool CHudGeiger::Draw(float flTime)
 {
-	int pct;
-	float flvol;
-	int rg[3];
-	int i;
 
-	if (m_iGeigerRange <= 800 && m_iGeigerRange > 0)
+    if (m_iGeigerRange < 1000 && m_iGeigerRange > 0)
 	{
-		// peicewise linear is better than continuous formula for this
-		if (m_iGeigerRange > 600)
+        int rg[3];
+        int i;
+        float flvol;
+        int pct;
+        // peicewise linear is better than continuous formula for this
+        if (m_iGeigerRange > 800)
+        {
+            pct = 0;			//Con_Printf ( "range > 800\n");
+        }
+        else if (m_iGeigerRange > 600)
 		{
 			pct = 2;
 			flvol = 0.4; //Con_Printf ( "range > 600\n");

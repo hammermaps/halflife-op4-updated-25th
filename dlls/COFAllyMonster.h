@@ -71,6 +71,7 @@ public:
 	void StartFollowing(CBaseEntity* pLeader);
 	virtual void DeclineFollowing() {}
 	void LimitFollowers(CBaseEntity* pPlayer, int maxFollowers);
+    bool IsAllowedToSpeak() override { return true; }
 
 	void EXPORT FollowerUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
 

@@ -241,7 +241,7 @@ public:
 	Vector m_vecAutoAim;
 	bool m_fOnTarget;
 	int m_iDeaths;
-	float m_iRespawnFrames; // used in PlayerDeathThink() to make sure players can always respawn
+	float m_flRespawnTimer; // used in PlayerDeathThink() to make sure players can always respawn
 
 	int m_lastx, m_lasty; // These are the previous update's crosshair angles, DON"T SAVE/RESTORE
 
@@ -281,6 +281,8 @@ public:
 	void PackDeadPlayerItems();
 	void RemoveAllItems(bool removeSuit);
 	bool SwitchWeapon(CBasePlayerItem* pWeapon);
+    void SetPrefsFromUserinfo( char * infobuffer );
+    bool HasPlayerItemFromID( int nID );
 
 	/**
 	*	@brief Equips an appropriate weapon for the player if they don't have one equipped already.
@@ -399,9 +401,7 @@ public:
 
 	bool Menu_Team_Input(int inp);
 	bool Menu_Char_Input(int inp);
-
-	void SetPrefsFromUserinfo(char* infobuffer);
-
+    
 	int m_iAutoWepSwitch;
 
 	bool IsOnRope() const { return (m_afPhysicsFlags & PFLAG_ONROPE) != 0; }

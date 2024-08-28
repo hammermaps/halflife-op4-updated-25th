@@ -61,6 +61,9 @@ extern int giR, giG, giB;
 
 #define MAX_MOTD_LENGTH 1536
 
+extern cvar_t* cl_hd_resolution;
+extern cvar_t* cl_2k_resolution;
+
 //
 //-----------------------------------------------------
 //
@@ -115,16 +118,16 @@ public:
 	bool MsgFunc_HideWeapon(const char* pszName, int iSize, void* pbuf);
 
 	void SlotInput(int iSlot);
-	void UserCmd_Slot1();
-	void UserCmd_Slot2();
-	void UserCmd_Slot3();
-	void UserCmd_Slot4();
-	void UserCmd_Slot5();
-	void UserCmd_Slot6();
-	void UserCmd_Slot7();
-	void UserCmd_Slot8();
-	void UserCmd_Slot9();
-	void UserCmd_Slot10();
+	void UserCmd_Slot1() { SlotInput(0); }
+	void UserCmd_Slot2() { SlotInput(1); }
+	void UserCmd_Slot3() { SlotInput(2); }
+	void UserCmd_Slot4() { SlotInput(3); }
+	void UserCmd_Slot5() { SlotInput(4); }
+	void UserCmd_Slot6() { SlotInput(5); }
+	void UserCmd_Slot7() { SlotInput(6); }
+	void UserCmd_Slot8() { SlotInput(7); }
+	void UserCmd_Slot9() { SlotInput(8); }
+	void UserCmd_Slot10() { SlotInput(9); }
 	void UserCmd_Close();
 	void UserCmd_NextWeapon();
 	void UserCmd_PrevWeapon();

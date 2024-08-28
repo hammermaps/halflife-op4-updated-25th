@@ -372,7 +372,7 @@ public:
 
 	// Immediately end a multiplayer game
 	void EndMultiplayerGame() override { GoToIntermission(); }
-
+    
 protected:
 	virtual void ChangeLevel();
 	virtual void GoToIntermission();
