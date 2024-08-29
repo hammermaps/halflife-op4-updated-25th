@@ -991,7 +991,7 @@ void CFuncVehicle :: Spawn( void )
 		pev->solid = SOLID_BSP;
 	pev->movetype = MOVETYPE_PUSH;
 	
-	SET_MODEL( ENT(pev), STRING(pev->model) );
+	SetModel(STRING(pev->model));
 
 	UTIL_SetSize( pev, pev->mins, pev->maxs );
 	UTIL_SetOrigin( pev, pev->origin );
@@ -1044,19 +1044,19 @@ void CFuncVehicle :: Precache( void )
 
 	switch (m_sounds)
 	{
-	case 1: PRECACHE_SOUND("plats/vehicle1.wav"); pev->noise = MAKE_STRING("plats/vehicle1.wav");break;
-	case 2: PRECACHE_SOUND("plats/vehicle2.wav"); pev->noise = MAKE_STRING("plats/vehicle2.wav");break;
-	case 3: PRECACHE_SOUND("plats/vehicle3.wav"); pev->noise = MAKE_STRING("plats/vehicle3.wav");break; 
-	case 4: PRECACHE_SOUND("plats/vehicle4.wav"); pev->noise = MAKE_STRING("plats/vehicle4.wav");break;
-	case 5: PRECACHE_SOUND("plats/vehicle6.wav"); pev->noise = MAKE_STRING("plats/vehicle6.wav");break;
-	case 6: PRECACHE_SOUND("plats/vehicle7.wav"); pev->noise = MAKE_STRING("plats/vehicle7.wav");break;
-	default: PRECACHE_SOUND("plats/vehicle7.wav"); pev->noise = MAKE_STRING("plats/vehicle7.wav");break;
+	case 1: PrecacheSound("plats/vehicle1.wav"); pev->noise = MAKE_STRING("plats/vehicle1.wav");break;
+	case 2: PrecacheSound("plats/vehicle2.wav"); pev->noise = MAKE_STRING("plats/vehicle2.wav");break;
+	case 3: PrecacheSound("plats/vehicle3.wav"); pev->noise = MAKE_STRING("plats/vehicle3.wav");break; 
+	case 4: PrecacheSound("plats/vehicle4.wav"); pev->noise = MAKE_STRING("plats/vehicle4.wav");break;
+	case 5: PrecacheSound("plats/vehicle6.wav"); pev->noise = MAKE_STRING("plats/vehicle6.wav");break;
+	case 6: PrecacheSound("plats/vehicle7.wav"); pev->noise = MAKE_STRING("plats/vehicle7.wav");break;
+	default: PrecacheSound("plats/vehicle7.wav"); pev->noise = MAKE_STRING("plats/vehicle7.wav");break;
 	}
 
-	PRECACHE_SOUND("plats/vehicle_brake1.wav");
-	PRECACHE_SOUND("plats/vehicle_start1.wav");
+	PrecacheSound("plats/vehicle_brake1.wav");
+	PrecacheSound("plats/vehicle_start1.wav");
 
-	m_usAdjustPitch = PRECACHE_EVENT( 1, "events/vehicle.sc" );
+	m_usAdjustPitch = PrecacheEvent( 1, "events/vehicle.sc" );
 }
 
 
@@ -1097,7 +1097,7 @@ void CFuncVehicleControls :: Spawn( void )
 {
 	pev->solid = SOLID_NOT;
 	pev->movetype = MOVETYPE_NONE;
-	SET_MODEL( ENT(pev), STRING(pev->model) );
+	SetModel(STRING(pev->model) );
 
 	UTIL_SetSize( pev, pev->mins, pev->maxs );
 	UTIL_SetOrigin( pev, pev->origin );

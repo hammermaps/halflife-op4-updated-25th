@@ -72,7 +72,7 @@ IMPLEMENT_SAVERESTORE(CBubbling, CBaseEntity);
 void CBubbling::Spawn()
 {
 	Precache();
-	SET_MODEL(ENT(pev), STRING(pev->model)); // Set size
+	SetModel(STRING(pev->model)); // Set size
 
 	pev->solid = SOLID_NOT; // Remove model & collisions
 	pev->renderamt = 0;		// The engine won't draw this model if this is set to 0 and blending is on
@@ -97,7 +97,7 @@ void CBubbling::Spawn()
 
 void CBubbling::Precache()
 {
-	m_bubbleModel = PRECACHE_MODEL("sprites/bubble.spr"); // Precache bubble sprite
+	m_bubbleModel = PrecacheModel("sprites/bubble.spr"); // Precache bubble sprite
 }
 
 
@@ -239,7 +239,7 @@ void CBeam::BeamInit(const char* pSpriteName, int width)
 	SetFrame(0);
 	SetScrollRate(0);
 	pev->model = MAKE_STRING(pSpriteName);
-	SetTexture(PRECACHE_MODEL((char*)pSpriteName));
+	SetTexture(PrecacheModel(pSpriteName));
 	SetWidth(width);
 	pev->skin = 0;
 	pev->sequence = 0;
@@ -506,7 +506,7 @@ void CLightning::Spawn()
 
 void CLightning::Precache()
 {
-	m_spriteTexture = PRECACHE_MODEL((char*)STRING(m_iszSpriteName));
+	m_spriteTexture = PrecacheModel(STRING(m_iszSpriteName));
 	CBeam::Precache();
 }
 
@@ -987,9 +987,9 @@ void CLaser::Spawn()
 
 void CLaser::Precache()
 {
-	pev->modelindex = PRECACHE_MODEL((char*)STRING(pev->model));
+	pev->modelindex = PrecacheModel(STRING(pev->model));
 	if (!FStringNull(m_iszSpriteName))
-		PRECACHE_MODEL((char*)STRING(m_iszSpriteName));
+		PrecacheModel(STRING(m_iszSpriteName));
 }
 
 
@@ -1141,8 +1141,8 @@ void CGlow::Spawn()
 	pev->effects = 0;
 	pev->frame = 0;
 
-	PRECACHE_MODEL((char*)STRING(pev->model));
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	PrecacheModel(STRING(pev->model));
+	SetModel(STRING(pev->model));
 
 	m_maxFrame = (float)MODEL_FRAMES(pev->modelindex) - 1;
 	if (m_maxFrame > 1.0 && pev->framerate != 0)
@@ -1186,7 +1186,7 @@ void CSprite::Spawn()
 	pev->frame = 0;
 
 	Precache();
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SetModel(STRING(pev->model));
 
 	m_maxFrame = (float)MODEL_FRAMES(pev->modelindex) - 1;
 	if (!FStringNull(pev->targetname) && (pev->spawnflags & SF_SPRITE_STARTON) == 0)
@@ -1205,7 +1205,7 @@ void CSprite::Spawn()
 
 void CSprite::Precache()
 {
-	PRECACHE_MODEL((char*)STRING(pev->model));
+	PrecacheModel(STRING(pev->model));
 
 	// Reset attachment after save/restore
 	if (pev->aiment)
@@ -1342,7 +1342,6 @@ void CSprite::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useTyp
 	}
 }
 
-
 class CGibShooter : public CBaseDelay
 {
 public:
@@ -1362,6 +1361,7 @@ public:
 	int m_iGibCapacity;
 	int m_iGibMaterial;
 	int m_iGibModelIndex;
+    
 	float m_flGibVelocity;
 	float m_flVariance;
 	float m_flGibLife;
@@ -1384,16 +1384,8 @@ LINK_ENTITY_TO_CLASS(gibshooter, CGibShooter);
 
 void CGibShooter::Precache()
 {
-	if (g_Language == LANGUAGE_GERMAN)
-	{
-		m_iGibModelIndex = PRECACHE_MODEL("models/germanygibs.mdl");
-	}
-	else
-	{
-		m_iGibModelIndex = PRECACHE_MODEL("models/hgibs.mdl");
-	}
+    m_iGibModelIndex = PrecacheModel("models/hgibs.mdl");
 }
-
 
 bool CGibShooter::KeyValue(KeyValueData* pkvd)
 {
@@ -1448,13 +1440,10 @@ void CGibShooter::Spawn()
 	pev->body = MODEL_FRAMES(m_iGibModelIndex);
 }
 
-
 CGib* CGibShooter::CreateGib()
 {
-	if (CVAR_GET_FLOAT("violence_hgibs") == 0)
-		return NULL;
-
 	CGib* pGib = GetClassPtr((CGib*)NULL);
+    pGib->Precache(); //Sounds are precached in CMaterialEntity::Precache
 	pGib->Spawn("models/hgibs.mdl");
 	pGib->m_bloodColor = BLOOD_COLOR_RED;
 
@@ -1468,14 +1457,11 @@ CGib* CGibShooter::CreateGib()
 	return pGib;
 }
 
-
 void CGibShooter::ShootThink()
 {
 	pev->nextthink = gpGlobals->time + m_flDelay;
 
-	Vector vecShootDir;
-
-	vecShootDir = pev->movedir;
+    Vector vecShootDir = pev->movedir;
 
 	vecShootDir = vecShootDir + gpGlobals->v_right * RANDOM_FLOAT(-1, 1) * m_flVariance;
 	vecShootDir = vecShootDir + gpGlobals->v_forward * RANDOM_FLOAT(-1, 1) * m_flVariance;
@@ -1538,9 +1524,9 @@ bool CEnvShooter::KeyValue(KeyValueData* pkvd)
 	}
 	else if (FStrEq(pkvd->szKeyName, "shootsounds"))
 	{
-		int iNoise = atoi(pkvd->szValue);
+		int iMaterial = atoi(pkvd->szValue);
 
-		switch (iNoise)
+		switch (iMaterial)
 		{
 		case 0:
 			m_iGibMaterial = matGlass;
@@ -1570,18 +1556,15 @@ bool CEnvShooter::KeyValue(KeyValueData* pkvd)
 	return CGibShooter::KeyValue(pkvd);
 }
 
-
 void CEnvShooter::Precache()
 {
-	m_iGibModelIndex = PRECACHE_MODEL((char*)STRING(pev->model));
-	CBreakable::MaterialSoundPrecache((Materials)m_iGibMaterial);
+    m_iGibModelIndex = PrecacheModel(STRING(pev->model));
 }
-
 
 CGib* CEnvShooter::CreateGib()
 {
 	CGib* pGib = GetClassPtr((CGib*)NULL);
-
+    pGib->Precache(); //Sounds are precached in CMaterialEntity::Precache
 	pGib->Spawn(STRING(pev->model));
 
 	int bodyPart = 0;
@@ -1603,9 +1586,7 @@ CGib* CEnvShooter::CreateGib()
 	return pGib;
 }
 
-
-
-
+/*
 class CTestEffect : public CBaseDelay
 {
 public:
@@ -1632,7 +1613,7 @@ void CTestEffect::Spawn()
 
 void CTestEffect::Precache()
 {
-	PRECACHE_MODEL("sprites/lgtning.spr");
+	PrecacheModel("sprites/lgtning.spr");
 }
 
 void CTestEffect::TestThink()
@@ -1708,8 +1689,7 @@ void CTestEffect::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE us
 	pev->nextthink = gpGlobals->time + 0.1;
 	m_flStartTime = gpGlobals->time;
 }
-
-
+*/
 
 // Blood effects
 class CBlood : public CPointEntity
@@ -2033,7 +2013,7 @@ void CMessage::Spawn()
 void CMessage::Precache()
 {
 	if (!FStringNull(pev->noise))
-		PRECACHE_SOUND((char*)STRING(pev->noise));
+		PrecacheSound(STRING(pev->noise));
 }
 
 bool CMessage::KeyValue(KeyValueData* pkvd)
@@ -2102,7 +2082,7 @@ public:
 
 void CEnvFunnel::Precache()
 {
-	m_iSprite = PRECACHE_MODEL("sprites/flare6.spr");
+	m_iSprite = PrecacheModel("sprites/flare6.spr");
 }
 
 LINK_ENTITY_TO_CLASS(env_funnel, CEnvFunnel);
@@ -2154,8 +2134,8 @@ public:
 
 void CEnvBeverage::Precache()
 {
-	PRECACHE_MODEL("models/can.mdl");
-	PRECACHE_SOUND("weapons/g_bounce3.wav");
+	PrecacheModel("models/can.mdl");
+	PrecacheSound("weapons/g_bounce3.wav");
 }
 
 LINK_ENTITY_TO_CLASS(env_beverage, CEnvBeverage);
@@ -2224,7 +2204,7 @@ void CItemSoda::Spawn()
 	pev->solid = SOLID_NOT;
 	pev->movetype = MOVETYPE_TOSS;
 
-	SET_MODEL(ENT(pev), "models/can.mdl");
+	SetModel("models/can.mdl");
 	UTIL_SetSize(pev, Vector(0, 0, 0), Vector(0, 0, 0));
 
 	SetThink(&CItemSoda::CanThink);

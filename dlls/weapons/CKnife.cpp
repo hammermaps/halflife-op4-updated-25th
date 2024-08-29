@@ -30,19 +30,19 @@ LINK_ENTITY_TO_CLASS(weapon_knife, CKnife);
 
 void CKnife::Precache()
 {
-	PRECACHE_MODEL("models/v_knife.mdl");
-	PRECACHE_MODEL("models/w_knife.mdl");
-	PRECACHE_MODEL("models/p_knife.mdl");
+	PrecacheModel("models/v_knife.mdl");
+	PrecacheModel("models/w_knife.mdl");
+	PrecacheModel("models/p_knife.mdl");
 
-	PRECACHE_SOUND("weapons/knife1.wav");
-	PRECACHE_SOUND("weapons/knife2.wav");
-	PRECACHE_SOUND("weapons/knife3.wav");
-	PRECACHE_SOUND("weapons/knife_hit_flesh1.wav");
-	PRECACHE_SOUND("weapons/knife_hit_flesh2.wav");
-	PRECACHE_SOUND("weapons/knife_hit_wall1.wav");
-	PRECACHE_SOUND("weapons/knife_hit_wall2.wav");
+	PrecacheSound("weapons/knife1.wav");
+	PrecacheSound("weapons/knife2.wav");
+	PrecacheSound("weapons/knife3.wav");
+	PrecacheSound("weapons/knife_hit_flesh1.wav");
+	PrecacheSound("weapons/knife_hit_flesh2.wav");
+	PrecacheSound("weapons/knife_hit_wall1.wav");
+	PrecacheSound("weapons/knife_hit_wall2.wav");
 
-	m_usKnife = PRECACHE_EVENT(1, "events/knife.sc");
+	m_usKnife = PrecacheEvent(1, "events/knife.sc");
 }
 
 void CKnife::Spawn()
@@ -51,7 +51,7 @@ void CKnife::Spawn()
 
 	m_iId = WEAPON_KNIFE;
 
-	SET_MODEL(edict(), "models/w_knife.mdl");
+	SetModel("models/w_knife.mdl");
 
 	m_iClip = WEAPON_NOCLIP;
 

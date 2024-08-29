@@ -26,15 +26,15 @@ void CItemAcceleratorCTF::Precache()
 {
 	CItemCTF::Precache();
 
-	PRECACHE_MODEL("models/w_accelerator.mdl");
-	PRECACHE_SOUND("turret/tu_ping.wav");
+	PrecacheModel("models/w_accelerator.mdl");
+	PrecacheSound("turret/tu_ping.wav");
 }
 
 void CItemAcceleratorCTF::Spawn()
 {
 	Precache();
 
-	SET_MODEL(edict(), "models/w_accelerator.mdl");
+	SetModel("models/w_accelerator.mdl");
 
 	//TODO: is this actually used?
 	pev->spawnflags |= SF_NORESPAWN;

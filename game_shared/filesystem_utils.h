@@ -161,9 +161,23 @@ public:
 	template <typename... Args>
 	int Printf(const char* format, Args&&... args)
 	{
-		return g_pFileSystem->FPrintf(_handle, format, std::forward<Args>(args)...);
+		return g_pFileSystem->FPrintf(_handle, UTIL_ConstCharToChar(format), std::forward<Args>(args)...);
 	}
 
+    char* UTIL_ConstCharToChar(const char* constStr) {
+	    // Allocate memory for the new char* string
+	    char* newStr = (char*)malloc(strlen(constStr) + 1);
+	    if (newStr == nullptr) {
+	        // Handle memory allocation failure
+	        return nullptr;
+	    }
+
+	    // Copy the contents of the const char* string to the new char* string
+	    strcpy(newStr, constStr);
+
+	    return newStr;
+	}
+    
 	constexpr operator bool() const { return IsOpen(); }
 
 private:

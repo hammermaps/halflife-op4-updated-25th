@@ -53,7 +53,7 @@ void CSatchelCharge::Spawn()
 	pev->movetype = MOVETYPE_BOUNCE;
 	pev->solid = SOLID_BBOX;
 
-	SET_MODEL(ENT(pev), "models/w_satchel.mdl");
+	SetModel("models/w_satchel.mdl");
 	//UTIL_SetSize(pev, Vector( -16, -16, -4), Vector(16, 16, 32));	// Old box -- size of headcrab monsters/players get blocked by this
 	UTIL_SetSize(pev, Vector(-4, -4, -4), Vector(4, 4, 4)); // Uses point-sized, and can be stepped over
 	UTIL_SetOrigin(pev, pev->origin);
@@ -132,10 +132,10 @@ void CSatchelCharge::SatchelThink()
 
 void CSatchelCharge::Precache()
 {
-	PRECACHE_MODEL("models/grenade.mdl");
-	PRECACHE_SOUND("weapons/g_bounce1.wav");
-	PRECACHE_SOUND("weapons/g_bounce2.wav");
-	PRECACHE_SOUND("weapons/g_bounce3.wav");
+	PrecacheModel("models/grenade.mdl");
+	PrecacheSound("weapons/g_bounce1.wav");
+	PrecacheSound("weapons/g_bounce2.wav");
+	PrecacheSound("weapons/g_bounce3.wav");
 }
 
 void CSatchelCharge::BounceSound()
@@ -214,7 +214,7 @@ void CSatchel::Spawn()
 {
 	Precache();
 	m_iId = WEAPON_SATCHEL;
-	SET_MODEL(ENT(pev), "models/w_satchel.mdl");
+	SetModel("models/w_satchel.mdl");
 
 	m_iDefaultAmmo = SATCHEL_DEFAULT_GIVE;
 
@@ -224,11 +224,11 @@ void CSatchel::Spawn()
 
 void CSatchel::Precache()
 {
-	PRECACHE_MODEL("models/v_satchel.mdl");
-	PRECACHE_MODEL("models/v_satchel_radio.mdl");
-	PRECACHE_MODEL("models/w_satchel.mdl");
-	PRECACHE_MODEL("models/p_satchel.mdl");
-	PRECACHE_MODEL("models/p_satchel_radio.mdl");
+	PrecacheModel("models/v_satchel.mdl");
+	PrecacheModel("models/v_satchel_radio.mdl");
+	PrecacheModel("models/w_satchel.mdl");
+	PrecacheModel("models/p_satchel.mdl");
+	PrecacheModel("models/p_satchel_radio.mdl");
 
 	UTIL_PrecacheOther("monster_satchel");
 }

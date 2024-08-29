@@ -1112,7 +1112,7 @@ void COFMedicAlly::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/hgrunt_medic.mdl");
+	SetModel("models/hgrunt_medic.mdl");
 	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = SOLID_SLIDEBOX;
@@ -1208,42 +1208,42 @@ void COFMedicAlly::Spawn()
 //=========================================================
 void COFMedicAlly::Precache()
 {
-	PRECACHE_MODEL("models/hgrunt_medic.mdl");
+	PrecacheModel("models/hgrunt_medic.mdl");
 
 	TalkInit();
 
-	PRECACHE_SOUND("hgrunt/gr_mgun1.wav");
-	PRECACHE_SOUND("hgrunt/gr_mgun2.wav");
+	PrecacheSound("hgrunt/gr_mgun1.wav");
+	PrecacheSound("hgrunt/gr_mgun2.wav");
 
-	PRECACHE_SOUND("fgrunt/death1.wav");
-	PRECACHE_SOUND("fgrunt/death2.wav");
-	PRECACHE_SOUND("fgrunt/death3.wav");
-	PRECACHE_SOUND("fgrunt/death4.wav");
-	PRECACHE_SOUND("fgrunt/death5.wav");
-	PRECACHE_SOUND("fgrunt/death6.wav");
+	PrecacheSound("fgrunt/death1.wav");
+	PrecacheSound("fgrunt/death2.wav");
+	PrecacheSound("fgrunt/death3.wav");
+	PrecacheSound("fgrunt/death4.wav");
+	PrecacheSound("fgrunt/death5.wav");
+	PrecacheSound("fgrunt/death6.wav");
 
-	PRECACHE_SOUND("fgrunt/pain1.wav");
-	PRECACHE_SOUND("fgrunt/pain2.wav");
-	PRECACHE_SOUND("fgrunt/pain3.wav");
-	PRECACHE_SOUND("fgrunt/pain4.wav");
-	PRECACHE_SOUND("fgrunt/pain5.wav");
-	PRECACHE_SOUND("fgrunt/pain6.wav");
+	PrecacheSound("fgrunt/pain1.wav");
+	PrecacheSound("fgrunt/pain2.wav");
+	PrecacheSound("fgrunt/pain3.wav");
+	PrecacheSound("fgrunt/pain4.wav");
+	PrecacheSound("fgrunt/pain5.wav");
+	PrecacheSound("fgrunt/pain6.wav");
 
-	PRECACHE_SOUND("hgrunt/gr_reload1.wav");
+	PrecacheSound("hgrunt/gr_reload1.wav");
 
-	PRECACHE_SOUND("weapons/desert_eagle_fire.wav");
-	PRECACHE_SOUND("weapons/desert_eagle_reload.wav");
-	PRECACHE_SOUND("weapons/sbarrel1.wav");
+	PrecacheSound("weapons/desert_eagle_fire.wav");
+	PrecacheSound("weapons/desert_eagle_reload.wav");
+	PrecacheSound("weapons/sbarrel1.wav");
 
-	PRECACHE_SOUND("fgrunt/medic_give_shot.wav");
-	PRECACHE_SOUND("fgrunt/medical.wav");
+	PrecacheSound("fgrunt/medic_give_shot.wav");
+	PrecacheSound("fgrunt/medical.wav");
 
-	PRECACHE_SOUND("zombie/claw_miss2.wav"); // because we use the basemonster SWIPE animation event
+	PrecacheSound("zombie/claw_miss2.wav"); // because we use the basemonster SWIPE animation event
 
 	// get voice pitch
 	m_voicePitch = 105;
 
-	m_iBrassShell = PRECACHE_MODEL("models/shell.mdl");
+	m_iBrassShell = PrecacheModel("models/shell.mdl");
 
 	COFSquadTalkMonster::Precache();
 }
@@ -3232,7 +3232,7 @@ void COFMedicAllyRepel::Spawn()
 void COFMedicAllyRepel::Precache()
 {
 	UTIL_PrecacheOther("monster_human_medic_ally");
-	m_iSpriteTexture = PRECACHE_MODEL("sprites/rope.spr");
+	m_iSpriteTexture = PrecacheModel("sprites/rope.spr");
 }
 
 void COFMedicAllyRepel::RepelUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)

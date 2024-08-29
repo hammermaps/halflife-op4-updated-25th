@@ -59,7 +59,7 @@ bool CGenericItem::KeyValue(KeyValueData* pkvd)
 
 void CGenericItem::Precache()
 {
-	PRECACHE_MODEL(const_cast<char*>(STRING(pev->model)));
+	PrecacheModel(const_cast<char*>(STRING(pev->model)));
 }
 
 void CGenericItem::Spawn()
@@ -71,7 +71,7 @@ void CGenericItem::Spawn()
 
 	Precache();
 
-	SET_MODEL(edict(), STRING(pev->model));
+	SetModel(STRING(pev->model));
 
 	if (0 != m_iSequence)
 	{

@@ -92,16 +92,16 @@ void CRecharge::Spawn()
 
 	UTIL_SetOrigin(pev, pev->origin); // set size and link into world
 	UTIL_SetSize(pev, pev->mins, pev->maxs);
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SetModel(STRING(pev->model));
 	m_iJuice = gSkillData.suitchargerCapacity;
 	pev->frame = 0;
 }
 
 void CRecharge::Precache()
 {
-	PRECACHE_SOUND("items/suitcharge1.wav");
-	PRECACHE_SOUND("items/suitchargeno1.wav");
-	PRECACHE_SOUND("items/suitchargeok1.wav");
+	PrecacheSound("items/suitcharge1.wav");
+	PrecacheSound("items/suitchargeno1.wav");
+	PrecacheSound("items/suitchargeok1.wav");
 }
 
 

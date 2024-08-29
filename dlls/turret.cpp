@@ -271,18 +271,18 @@ void CBaseTurret::Spawn()
 
 void CBaseTurret::Precache()
 {
-	PRECACHE_SOUND("turret/tu_fire1.wav");
-	PRECACHE_SOUND("turret/tu_ping.wav");
-	PRECACHE_SOUND("turret/tu_active2.wav");
-	PRECACHE_SOUND("turret/tu_die.wav");
-	PRECACHE_SOUND("turret/tu_die2.wav");
-	PRECACHE_SOUND("turret/tu_die3.wav");
+	PrecacheSound("turret/tu_fire1.wav");
+	PrecacheSound("turret/tu_ping.wav");
+	PrecacheSound("turret/tu_active2.wav");
+	PrecacheSound("turret/tu_die.wav");
+	PrecacheSound("turret/tu_die2.wav");
+	PrecacheSound("turret/tu_die3.wav");
 	// PRECACHE_SOUND ("turret/tu_retract.wav"); // just use deploy sound to save memory
-	PRECACHE_SOUND("turret/tu_deploy.wav");
-	PRECACHE_SOUND("turret/tu_spinup.wav");
-	PRECACHE_SOUND("turret/tu_spindown.wav");
-	PRECACHE_SOUND("turret/tu_search.wav");
-	PRECACHE_SOUND("turret/tu_alert.wav");
+	PrecacheSound("turret/tu_deploy.wav");
+	PrecacheSound("turret/tu_spinup.wav");
+	PrecacheSound("turret/tu_spindown.wav");
+	PrecacheSound("turret/tu_search.wav");
+	PrecacheSound("turret/tu_alert.wav");
 }
 
 #define TURRET_GLOW_SPRITE "sprites/flare3.spr"
@@ -290,7 +290,7 @@ void CBaseTurret::Precache()
 void CTurret::Spawn()
 {
 	Precache();
-	SET_MODEL(ENT(pev), "models/turret.mdl");
+	SetModel("models/turret.mdl");
 	pev->health = gSkillData.turretHealth;
 	m_HackedGunPos = Vector(0, 0, 12.75);
 	m_flMaxSpin = TURRET_MAXSPIN;
@@ -316,14 +316,14 @@ void CTurret::Spawn()
 void CTurret::Precache()
 {
 	CBaseTurret::Precache();
-	PRECACHE_MODEL("models/turret.mdl");
-	PRECACHE_MODEL(TURRET_GLOW_SPRITE);
+	PrecacheModel("models/turret.mdl");
+	PrecacheModel(TURRET_GLOW_SPRITE);
 }
 
 void CMiniTurret::Spawn()
 {
 	Precache();
-	SET_MODEL(ENT(pev), "models/miniturret.mdl");
+	SetModel("models/miniturret.mdl");
 	pev->health = gSkillData.miniturretHealth;
 	m_HackedGunPos = Vector(0, 0, 12.75);
 	m_flMaxSpin = 0;
@@ -343,10 +343,10 @@ void CMiniTurret::Spawn()
 void CMiniTurret::Precache()
 {
 	CBaseTurret::Precache();
-	PRECACHE_MODEL("models/miniturret.mdl");
-	PRECACHE_SOUND("weapons/hks1.wav");
-	PRECACHE_SOUND("weapons/hks2.wav");
-	PRECACHE_SOUND("weapons/hks3.wav");
+	PrecacheModel("models/miniturret.mdl");
+	PrecacheSound("weapons/hks1.wav");
+	PrecacheSound("weapons/hks2.wav");
+	PrecacheSound("weapons/hks3.wav");
 }
 
 void CBaseTurret::Initialize()
@@ -1168,13 +1168,13 @@ LINK_ENTITY_TO_CLASS(monster_sentry, CSentry);
 void CSentry::Precache()
 {
 	CBaseTurret::Precache();
-	PRECACHE_MODEL("models/sentry.mdl");
+	PrecacheModel("models/sentry.mdl");
 }
 
 void CSentry::Spawn()
 {
 	Precache();
-	SET_MODEL(ENT(pev), "models/sentry.mdl");
+	SetModel("models/sentry.mdl");
 	pev->health = gSkillData.sentryHealth;
 	m_HackedGunPos = Vector(0, 0, 48);
 	pev->view_ofs.z = 48;

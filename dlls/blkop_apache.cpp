@@ -119,7 +119,7 @@ void COFBlackOpsApache::Spawn()
 	pev->movetype = MOVETYPE_FLY;
 	pev->solid = SOLID_BBOX;
 
-	SET_MODEL(ENT(pev), "models/blkop_apache.mdl");
+	SetModel("models/blkop_apache.mdl");
 	UTIL_SetSize(pev, Vector(-32, -32, -64), Vector(32, 32, 0));
 	UTIL_SetOrigin(pev, pev->origin);
 
@@ -155,23 +155,23 @@ void COFBlackOpsApache::Spawn()
 
 void COFBlackOpsApache::Precache()
 {
-	PRECACHE_MODEL("models/blkop_apache.mdl");
+	PrecacheModel("models/blkop_apache.mdl");
 
-	PRECACHE_SOUND("apache/ap_rotor1.wav");
-	PRECACHE_SOUND("apache/ap_rotor2.wav");
-	PRECACHE_SOUND("apache/ap_rotor3.wav");
-	PRECACHE_SOUND("apache/ap_whine1.wav");
+	PrecacheSound("apache/ap_rotor1.wav");
+	PrecacheSound("apache/ap_rotor2.wav");
+	PrecacheSound("apache/ap_rotor3.wav");
+	PrecacheSound("apache/ap_whine1.wav");
 
-	PRECACHE_SOUND("weapons/mortarhit.wav");
+	PrecacheSound("weapons/mortarhit.wav");
 
-	m_iSpriteTexture = PRECACHE_MODEL("sprites/white.spr");
+	m_iSpriteTexture = PrecacheModel("sprites/white.spr");
 
-	PRECACHE_SOUND("turret/tu_fire1.wav");
+	PrecacheSound("turret/tu_fire1.wav");
 
-	PRECACHE_MODEL("sprites/lgtning.spr");
+	PrecacheModel("sprites/lgtning.spr");
 
-	m_iExplode = PRECACHE_MODEL("sprites/fexplo.spr");
-	m_iBodyGibs = PRECACHE_MODEL("models/metalplategibs_green.mdl");
+	m_iExplode = PrecacheModel("sprites/fexplo.spr");
+	m_iBodyGibs = PrecacheModel("models/metalplategibs_green.mdl");
 
 	UTIL_PrecacheOther("hvr_blkop_rocket");
 }
@@ -1025,7 +1025,7 @@ void COFBlackOpsApacheHVR::Spawn()
 	pev->movetype = MOVETYPE_FLY;
 	pev->solid = SOLID_BBOX;
 
-	SET_MODEL(ENT(pev), "models/HVR.mdl");
+	SetModel("models/HVR.mdl");
 	UTIL_SetSize(pev, Vector(0, 0, 0), Vector(0, 0, 0));
 	UTIL_SetOrigin(pev, pev->origin);
 
@@ -1044,9 +1044,9 @@ void COFBlackOpsApacheHVR::Spawn()
 
 void COFBlackOpsApacheHVR::Precache()
 {
-	PRECACHE_MODEL("models/HVR.mdl");
-	m_iTrail = PRECACHE_MODEL("sprites/smoke.spr");
-	PRECACHE_SOUND("weapons/rocket1.wav");
+	PrecacheModel("models/HVR.mdl");
+	m_iTrail = PrecacheModel("sprites/smoke.spr");
+	PrecacheSound("weapons/rocket1.wav");
 }
 
 

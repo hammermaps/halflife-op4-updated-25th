@@ -1152,7 +1152,7 @@ void CHGruntAlly::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/hgrunt_opfor.mdl");
+	SetModel("models/hgrunt_opfor.mdl");
 	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = SOLID_SLIDEBOX;
@@ -1236,8 +1236,8 @@ void CHGruntAlly::Spawn()
 
 	pev->skin = 0;
 
-	m_iSawShell = PRECACHE_MODEL("models/saw_shell.mdl");
-	m_iSawLink = PRECACHE_MODEL("models/saw_link.mdl");
+	m_iSawShell = PrecacheModel("models/saw_shell.mdl");
+	m_iSawLink = PrecacheModel("models/saw_link.mdl");
 
 	COFSquadTalkMonster::g_talkWaitTime = 0;
 
@@ -1253,47 +1253,47 @@ void CHGruntAlly::Spawn()
 //=========================================================
 void CHGruntAlly::Precache()
 {
-	PRECACHE_MODEL("models/hgrunt_opfor.mdl");
+	PrecacheModel("models/hgrunt_opfor.mdl");
 
 	TalkInit();
 
-	PRECACHE_SOUND("hgrunt/gr_mgun1.wav");
-	PRECACHE_SOUND("hgrunt/gr_mgun2.wav");
+	PrecacheSound("hgrunt/gr_mgun1.wav");
+	PrecacheSound("hgrunt/gr_mgun2.wav");
 
-	PRECACHE_SOUND("fgrunt/death1.wav");
-	PRECACHE_SOUND("fgrunt/death2.wav");
-	PRECACHE_SOUND("fgrunt/death3.wav");
-	PRECACHE_SOUND("fgrunt/death4.wav");
-	PRECACHE_SOUND("fgrunt/death5.wav");
-	PRECACHE_SOUND("fgrunt/death6.wav");
+	PrecacheSound("fgrunt/death1.wav");
+	PrecacheSound("fgrunt/death2.wav");
+	PrecacheSound("fgrunt/death3.wav");
+	PrecacheSound("fgrunt/death4.wav");
+	PrecacheSound("fgrunt/death5.wav");
+	PrecacheSound("fgrunt/death6.wav");
 
-	PRECACHE_SOUND("fgrunt/pain1.wav");
-	PRECACHE_SOUND("fgrunt/pain2.wav");
-	PRECACHE_SOUND("fgrunt/pain3.wav");
-	PRECACHE_SOUND("fgrunt/pain4.wav");
-	PRECACHE_SOUND("fgrunt/pain5.wav");
-	PRECACHE_SOUND("fgrunt/pain6.wav");
+	PrecacheSound("fgrunt/pain1.wav");
+	PrecacheSound("fgrunt/pain2.wav");
+	PrecacheSound("fgrunt/pain3.wav");
+	PrecacheSound("fgrunt/pain4.wav");
+	PrecacheSound("fgrunt/pain5.wav");
+	PrecacheSound("fgrunt/pain6.wav");
 
-	PRECACHE_SOUND("hgrunt/gr_reload1.wav");
+	PrecacheSound("hgrunt/gr_reload1.wav");
 
-	PRECACHE_SOUND("weapons/saw_fire1.wav");
-	PRECACHE_SOUND("weapons/saw_fire2.wav");
-	PRECACHE_SOUND("weapons/saw_fire3.wav");
-	PRECACHE_SOUND("weapons/saw_reload.wav");
+	PrecacheSound("weapons/saw_fire1.wav");
+	PrecacheSound("weapons/saw_fire2.wav");
+	PrecacheSound("weapons/saw_fire3.wav");
+	PrecacheSound("weapons/saw_reload.wav");
 
-	PRECACHE_SOUND("weapons/glauncher.wav");
+	PrecacheSound("weapons/glauncher.wav");
 
-	PRECACHE_SOUND("weapons/sbarrel1.wav");
+	PrecacheSound("weapons/sbarrel1.wav");
 
-	PRECACHE_SOUND("fgrunt/medic.wav");
+	PrecacheSound("fgrunt/medic.wav");
 
-	PRECACHE_SOUND("zombie/claw_miss2.wav"); // because we use the basemonster SWIPE animation event
+	PrecacheSound("zombie/claw_miss2.wav"); // because we use the basemonster SWIPE animation event
 
 	// get voice pitch
 	m_voicePitch = 100;
 
-	m_iBrassShell = PRECACHE_MODEL("models/shell.mdl"); // brass shell
-	m_iShotgunShell = PRECACHE_MODEL("models/shotgunshell.mdl");
+	m_iBrassShell = PrecacheModel("models/shell.mdl"); // brass shell
+	m_iShotgunShell = PrecacheModel("models/shotgunshell.mdl");
 
 	COFSquadTalkMonster::Precache();
 }
@@ -2980,7 +2980,7 @@ void CHGruntAllyRepel::Spawn()
 void CHGruntAllyRepel::Precache()
 {
 	UTIL_PrecacheOther("monster_human_grunt_ally");
-	m_iSpriteTexture = PRECACHE_MODEL("sprites/rope.spr");
+	m_iSpriteTexture = PrecacheModel("sprites/rope.spr");
 }
 
 void CHGruntAllyRepel::RepelUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
@@ -3070,8 +3070,8 @@ LINK_ENTITY_TO_CLASS(monster_human_grunt_ally_dead, CDeadHGruntAlly);
 //=========================================================
 void CDeadHGruntAlly::Spawn()
 {
-	PRECACHE_MODEL("models/hgrunt_opfor.mdl");
-	SET_MODEL(ENT(pev), "models/hgrunt_opfor.mdl");
+	PrecacheModel("models/hgrunt_opfor.mdl");
+	SetModel("models/hgrunt_opfor.mdl");
 
 	pev->effects = 0;
 	pev->yaw_speed = 8;

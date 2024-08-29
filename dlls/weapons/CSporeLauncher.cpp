@@ -38,19 +38,19 @@ LINK_ENTITY_TO_CLASS(weapon_sporelauncher, CSporeLauncher);
 
 void CSporeLauncher::Precache()
 {
-	PRECACHE_MODEL("models/w_spore_launcher.mdl");
-	PRECACHE_MODEL("models/v_spore_launcher.mdl");
-	PRECACHE_MODEL("models/p_spore_launcher.mdl");
+	PrecacheModel("models/w_spore_launcher.mdl");
+	PrecacheModel("models/v_spore_launcher.mdl");
+	PrecacheModel("models/p_spore_launcher.mdl");
 
-	PRECACHE_SOUND("weapons/splauncher_fire.wav");
-	PRECACHE_SOUND("weapons/splauncher_altfire.wav");
-	PRECACHE_SOUND("weapons/splauncher_bounce.wav");
-	PRECACHE_SOUND("weapons/splauncher_reload.wav");
-	PRECACHE_SOUND("weapons/splauncher_pet.wav");
+	PrecacheSound("weapons/splauncher_fire.wav");
+	PrecacheSound("weapons/splauncher_altfire.wav");
+	PrecacheSound("weapons/splauncher_bounce.wav");
+	PrecacheSound("weapons/splauncher_reload.wav");
+	PrecacheSound("weapons/splauncher_pet.wav");
 
 	UTIL_PrecacheOther("spore");
 
-	m_usFireSpore = PRECACHE_EVENT(1, "events/spore.sc");
+	m_usFireSpore = PrecacheEvent(1, "events/spore.sc");
 }
 
 void CSporeLauncher::Spawn()
@@ -59,7 +59,7 @@ void CSporeLauncher::Spawn()
 
 	m_iId = WEAPON_SPORELAUNCHER;
 
-	SET_MODEL(edict(), "models/w_spore_launcher.mdl");
+	SetModel("models/w_spore_launcher.mdl");
 
 	m_iDefaultAmmo = SPORELAUNCHER_DEFAULT_GIVE;
 
@@ -372,15 +372,15 @@ public:
 
 	void Precache() override
 	{
-		PRECACHE_MODEL("models/spore_ammo.mdl");
-		PRECACHE_SOUND("weapons/spore_ammo.wav");
+		PrecacheModel("models/spore_ammo.mdl");
+		PrecacheSound("weapons/spore_ammo.wav");
 	}
 
 	void Spawn() override
 	{
 		Precache();
 
-		SET_MODEL(edict(), "models/spore_ammo.mdl");
+		SetModel("models/spore_ammo.mdl");
 
 		pev->movetype = MOVETYPE_FLY;
 

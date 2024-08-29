@@ -640,7 +640,7 @@ void CCleansuitScientist::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/cleansuit_scientist.mdl");
+	SetModel("models/cleansuit_scientist.mdl");
 	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = SOLID_SLIDEBOX;
@@ -676,12 +676,12 @@ void CCleansuitScientist::Spawn()
 //=========================================================
 void CCleansuitScientist::Precache()
 {
-	PRECACHE_MODEL("models/cleansuit_scientist.mdl");
-	PRECACHE_SOUND("scientist/sci_pain1.wav");
-	PRECACHE_SOUND("scientist/sci_pain2.wav");
-	PRECACHE_SOUND("scientist/sci_pain3.wav");
-	PRECACHE_SOUND("scientist/sci_pain4.wav");
-	PRECACHE_SOUND("scientist/sci_pain5.wav");
+	PrecacheModel("models/cleansuit_scientist.mdl");
+	PrecacheSound("scientist/sci_pain1.wav");
+	PrecacheSound("scientist/sci_pain2.wav");
+	PrecacheSound("scientist/sci_pain3.wav");
+	PrecacheSound("scientist/sci_pain4.wav");
+	PrecacheSound("scientist/sci_pain5.wav");
 
 	// every new scientist must call this, otherwise
 	// when a level is loaded, nobody will talk (time is reset to 0)
@@ -1129,8 +1129,8 @@ LINK_ENTITY_TO_CLASS(monster_cleansuit_scientist_dead, CDeadCleansuitScientist);
 //
 void CDeadCleansuitScientist::Spawn()
 {
-	PRECACHE_MODEL("models/cleansuit_scientist.mdl");
-	SET_MODEL(ENT(pev), "models/cleansuit_scientist.mdl");
+	PrecacheModel("models/cleansuit_scientist.mdl");
+	SetModel("models/cleansuit_scientist.mdl");
 
 	pev->effects = 0;
 	pev->sequence = 0;
@@ -1211,8 +1211,8 @@ typedef enum
 //
 void CSittingCleansuitScientist::Spawn()
 {
-	PRECACHE_MODEL("models/cleansuit_scientist.mdl");
-	SET_MODEL(ENT(pev), "models/cleansuit_scientist.mdl");
+	PrecacheModel("models/cleansuit_scientist.mdl");
+	SetModel("models/cleansuit_scientist.mdl");
 	Precache();
 	InitBoneControllers();
 

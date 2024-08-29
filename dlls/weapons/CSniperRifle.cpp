@@ -42,26 +42,26 @@ void CSniperRifle::Precache()
 
 	m_iId = WEAPON_SNIPERRIFLE;
 
-	PRECACHE_MODEL("models/w_m40a1.mdl");
-	PRECACHE_MODEL("models/v_m40a1.mdl");
-	PRECACHE_MODEL("models/p_m40a1.mdl");
+	PrecacheModel("models/w_m40a1.mdl");
+	PrecacheModel("models/v_m40a1.mdl");
+	PrecacheModel("models/p_m40a1.mdl");
 
-	PRECACHE_SOUND("weapons/sniper_fire.wav");
-	PRECACHE_SOUND("weapons/sniper_zoom.wav");
-	PRECACHE_SOUND("weapons/sniper_reload_first_seq.wav");
-	PRECACHE_SOUND("weapons/sniper_reload_second_seq.wav");
-	PRECACHE_SOUND("weapons/sniper_miss.wav");
-	PRECACHE_SOUND("weapons/sniper_bolt1.wav");
-	PRECACHE_SOUND("weapons/sniper_bolt2.wav");
+	PrecacheSound("weapons/sniper_fire.wav");
+	PrecacheSound("weapons/sniper_zoom.wav");
+	PrecacheSound("weapons/sniper_reload_first_seq.wav");
+	PrecacheSound("weapons/sniper_reload_second_seq.wav");
+	PrecacheSound("weapons/sniper_miss.wav");
+	PrecacheSound("weapons/sniper_bolt1.wav");
+	PrecacheSound("weapons/sniper_bolt2.wav");
 
-	m_usSniper = PRECACHE_EVENT(1, "events/sniper.sc");
+	m_usSniper = PrecacheEvent(1, "events/sniper.sc");
 }
 
 void CSniperRifle::Spawn()
 {
 	Precache();
 
-	SET_MODEL(edict(), "models/w_m40a1.mdl");
+	SetModel("models/w_m40a1.mdl");
 
 	m_iDefaultAmmo = SNIPERRIFLE_DEFAULT_GIVE;
 
@@ -248,14 +248,14 @@ public:
 	void Spawn() override
 	{
 		Precache();
-		SET_MODEL(edict(), "models/w_m40a1clip.mdl");
+		SetModel("models/w_m40a1clip.mdl");
 		CBasePlayerAmmo::Spawn();
 	}
 
 	void Precache() override
 	{
-		PRECACHE_MODEL("models/w_m40a1clip.mdl");
-		PRECACHE_SOUND("items/9mmclip1.wav");
+		PrecacheModel("models/w_m40a1clip.mdl");
+		PrecacheSound("items/9mmclip1.wav");
 	}
 
 	bool AddAmmo(CBaseEntity* pOther) override

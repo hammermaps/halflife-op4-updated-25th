@@ -38,7 +38,7 @@ constexpr float RopeFrameRate = 60.f;
 */
 constexpr float RopeForceMultiplier = 30.f;
 
-static const char* const g_pszCreakSounds[] =
+const char* g_pszCreakSounds[] =
 	{
 		"items/rope1.wav",
 		"items/rope2.wav",
@@ -129,7 +129,7 @@ void CRope::Precache()
 	UTIL_PrecacheOther("rope_segment");
 	UTIL_PrecacheOther("rope_sample");
 
-	PRECACHE_SOUND_ARRAY(g_pszCreakSounds);
+	PrecacheSoundArray(g_pszCreakSounds, ARRAYSIZE(g_pszCreakSounds));
 }
 
 void CRope::Spawn()

@@ -767,7 +767,7 @@ void CGargantua::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/garg.mdl");
+	SetModel("models/garg.mdl");
 	UTIL_SetSize(pev, Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	pev->solid = SOLID_SLIDEBOX;
@@ -794,25 +794,25 @@ void CGargantua::Spawn()
 //=========================================================
 void CGargantua::Precache()
 {
-	PRECACHE_MODEL("models/garg.mdl");
-	PRECACHE_MODEL(GARG_EYE_SPRITE_NAME);
-	PRECACHE_MODEL(GARG_BEAM_SPRITE_NAME);
-	PRECACHE_MODEL(GARG_BEAM_SPRITE2);
-	gStompSprite = PRECACHE_MODEL(GARG_STOMP_SPRITE_NAME);
-	gGargGibModel = PRECACHE_MODEL(GARG_GIB_MODEL);
-	PRECACHE_SOUND(GARG_STOMP_BUZZ_SOUND);
+	PrecacheModel("models/garg.mdl");
+	PrecacheModel(GARG_EYE_SPRITE_NAME);
+	PrecacheModel(GARG_BEAM_SPRITE_NAME);
+	PrecacheModel(GARG_BEAM_SPRITE2);
+	gStompSprite = PrecacheModel(GARG_STOMP_SPRITE_NAME);
+	gGargGibModel = PrecacheModel(GARG_GIB_MODEL);
+	PrecacheSound(GARG_STOMP_BUZZ_SOUND);
 
-	PRECACHE_SOUND_ARRAY(pAttackHitSounds);
-	PRECACHE_SOUND_ARRAY(pBeamAttackSounds);
-	PRECACHE_SOUND_ARRAY(pAttackMissSounds);
-	PRECACHE_SOUND_ARRAY(pRicSounds);
-	PRECACHE_SOUND_ARRAY(pFootSounds);
-	PRECACHE_SOUND_ARRAY(pIdleSounds);
-	PRECACHE_SOUND_ARRAY(pAlertSounds);
-	PRECACHE_SOUND_ARRAY(pPainSounds);
-	PRECACHE_SOUND_ARRAY(pAttackSounds);
-	PRECACHE_SOUND_ARRAY(pStompSounds);
-	PRECACHE_SOUND_ARRAY(pBreatheSounds);
+	PrecacheSoundArray(pAttackHitSounds, ARRAYSIZE(pAttackHitSounds));
+	PrecacheSoundArray(pBeamAttackSounds, ARRAYSIZE(pBeamAttackSounds));
+	PrecacheSoundArray(pAttackMissSounds, ARRAYSIZE(pAttackMissSounds));
+	PrecacheSoundArray(pRicSounds, ARRAYSIZE(pRicSounds));
+	PrecacheSoundArray(pFootSounds, ARRAYSIZE(pFootSounds));
+	PrecacheSoundArray(pIdleSounds, ARRAYSIZE(pIdleSounds));
+	PrecacheSoundArray(pAlertSounds, ARRAYSIZE(pAlertSounds));
+	PrecacheSoundArray(pPainSounds, ARRAYSIZE(pPainSounds));
+	PrecacheSoundArray(pAttackSounds, ARRAYSIZE(pAttackSounds));
+	PrecacheSoundArray(pStompSounds, ARRAYSIZE(pStompSounds));
+	PrecacheSoundArray(pBreatheSounds, ARRAYSIZE(pBreatheSounds));
 }
 
 
@@ -1124,7 +1124,7 @@ void CGargantua::RunTask(Task_t* pTask)
 			for (i = 0; i < 10; i++)
 			{
 				CGib* pGib = GetClassPtr((CGib*)NULL);
-
+			    pGib->Precache(); //Sounds are precached in CMaterialEntity::Precache
 				pGib->Spawn(GARG_GIB_MODEL);
 
 				int bodyPart = 0;

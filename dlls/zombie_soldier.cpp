@@ -22,6 +22,7 @@
 #include "util.h"
 #include "cbase.h"
 #include "monsters.h"
+#include "PlatformHeaders.h"
 #include "schedule.h"
 
 
@@ -273,7 +274,7 @@ void CZombieSoldier::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/zombie_soldier.mdl");
+	SetModel("models/zombie_soldier.mdl");
 	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = SOLID_SLIDEBOX;
@@ -293,27 +294,14 @@ void CZombieSoldier::Spawn()
 //=========================================================
 void CZombieSoldier::Precache()
 {
-	int i;
-
-	PRECACHE_MODEL("models/zombie_soldier.mdl");
-
-	for (i = 0; i < ARRAYSIZE(pAttackHitSounds); i++)
-		PRECACHE_SOUND((char*)pAttackHitSounds[i]);
-
-	for (i = 0; i < ARRAYSIZE(pAttackMissSounds); i++)
-		PRECACHE_SOUND((char*)pAttackMissSounds[i]);
-
-	for (i = 0; i < ARRAYSIZE(pAttackSounds); i++)
-		PRECACHE_SOUND((char*)pAttackSounds[i]);
-
-	for (i = 0; i < ARRAYSIZE(pIdleSounds); i++)
-		PRECACHE_SOUND((char*)pIdleSounds[i]);
-
-	for (i = 0; i < ARRAYSIZE(pAlertSounds); i++)
-		PRECACHE_SOUND((char*)pAlertSounds[i]);
-
-	for (i = 0; i < ARRAYSIZE(pPainSounds); i++)
-		PRECACHE_SOUND((char*)pPainSounds[i]);
+	PrecacheModel("models/zombie_soldier.mdl");
+    
+    PrecacheSoundArray(pAttackHitSounds, ARRAYSIZE(pAttackHitSounds));
+    PrecacheSoundArray(pAttackMissSounds, ARRAYSIZE(pAttackMissSounds));
+    PrecacheSoundArray(pAttackSounds, ARRAYSIZE(pAttackSounds));
+    PrecacheSoundArray(pIdleSounds, ARRAYSIZE(pIdleSounds));
+    PrecacheSoundArray(pAlertSounds, ARRAYSIZE(pAlertSounds));
+    PrecacheSoundArray(pPainSounds, ARRAYSIZE(pPainSounds));
 }
 
 //=========================================================
@@ -381,8 +369,8 @@ LINK_ENTITY_TO_CLASS(monster_zombie_soldier_dead, CDeadZombieSoldier);
 //=========================================================
 void CDeadZombieSoldier::Spawn()
 {
-	PRECACHE_MODEL("models/zombie_soldier.mdl");
-	SET_MODEL(ENT(pev), "models/zombie_soldier.mdl");
+	PrecacheModel("models/zombie_soldier.mdl");
+	SetModel("models/zombie_soldier.mdl");
 
 	pev->effects = 0;
 	pev->yaw_speed = 8;

@@ -32,7 +32,7 @@ void CShotgun::Spawn()
 {
 	Precache();
 	m_iId = WEAPON_SHOTGUN;
-	SET_MODEL(ENT(pev), "models/w_shotgun.mdl");
+	SetModel("models/w_shotgun.mdl");
 
 	m_iDefaultAmmo = SHOTGUN_DEFAULT_GIVE;
 
@@ -42,28 +42,28 @@ void CShotgun::Spawn()
 
 void CShotgun::Precache()
 {
-	PRECACHE_MODEL("models/v_shotgun.mdl");
-	PRECACHE_MODEL("models/w_shotgun.mdl");
-	PRECACHE_MODEL("models/p_shotgun.mdl");
+	PrecacheModel("models/v_shotgun.mdl");
+	PrecacheModel("models/w_shotgun.mdl");
+	PrecacheModel("models/p_shotgun.mdl");
 
-	m_iShell = PRECACHE_MODEL("models/shotgunshell.mdl"); // shotgun shell
+	m_iShell = PrecacheModel("models/shotgunshell.mdl"); // shotgun shell
 
-	PRECACHE_SOUND("items/9mmclip1.wav");
+	PrecacheSound("items/9mmclip1.wav");
 
-	PRECACHE_SOUND("weapons/dbarrel1.wav"); //shotgun
-	PRECACHE_SOUND("weapons/sbarrel1.wav"); //shotgun
+	PrecacheSound("weapons/dbarrel1.wav"); //shotgun
+	PrecacheSound("weapons/sbarrel1.wav"); //shotgun
 
-	PRECACHE_SOUND("weapons/reload1.wav"); // shotgun reload
-	PRECACHE_SOUND("weapons/reload3.wav"); // shotgun reload
+	PrecacheSound("weapons/reload1.wav"); // shotgun reload
+	PrecacheSound("weapons/reload3.wav"); // shotgun reload
 
 	//	PRECACHE_SOUND ("weapons/sshell1.wav");	// shotgun reload - played on client
 	//	PRECACHE_SOUND ("weapons/sshell3.wav");	// shotgun reload - played on client
 
-	PRECACHE_SOUND("weapons/357_cock1.wav"); // gun empty sound
-	PRECACHE_SOUND("weapons/scock1.wav");	 // cock gun
+	PrecacheSound("weapons/357_cock1.wav"); // gun empty sound
+	PrecacheSound("weapons/scock1.wav");	 // cock gun
 
-	m_usSingleFire = PRECACHE_EVENT(1, "events/shotgun1.sc");
-	m_usDoubleFire = PRECACHE_EVENT(1, "events/shotgun2.sc");
+	m_usSingleFire = PrecacheEvent(1, "events/shotgun1.sc");
+	m_usDoubleFire = PrecacheEvent(1, "events/shotgun2.sc");
 }
 
 bool CShotgun::GetItemInfo(ItemInfo* p)
@@ -373,13 +373,13 @@ class CShotgunAmmo : public CBasePlayerAmmo
 	void Spawn() override
 	{
 		Precache();
-		SET_MODEL(ENT(pev), "models/w_shotbox.mdl");
+		SetModel("models/w_shotbox.mdl");
 		CBasePlayerAmmo::Spawn();
 	}
 	void Precache() override
 	{
-		PRECACHE_MODEL("models/w_shotbox.mdl");
-		PRECACHE_SOUND("items/9mmclip1.wav");
+		PrecacheModel("models/w_shotbox.mdl");
+		PrecacheSound("items/9mmclip1.wav");
 	}
 	bool AddAmmo(CBaseEntity* pOther) override
 	{

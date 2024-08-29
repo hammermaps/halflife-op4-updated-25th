@@ -37,15 +37,15 @@ LINK_ENTITY_TO_CLASS(weapon_eagle, CEagle);
 
 void CEagle::Precache()
 {
-	PRECACHE_MODEL("models/v_desert_eagle.mdl");
-	PRECACHE_MODEL("models/w_desert_eagle.mdl");
-	PRECACHE_MODEL("models/p_desert_eagle.mdl");
-	m_iShell = PRECACHE_MODEL("models/shell.mdl");
-	PRECACHE_SOUND("weapons/desert_eagle_fire.wav");
-	PRECACHE_SOUND("weapons/desert_eagle_reload.wav");
-	PRECACHE_SOUND("weapons/desert_eagle_sight.wav");
-	PRECACHE_SOUND("weapons/desert_eagle_sight2.wav");
-	m_usFireEagle = PRECACHE_EVENT(1, "events/eagle.sc");
+	PrecacheModel("models/v_desert_eagle.mdl");
+	PrecacheModel("models/w_desert_eagle.mdl");
+	PrecacheModel("models/p_desert_eagle.mdl");
+	m_iShell = PrecacheModel("models/shell.mdl");
+	PrecacheSound("weapons/desert_eagle_fire.wav");
+	PrecacheSound("weapons/desert_eagle_reload.wav");
+	PrecacheSound("weapons/desert_eagle_sight.wav");
+	PrecacheSound("weapons/desert_eagle_sight2.wav");
+	m_usFireEagle = PrecacheEvent(1, "events/eagle.sc");
 }
 
 void CEagle::Spawn()
@@ -56,7 +56,7 @@ void CEagle::Spawn()
 
 	m_iId = WEAPON_EAGLE;
 
-	SET_MODEL(edict(), "models/w_desert_eagle.mdl");
+	SetModel("models/w_desert_eagle.mdl");
 
 	m_iDefaultAmmo = DEAGLE_DEFAULT_GIVE;
 
@@ -368,14 +368,14 @@ class CEagleAmmo : public CBasePlayerAmmo
 	{
 		Precache();
 		//TODO: could probably use a better model
-		SET_MODEL(ENT(pev), "models/w_9mmclip.mdl");
+		SetModel("models/w_9mmclip.mdl");
 		CBasePlayerAmmo::Spawn();
 	}
 
 	void Precache() override
 	{
-		PRECACHE_MODEL("models/w_9mmclip.mdl");
-		PRECACHE_SOUND("items/9mmclip1.wav");
+		PrecacheModel("models/w_9mmclip.mdl");
+		PrecacheSound("items/9mmclip1.wav");
 	}
 
 	bool AddAmmo(CBaseEntity* pOther) override

@@ -221,7 +221,7 @@ static void ThrowGib(entvars_t *pev, char *szGibModel, float flDamage)   \
 																	   \ \
 static void ThrowHead(entvars_t *pev, char *szGibModel, floatflDamage)   \
 {                                                                        \
-	SET_MODEL(ENT(pev), szGibModel);                                     \
+	SetModel(szGibModel);                                     \
 	pev->frame			= 0;                                                    \
 	pev->nextthink		= -1;                                                \
 	pev->movetype		= MOVETYPE_BOUNCE;                                    \
@@ -3243,7 +3243,7 @@ void CBasePlayer::Spawn()
 
 	g_pGameRules->GetPlayerSpawnSpot(this);
 
-	SET_MODEL(ENT(pev), "models/player.mdl");
+	SetModel("models/player.mdl");
 	g_ulModelIndexPlayer = pev->modelindex;
 	pev->sequence = LookupActivity(ACT_IDLE);
 
@@ -3685,14 +3685,12 @@ void CBloodSplat::Spawn(entvars_t* pevOwner)
 void CBloodSplat::Spray()
 {
 	TraceResult tr;
+    
+    UTIL_MakeVectors(pev->angles);
+    UTIL_TraceLine(pev->origin, pev->origin + gpGlobals->v_forward * 128, ignore_monsters, pev->owner, &tr);
 
-	if (g_Language != LANGUAGE_GERMAN)
-	{
-		UTIL_MakeVectors(pev->angles);
-		UTIL_TraceLine(pev->origin, pev->origin + gpGlobals->v_forward * 128, ignore_monsters, pev->owner, &tr);
-
-		UTIL_BloodDecalTrace(&tr, BLOOD_COLOR_RED);
-	}
+    UTIL_BloodDecalTrace(&tr, BLOOD_COLOR_RED);
+	
 	SetThink(&CBloodSplat::SUB_Remove);
 	pev->nextthink = gpGlobals->time + 0.1;
 }
@@ -5635,8 +5633,8 @@ LINK_ENTITY_TO_CLASS(monster_hevsuit_dead, CDeadHEV);
 //=========================================================
 void CDeadHEV::Spawn()
 {
-	PRECACHE_MODEL("models/deadhaz.mdl");
-	SET_MODEL(ENT(pev), "models/deadhaz.mdl");
+	PrecacheModel("models/deadhaz.mdl");
+	SetModel("models/deadhaz.mdl");
 
 	pev->effects = 0;
 	pev->yaw_speed = 8;

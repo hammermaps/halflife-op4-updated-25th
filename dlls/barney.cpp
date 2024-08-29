@@ -396,7 +396,7 @@ void CBarney::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/barney.mdl");
+	SetModel("models/barney.mdl");
 	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = SOLID_SLIDEBOX;
@@ -421,18 +421,18 @@ void CBarney::Spawn()
 //=========================================================
 void CBarney::Precache()
 {
-	PRECACHE_MODEL("models/barney.mdl");
+	PrecacheModel("models/barney.mdl");
 
-	PRECACHE_SOUND("barney/ba_attack1.wav");
-	PRECACHE_SOUND("barney/ba_attack2.wav");
+	PrecacheSound("barney/ba_attack1.wav");
+	PrecacheSound("barney/ba_attack2.wav");
 
-	PRECACHE_SOUND("barney/ba_pain1.wav");
-	PRECACHE_SOUND("barney/ba_pain2.wav");
-	PRECACHE_SOUND("barney/ba_pain3.wav");
+	PrecacheSound("barney/ba_pain1.wav");
+	PrecacheSound("barney/ba_pain2.wav");
+	PrecacheSound("barney/ba_pain3.wav");
 
-	PRECACHE_SOUND("barney/ba_die1.wav");
-	PRECACHE_SOUND("barney/ba_die2.wav");
-	PRECACHE_SOUND("barney/ba_die3.wav");
+	PrecacheSound("barney/ba_die1.wav");
+	PrecacheSound("barney/ba_die2.wav");
+	PrecacheSound("barney/ba_die3.wav");
 
 	// every new barney must call this, otherwise
 	// when a level is loaded, nobody will talk (time is reset to 0)
@@ -801,8 +801,8 @@ LINK_ENTITY_TO_CLASS(monster_barney_dead, CDeadBarney);
 //=========================================================
 void CDeadBarney::Spawn()
 {
-	PRECACHE_MODEL("models/barney.mdl");
-	SET_MODEL(ENT(pev), "models/barney.mdl");
+	PrecacheModel("models/barney.mdl");
+	SetModel("models/barney.mdl");
 
 	pev->effects = 0;
 	pev->yaw_speed = 8;

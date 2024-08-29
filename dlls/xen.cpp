@@ -93,7 +93,7 @@ void CXenPLight::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/light.mdl");
+	SetModel("models/light.mdl");
 	pev->movetype = MOVETYPE_NONE;
 	pev->solid = SOLID_TRIGGER;
 
@@ -110,8 +110,8 @@ void CXenPLight::Spawn()
 
 void CXenPLight::Precache()
 {
-	PRECACHE_MODEL("models/light.mdl");
-	PRECACHE_MODEL(XEN_PLANT_GLOW_SPRITE);
+	PrecacheModel("models/light.mdl");
+	PrecacheModel(XEN_PLANT_GLOW_SPRITE);
 }
 
 
@@ -195,7 +195,7 @@ LINK_ENTITY_TO_CLASS(xen_hair, CXenHair);
 void CXenHair::Spawn()
 {
 	Precache();
-	SET_MODEL(edict(), "models/hair.mdl");
+	SetModel("models/hair.mdl");
 	UTIL_SetSize(pev, Vector(-4, -4, 0), Vector(4, 4, 32));
 	pev->sequence = 0;
 
@@ -221,7 +221,7 @@ void CXenHair::Think()
 
 void CXenHair::Precache()
 {
-	PRECACHE_MODEL("models/hair.mdl");
+	PrecacheModel("models/hair.mdl");
 }
 
 
@@ -298,7 +298,7 @@ void CXenTree::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/tree.mdl");
+	SetModel("models/tree.mdl");
 	pev->movetype = MOVETYPE_NONE;
 	pev->solid = SOLID_BBOX;
 
@@ -333,10 +333,11 @@ const char* CXenTree::pAttackMissSounds[] =
 
 void CXenTree::Precache()
 {
-	PRECACHE_MODEL("models/tree.mdl");
-	PRECACHE_MODEL(XEN_PLANT_GLOW_SPRITE);
-	PRECACHE_SOUND_ARRAY(pAttackHitSounds);
-	PRECACHE_SOUND_ARRAY(pAttackMissSounds);
+	PrecacheModel("models/tree.mdl");
+	PrecacheModel(XEN_PLANT_GLOW_SPRITE);
+    
+	PrecacheSoundArray(pAttackHitSounds, ARRAYSIZE(pAttackHitSounds));
+	PrecacheSoundArray(pAttackMissSounds, ARRAYSIZE(pAttackMissSounds));
 }
 
 
@@ -476,7 +477,7 @@ CXenHull* CXenHull::CreateHull(CBaseEntity* source, const Vector& mins, const Ve
 	CXenHull* pHull = GetClassPtr((CXenHull*)NULL);
 
 	UTIL_SetOrigin(pHull->pev, source->pev->origin + offset);
-	SET_MODEL(pHull->edict(), STRING(source->pev->model));
+	pHull->SetModel(STRING(source->pev->model));
 	pHull->pev->solid = SOLID_BBOX;
 	pHull->pev->classname = MAKE_STRING("xen_hull");
 	pHull->pev->movetype = MOVETYPE_NONE;
@@ -538,7 +539,7 @@ void CXenSpore::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), pModelNames[pev->skin]);
+	SetModel(pModelNames[pev->skin]);
 	pev->movetype = MOVETYPE_NONE;
 	pev->solid = SOLID_BBOX;
 	pev->takedamage = DAMAGE_YES;
@@ -561,7 +562,7 @@ const char* CXenSpore::pModelNames[] =
 
 void CXenSpore::Precache()
 {
-	PRECACHE_MODEL((char*)pModelNames[pev->skin]);
+	PrecacheModel(pModelNames[pev->skin]);
 }
 
 

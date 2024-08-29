@@ -24,6 +24,8 @@ This file contains "stubs" of class member implementations so that we can predic
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
+#include "FileSystem.h"
+#include "filesystem_utils.h"
 #include "player.h"
 #include "weapons.h"
 #include "nodes.h"
@@ -39,14 +41,46 @@ CBaseEntity* CBaseEntity::GetNextTarget() { return NULL; }
 bool CBaseEntity::Save(CSave& save) { return true; }
 bool CBaseEntity::Restore(CRestore& restore) { return true; }
 void CBaseEntity::SetObjectCollisionBox() {}
-bool CBaseEntity::Intersects(CBaseEntity* pOther) { return false; }
+bool CBaseEntity::Intersects(const CBaseEntity* pOther) const { return false; }
 void CBaseEntity::MakeDormant() {}
-bool CBaseEntity::IsDormant() { return false; }
 bool CBaseEntity::IsInWorld() { return true; }
 bool CBaseEntity::ShouldToggle(USE_TYPE useType, bool currentState) { return false; }
 int CBaseEntity::DamageDecal(int bitsDamageType) { return -1; }
 CBaseEntity* CBaseEntity::Create(const char* szName, const Vector& vecOrigin, const Vector& vecAngles, edict_t* pentOwner) { return NULL; }
 void CBaseEntity::SUB_Remove() {}
+void CBaseEntity::SetModel(const char* model) {}
+int CBaseEntity::PrecacheModel(const char* pszModelName)  { return 1; }
+int CBaseEntity::PrecacheSound(const char* pszSoundName)
+{
+    if(g_pFileSystem->FileExists(pszSoundName))
+    {
+        FileHandle_t file = g_pFileSystem->Open(pszSoundName, "r");
+        if (file != FILESYSTEM_INVALID_HANDLE && g_pFileSystem->Size(file) > 0)
+        {
+            g_pFileSystem->Close(file);
+            return g_engfuncs.pfnPrecacheSound(pszSoundName);
+        }
+    }
+    
+    return g_engfuncs.pfnPrecacheSound("sound/null.wav");
+}
+unsigned short CBaseEntity::PrecacheEvent(int type, const char* psz) const
+{
+    //verify file exists
+    if(g_pFileSystem->FileExists(psz))
+    {
+        FileHandle_t file = g_pFileSystem->Open(psz, "r");
+        if (file != FILESYSTEM_INVALID_HANDLE && g_pFileSystem->Size(file) > 0)
+        {
+            g_pFileSystem->Close(file);
+            return g_engfuncs.pfnPrecacheEvent(type, psz);
+        }
+    }
+
+    return g_engfuncs.pfnPrecacheEvent(type, "events/null.sc");
+}
+void CBaseEntity::PrecacheSoundArray(const char* soundFiles[],int arraySize) {}
+void CBaseEntity::Precache() {};
 
 // CBaseDelay Stubs
 bool CBaseDelay::KeyValue(struct KeyValueData_s*) { return false; }

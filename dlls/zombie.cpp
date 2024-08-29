@@ -269,7 +269,7 @@ void CZombie::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/zombie.mdl");
+	SetModel("models/zombie.mdl");
 	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = SOLID_SLIDEBOX;
@@ -289,14 +289,14 @@ void CZombie::Spawn()
 //=========================================================
 void CZombie::Precache()
 {
-	PRECACHE_MODEL("models/zombie.mdl");
+	PrecacheModel("models/zombie.mdl");
 
-	PRECACHE_SOUND_ARRAY(pAttackHitSounds);
-	PRECACHE_SOUND_ARRAY(pAttackMissSounds);
-	PRECACHE_SOUND_ARRAY(pAttackSounds);
-	PRECACHE_SOUND_ARRAY(pIdleSounds);
-	PRECACHE_SOUND_ARRAY(pAlertSounds);
-	PRECACHE_SOUND_ARRAY(pPainSounds);
+    PrecacheSoundArray(pAttackHitSounds, ARRAYSIZE(pAttackHitSounds));
+    PrecacheSoundArray(pAttackMissSounds, ARRAYSIZE(pAttackMissSounds));
+    PrecacheSoundArray(pAttackSounds, ARRAYSIZE(pAttackSounds));
+    PrecacheSoundArray(pIdleSounds, ARRAYSIZE(pIdleSounds));
+    PrecacheSoundArray(pAlertSounds, ARRAYSIZE(pAlertSounds));
+    PrecacheSoundArray(pPainSounds, ARRAYSIZE(pPainSounds));
 }
 
 //=========================================================

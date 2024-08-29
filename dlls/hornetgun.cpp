@@ -49,7 +49,7 @@ void CHgun::Spawn()
 {
 	Precache();
 	m_iId = WEAPON_HORNETGUN;
-	SET_MODEL(ENT(pev), "models/w_hgun.mdl");
+	SetModel("models/w_hgun.mdl");
 
 	m_iDefaultAmmo = HIVEHAND_DEFAULT_GIVE;
 	m_iFirePhase = 0;
@@ -60,11 +60,11 @@ void CHgun::Spawn()
 
 void CHgun::Precache()
 {
-	PRECACHE_MODEL("models/v_hgun.mdl");
-	PRECACHE_MODEL("models/w_hgun.mdl");
-	PRECACHE_MODEL("models/p_hgun.mdl");
+	PrecacheModel("models/v_hgun.mdl");
+	PrecacheModel("models/w_hgun.mdl");
+	PrecacheModel("models/p_hgun.mdl");
 
-	m_usHornetFire = PRECACHE_EVENT(1, "events/firehornet.sc");
+	m_usHornetFire = PrecacheEvent(1, "events/firehornet.sc");
 
 	UTIL_PrecacheOther("hornet");
 }

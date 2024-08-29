@@ -264,11 +264,11 @@ void CTentacle::Spawn()
 
 	if (pev->spawnflags & SF_TENTACLE_USE_LOWER_MODEL)
 	{
-		SET_MODEL(ENT(pev), "models/tentacle3.mdl");
+		SetModel("models/tentacle3.mdl");
 	}
 	else
 	{
-		SET_MODEL(ENT(pev), "models/tentacle2.mdl");
+		SetModel("models/tentacle2.mdl");
 	}
 
 	UTIL_SetSize(pev, Vector(-32, -32, 0), Vector(32, 32, 64));
@@ -307,32 +307,32 @@ void CTentacle::Spawn()
 
 void CTentacle::Precache()
 {
-	PRECACHE_MODEL("models/tentacle2.mdl");
-	PRECACHE_MODEL("models/tentacle3.mdl");
+	PrecacheModel("models/tentacle2.mdl");
+	PrecacheModel("models/tentacle3.mdl");
 
-	PRECACHE_SOUND("ambience/flies.wav");
-	PRECACHE_SOUND("ambience/squirm2.wav");
+	PrecacheSound("ambience/flies.wav");
+	PrecacheSound("ambience/squirm2.wav");
 
-	PRECACHE_SOUND("tentacle/te_alert1.wav");
-	PRECACHE_SOUND("tentacle/te_alert2.wav");
-	PRECACHE_SOUND("tentacle/te_flies1.wav");
-	PRECACHE_SOUND("tentacle/te_move1.wav");
-	PRECACHE_SOUND("tentacle/te_move2.wav");
-	PRECACHE_SOUND("tentacle/te_roar1.wav");
-	PRECACHE_SOUND("tentacle/te_roar2.wav");
-	PRECACHE_SOUND("tentacle/te_search1.wav");
-	PRECACHE_SOUND("tentacle/te_search2.wav");
-	PRECACHE_SOUND("tentacle/te_sing1.wav");
-	PRECACHE_SOUND("tentacle/te_sing2.wav");
-	PRECACHE_SOUND("tentacle/te_squirm2.wav");
-	PRECACHE_SOUND("tentacle/te_strike1.wav");
-	PRECACHE_SOUND("tentacle/te_strike2.wav");
-	PRECACHE_SOUND("tentacle/te_swing1.wav");
-	PRECACHE_SOUND("tentacle/te_swing2.wav");
+	PrecacheSound("tentacle/te_alert1.wav");
+	PrecacheSound("tentacle/te_alert2.wav");
+	PrecacheSound("tentacle/te_flies1.wav");
+	PrecacheSound("tentacle/te_move1.wav");
+	PrecacheSound("tentacle/te_move2.wav");
+	PrecacheSound("tentacle/te_roar1.wav");
+	PrecacheSound("tentacle/te_roar2.wav");
+	PrecacheSound("tentacle/te_search1.wav");
+	PrecacheSound("tentacle/te_search2.wav");
+	PrecacheSound("tentacle/te_sing1.wav");
+	PrecacheSound("tentacle/te_sing2.wav");
+	PrecacheSound("tentacle/te_squirm2.wav");
+	PrecacheSound("tentacle/te_strike1.wav");
+	PrecacheSound("tentacle/te_strike2.wav");
+	PrecacheSound("tentacle/te_swing1.wav");
+	PrecacheSound("tentacle/te_swing2.wav");
 
-	PRECACHE_SOUND_ARRAY(pHitSilo);
-	PRECACHE_SOUND_ARRAY(pHitDirt);
-	PRECACHE_SOUND_ARRAY(pHitWater);
+	PrecacheSoundArray(pHitSilo, ARRAYSIZE(pHitSilo));
+    PrecacheSoundArray(pHitDirt, ARRAYSIZE(pHitDirt));
+    PrecacheSoundArray(pHitWater, ARRAYSIZE(pHitWater));
 }
 
 
@@ -1060,7 +1060,7 @@ LINK_ENTITY_TO_CLASS(monster_tentaclemaw, CTentacleMaw);
 void CTentacleMaw::Spawn()
 {
 	Precache();
-	SET_MODEL(ENT(pev), "models/maw.mdl");
+	SetModel("models/maw.mdl");
 	UTIL_SetSize(pev, Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	pev->solid = SOLID_NOT;
@@ -1076,5 +1076,5 @@ void CTentacleMaw::Spawn()
 
 void CTentacleMaw::Precache()
 {
-	PRECACHE_MODEL("models/maw.mdl");
+	PrecacheModel("models/maw.mdl");
 }

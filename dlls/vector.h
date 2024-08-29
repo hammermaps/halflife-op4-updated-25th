@@ -95,6 +95,21 @@ public:
 	[[nodiscard]] constexpr Vector operator*(float fl) const { return Vector(x * fl, y * fl, z * fl); }
 	[[nodiscard]] constexpr Vector operator/(float fl) const { return Vector(x / fl, y / fl, z / fl); }
 
+    // New operators
+    constexpr Vector& operator+=(const Vector& v) {
+	    x += v.x;
+	    y += v.y;
+	    z += v.z;
+	    return *this;
+	}
+
+    constexpr Vector& operator-=(const Vector& v) {
+	    x -= v.x;
+	    y -= v.y;
+	    z -= v.z;
+	    return *this;
+	}
+    
 	// Methods
 	constexpr void CopyToArray(float* rgfl) const { rgfl[0] = x, rgfl[1] = y, rgfl[2] = z; }
 

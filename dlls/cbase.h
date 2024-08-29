@@ -45,6 +45,7 @@ CBaseEntity
 // UNDONE: This will ignore transition volumes (trigger_transition), but not the PVS!!!
 #define FCAP_FORCE_TRANSITION 0x00000080 // ALWAYS goes across transitions
 
+#include "const.h"
 #include "Platform.h"
 #include "saverestore.h"
 #include "schedule.h"
@@ -79,13 +80,13 @@ extern void SaveGlobalState(SAVERESTOREDATA* pSaveData);
 extern void RestoreGlobalState(SAVERESTOREDATA* pSaveData);
 extern void ResetGlobalState();
 
-typedef enum
+enum USE_TYPE
 {
 	USE_OFF = 0,
 	USE_ON = 1,
 	USE_SET = 2,
 	USE_TOGGLE = 3
-} USE_TYPE;
+};
 
 extern void FireTargets(const char* targetName, CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
 
@@ -165,22 +166,497 @@ public:
 	CBaseEntity* m_pGoalEnt; // path corner we are heading towards
 	CBaseEntity* m_pLink;	 // used for temporary link-list operations.
 
+    // entity creation load null models
+protected:
+    bool m_bHasPreacheError = false; // true if the entity has a critical precache error
+    int g_sModelIndexNullModel = 0;
+    int g_sModelIndexErrorModel = 0;
+    int g_sModelIndexErrorSprite = 0;
+    int g_sSoundIndexNullSound = 0;
+    unsigned short g_sEventIndexNullEvent = 0;
+public:
+
 	/**
 	*	@brief Entity flags sent to the client in ::AddToFullPack
 	*/
 	byte m_EFlags = 0;
 
-	virtual ~CBaseEntity() {}
+	virtual ~CBaseEntity() = default;
 
-	// initialization functions
+    // initialization functions
 	virtual void Spawn() {}
-	virtual void Precache() {}
+	virtual void Precache();
 	virtual bool KeyValue(KeyValueData* pkvd) { return false; }
 	virtual bool Save(CSave& save);
 	virtual bool Restore(CRestore& restore);
 	virtual int ObjectCaps() { return FCAP_ACROSS_TRANSITION; }
 	virtual void Activate() {}
+    
+    /**
+     * \brief Sets the owner of the entity.
+     *
+     * This function sets the owner of the entity to the specified edict.
+     *
+     * \param pentOwner The edict of the owner entity.
+     */
+    virtual void SetOwner(edict_t* pentOwner) { pev->owner = pentOwner; }
 
+    /**
+     * \brief Gets the owner of the entity.
+     *
+     * This function returns the edict of the owner entity.
+     *
+     * \return The edict of the owner entity.
+     */
+    virtual edict_t* GetOwner() { return pev->owner; }
+
+    /**
+     * \brief Sets the owner of the entity.
+     *
+     * This function sets the owner of the entity to the specified CBaseEntity.
+     *
+     * \param pOwner The CBaseEntity of the owner entity.
+     */
+    virtual void SetOwner(CBaseEntity* pOwner) { SetOwner(pOwner->edict()); }
+
+    /**
+     * \brief Gets the owner entity.
+     *
+     * This function returns the CBaseEntity of the owner entity.
+     *
+     * \return The CBaseEntity of the owner entity.
+     */
+    virtual CBaseEntity* GetOwnerEntity() { return Instance(pev->owner); }
+
+    /**
+     * \brief Sets the origin of the entity.
+     *
+     * This function sets the origin (position) of the entity to the specified vector.
+     *
+     * \param vecOrigin The vector representing the new origin.
+     */
+    virtual void SetOrigin(const Vector& vecOrigin) { pev->origin = vecOrigin; }
+
+    /**
+     * \brief Gets the origin of the entity.
+     *
+     * This function returns the origin (position) of the entity.
+     *
+     * \return The vector representing the origin.
+     */
+    virtual Vector GetOrigin() const { return pev->origin; }
+
+    /**
+     * \brief Sets the old origin of the entity.
+     *
+     * This function sets the old origin (previous position) of the entity to the specified vector.
+     *
+     * \param vecOrigin The vector representing the new old origin.
+     */
+    virtual void SetOldOrigin(const Vector& vecOrigin) { pev->oldorigin = vecOrigin; }
+
+    /**
+     * \brief Gets the old origin of the entity.
+     *
+     * This function returns the old origin (previous position) of the entity.
+     *
+     * \return The vector representing the old origin.
+     */
+    virtual Vector GetOldOrigin() const { return pev->oldorigin; }
+
+    /**
+     * \brief Sets the angles of the entity.
+     *
+     * This function sets the angles (rotation) of the entity to the specified vector.
+     *
+     * \param vecAngles The vector representing the new angles.
+     */
+    virtual void SetAngles(const Vector& vecAngles) { pev->angles = vecAngles; }
+
+    /**
+     * \brief Gets the angles of the entity.
+     *
+     * This function returns the angles (rotation) of the entity.
+     *
+     * \return The vector representing the angles.
+     */
+    virtual Vector GetAngles() const { return pev->angles; }
+
+    /**
+     * \brief Sets the render mode of the entity.
+     *
+     * This function sets the render mode of the entity to the specified mode.
+     *
+     * \param rendermode The integer representing the new render mode.
+     */
+    virtual void SetRenderMode(int rendermode) { pev->rendermode = rendermode; }
+
+    /**
+     * \brief Gets the render mode of the entity.
+     *
+     * This function returns the render mode of the entity.
+     *
+     * \return The integer representing the render mode.
+     */
+    virtual int GetRenderMode() const { return pev->rendermode; }
+
+    /**
+     * \brief Sets the render amount of the entity.
+     *
+     * This function sets the render amount (transparency) of the entity.
+     *
+     * \param renderamt The integer representing the new render amount.
+     */
+    virtual void SetRenderAmount(int renderamt) { pev->renderamt = renderamt; }
+
+    /**
+     * \brief Gets the render amount of the entity.
+     *
+     * This function returns the render amount (transparency) of the entity.
+     *
+     * \return The integer representing the render amount.
+     */
+    virtual int GetRenderAmount() const { return pev->renderamt; }
+
+    /**
+     * \brief Sets the render color of the entity.
+     *
+     * This function sets the render color of the entity to the specified vector.
+     *
+     * \param rendercolor The vector representing the new render color.
+     */
+    virtual void SetRenderColor(const Vector& rendercolor) { pev->rendercolor = rendercolor; }
+
+    /**
+     * \brief Gets the render color of the entity.
+     *
+     * This function returns the render color of the entity.
+     *
+     * \return The vector representing the render color.
+     */
+    virtual Vector GetRenderColor() const { return pev->rendercolor; }
+
+    /**
+     * \brief Sets the render effects of the entity.
+     *
+     * This function sets the render effects of the entity to the specified effects.
+     *
+     * \param renderfx The integer representing the new render effects.
+     */
+    virtual void SetRenderFX(int renderfx) { pev->renderfx = renderfx; }
+
+    /**
+     * \brief Gets the render effects of the entity.
+     *
+     * This function returns the render effects of the entity.
+     *
+     * \return The integer representing the render effects.
+     */
+    virtual int GetRenderFX() const { return pev->renderfx; }
+
+    /**
+     * \brief Sets the specified effect for the entity.
+     *
+     * This function sets the specified effect for the entity by modifying the effects bitmask.
+     *
+     * \param effect The EntityEffects value representing the effect to set.
+     */
+    virtual void SetEffect(EntityEffects effect) { SetBits(pev->effects, effect); }
+
+    /**
+     * \brief Clears the specified effect for the entity.
+     *
+     * This function clears the specified effect for the entity by modifying the effects bitmask.
+     *
+     * \param effect The EntityEffects value representing the effect to clear.
+     */
+    virtual void ClearEffect(EntityEffects effect) { BitIfSetDel(pev->effects, effect); }
+
+    /**
+     * \brief Checks if the entity has the specified effect.
+     *
+     * This function checks if the entity has the specified effect by examining the effects bitmask.
+     *
+     * \param effect The EntityEffects value representing the effect to check.
+     * \return True if the entity has the effect, otherwise false.
+     */
+    virtual bool HasEffect(EntityEffects effect) const { return FBitSet(pev->effects, effect); }
+    
+    /**
+     * \brief Sets the movement type of the entity.
+     *
+     * This function sets the movement type of the entity to the specified type.
+     *
+     * \param movetype The integer representing the new movement type.
+     */
+    virtual void SetMovetype(MoveTypes movetype) { pev->movetype = movetype; }
+
+    /**
+     * \brief Gets the movement type of the entity.
+     *
+     * This function returns the movement type of the entity.
+     *
+     * \return The integer representing the movement type.
+     */
+    virtual int GetMovetype() const { return pev->movetype; }
+
+    /**
+     * \brief Sets the solidity of the entity.
+     *
+     * This function sets the solidity of the entity to the specified value.
+     *
+     * \param solid The SolidType representing the new solidity.
+     */
+    virtual void SetSolid(SolidType solid) { pev->solid = solid; }
+
+    /**
+     * \brief Gets the solidity of the entity.
+     *
+     * This function returns the solidity of the entity.
+     *
+     * \return The integer representing the solidity.
+     */
+    virtual int GetSolid() const { return pev->solid; }
+
+    /**
+     * \brief Sets the model of the entity.
+     *
+     * This function sets the model of the entity to the specified model.
+     *
+     * \param model The string representing the new model.
+     */
+    virtual void SetModel(const char* model);
+
+    /**
+     * \brief Gets the model of the entity.
+     *
+     * This function returns the model of the entity.
+     *
+     * \return The string representing the model.
+     */
+    virtual const char* GetModel() const { return STRING(pev->model); }
+
+    /**
+     * \brief Sets the model scale of the entity.
+     *
+     * This function sets the model scale of the entity to the specified scale.
+     *
+     * \param scale The float representing the new model scale.
+     */
+    virtual void SetModelScale(float scale) { pev->scale = scale; }
+
+    /**
+     * \brief Gets the model scale of the entity.
+     *
+     * This function returns the model scale of the entity.
+     *
+     * \return The float representing the model scale.
+     */
+    virtual float GetModelScale() const { return pev->scale; }
+
+    /**
+     * \brief Sets a flag for the entity.
+     *
+     * This function sets the specified flag for the entity.
+     *
+     * \param flag The flag to set.
+     */
+    virtual void SetFlag(Flags flag) { FBitSet(pev->flags, flag); }
+
+    /**
+     * \brief Clears a flag for the entity.
+     *
+     * This function clears the specified flag for the entity.
+     *
+     * \param flag The flag to clear.
+     */
+    virtual void ClearFlag(Flags flag) { BitIfSetDel(pev->flags, flag); }
+
+    /**
+     * \brief Checks if the entity has a specific flag.
+     *
+     * This function checks if the entity has the specified flag.
+     *
+     * \param flag The flag to check.
+     * \return True if the entity has the flag, otherwise false.
+     */
+    virtual bool HasFlag(Flags flag) const { return FBitSet(pev->flags, flag); }
+    
+    /**
+     * \brief Sets the next think time for the entity.
+     *
+     * This function sets the next think time for the entity based on its movement type.
+     *
+     * \param delay The float value representing the delay before the next think.
+     */
+    virtual void SetNextThink(float delay) { pev->nextthink = (GetMovetype() == MOVETYPE_PUSH ? pev->ltime + delay : gpGlobals->time + delay); }
+    
+    /**
+     * \brief Sets the absolute minimum bounds of the entity.
+     *
+     * This function sets the absolute minimum bounds of the entity to the specified vector.
+     *
+     * \param absmin The vector representing the new absolute minimum bounds.
+     */
+    virtual void SetAbsMin(const Vector& absmin) { pev->absmin = absmin; }
+
+    /**
+     * \brief Gets the absolute minimum bounds of the entity.
+     *
+     * This function returns the absolute minimum bounds of the entity.
+     *
+     * \return The vector representing the absolute minimum bounds.
+     */
+    virtual Vector GetAbsMin() const { return pev->absmin; }
+
+    /**
+     * \brief Sets the absolute maximum bounds of the entity.
+     *
+     * This function sets the absolute maximum bounds of the entity to the specified vector.
+     *
+     * \param absmax The vector representing the new absolute maximum bounds.
+     */
+    virtual void SetAbsMax(const Vector& absmax) { pev->absmax = absmax; }
+
+    /**
+     * \brief Gets the absolute maximum bounds of the entity.
+     *
+     * This function returns the absolute maximum bounds of the entity.
+     *
+     * \return The vector representing the absolute maximum bounds.
+     */
+    virtual Vector GetAbsMax() const { return pev->absmax; }
+    
+    /**
+     * \brief Disables the next think time for the entity.
+     *
+     * This function sets the next think time for the entity to zero, effectively disabling it.
+     */
+    virtual void DontThink() { pev->nextthink = 0; }
+
+    /**
+     * \brief Precaches a model if it exists.
+     *
+     * \param pszModelName The name of the model to be precached.
+     * \return The index of the precached model.
+     */
+    virtual int PrecacheModel(const char* pszModelName);
+
+    /**
+     * \brief Precaches a model using a string_t identifier.
+     *
+     * \param iszModelName The string_t identifier of the model to be precached.
+     * \return The index of the precached model.
+     */
+    virtual int PrecacheModel(const string_t iszModelName)
+    {
+        return PrecacheModel(STRING(iszModelName));
+    }
+
+    /**
+     * \brief Precaches a sound if it exists.
+     *
+     * \param pszSoundName The name of the sound to be precached.
+     * \return The index of the precached sound.
+     */
+    virtual int PrecacheSound(const char* pszSoundName);
+
+    /**
+     * \brief Precaches a sound using a string_t identifier, or a default sound if not found.
+     *
+     * \param iszSoundName The string_t identifier of the sound to be precached.
+     * \param iszESoundName The string_t identifier of the default sound to be precached if the first is not found.
+     * \return The index of the precached sound.
+     */
+    virtual int PrecacheSound(const string_t iszSoundName, const char* iszESoundName)
+    {
+        if (FStringNull(iszSoundName))
+            return PrecacheSound(iszESoundName);
+
+        return PrecacheSound(iszSoundName);
+    }
+
+    /**
+     * \brief Precaches a sound using a string_t identifier.
+     *
+     * \param pszSoundName The string_t identifier of the sound to be precached.
+     * \return The index of the precached sound.
+     */
+    virtual int PrecacheSound(const string_t pszSoundName) {
+        return PrecacheSound(STRING(pszSoundName));
+    }
+
+    /**
+     * \brief Precaches an array of sounds.
+     *
+     * \param soundFiles An array of sound file names to be precached.
+     */
+    void PrecacheSoundArray(const char* soundFiles[],int arraySize);
+
+    /**
+     * \brief Precaches an event.
+     *
+     * \param type The type of the event.
+     * \param psz The name of the event to be precached.
+     * \return The index of the precached event.
+     */
+    unsigned short PrecacheEvent(int type, const char* psz) const;
+
+    /**
+     * \brief Precaches an event with a default type of 1.
+     *
+     * \param psz The name of the event to be precached.
+     * \return The index of the precached event.
+     */
+    virtual unsigned short PrecacheEvent(const char* psz) {
+        return PrecacheEvent(1, psz);
+    }
+    
+    /**
+     * \brief Sets the damage mode of the entity.
+     *
+     * This function sets the damage mode of the entity to the specified mode.
+     *
+     * \param takeDamage The TakeDamageMode representing the new damage mode.
+     */
+    virtual void SetTakeDamage(TakeDamageMode takeDamage) { pev->takedamage = takeDamage; }
+
+    /**
+     * \brief Gets the damage mode of the entity.
+     *
+     * This function returns the damage mode of the entity.
+     *
+     * \return The TakeDamageMode representing the damage mode.
+     */
+    virtual TakeDamageMode GetTakeDamage() const { return static_cast<TakeDamageMode>(pev->takedamage); }
+
+    /**
+     * \brief Sets the dead flag of the entity.
+     *
+     * This function sets the dead flag of the entity to the specified flag.
+     *
+     * \param flag The DeadFlag representing the new dead flag.
+     */
+    virtual void SetDeadFlag(DeadFlag flag) { pev->deadflag = flag; }
+
+    /**
+     * \brief Gets the dead flag of the entity.
+     *
+     * This function returns the dead flag of the entity.
+     *
+     * \return The DeadFlag representing the dead flag.
+     */
+    virtual DeadFlag GetDeadFlag() const { return static_cast<DeadFlag>(pev->deadflag); }
+
+    virtual void SetHealth(float health) { pev->health = health; }
+    virtual float GetHealth() const { return pev->health; }
+
+    virtual void SetMaxHealth(float maxHealth) { pev->max_health = maxHealth; }
+    virtual float GetMaxHealth() const { return pev->max_health; }
+
+    
+    
+    
 	// Setup the object->object collision box (pev->mins / pev->maxs is the object->world collision box)
 	virtual void SetObjectCollisionBox();
 
@@ -289,9 +765,18 @@ public:
 
 	void SUB_UseTargets(CBaseEntity* pActivator, USE_TYPE useType, float value);
 	// Do the bounding boxes of these two intersect?
-	bool Intersects(CBaseEntity* pOther);
+	bool Intersects(const CBaseEntity* pOther) const;
 	void MakeDormant();
-	bool IsDormant();
+
+    /**
+     * \brief Checks if the entity is dormant.
+     *
+     * This function checks if the entity has the dormant flag set.
+     *
+     * \return True if the entity is dormant, otherwise false.
+     */
+    bool IsDormant() const { return HasFlag(FL_DORMANT); }
+    
 	bool IsLockedByMaster() { return false; }
 
 	static CBaseEntity* Instance(edict_t* pent);
@@ -505,6 +990,44 @@ public:
 	void EXPORT DelayThink();
 };
 
+enum Materials
+{
+    matGlass = 0,
+    matWood,
+    matMetal,
+    matFlesh,
+    matCinderBlock,
+    matCeilingTile,
+    matComputer,
+    matUnbreakableGlass,
+    matRocks,
+    matNone,
+    matLastMaterial
+};
+
+class CMaterialEntity : public CBaseDelay
+{
+public:
+    bool KeyValue(KeyValueData* pkvd) override;
+    void Precache() override;
+
+    bool Save(CSave& save) override;
+    bool Restore(CRestore& restore) override;
+    
+    static TYPEDESCRIPTION m_SaveData[];
+    
+    void MaterialSoundRandom(edict_t* pEdict, Materials soundMaterial, int channel, float volume, int pitch);
+    void MaterialSoundRandom(edict_t* pEdict, Materials soundMaterial, float volume);
+    static const char** MaterialSoundList(Materials precacheMaterial, int& soundCount);
+
+    static const char* pSoundsWood[];
+    static const char* pSoundsFlesh[];
+    static const char* pSoundsGlass[];
+    static const char* pSoundsMetal[];
+    static const char* pSoundsConcrete[];
+
+    Materials m_Material;
+};
 
 class CBaseAnimating : public CBaseDelay
 {
@@ -781,7 +1304,7 @@ class CWorld : public CBaseEntity
 {
 public:
 	CWorld();
-	~CWorld();
+	~CWorld() override;
 
 	void Spawn() override;
 	void Precache() override;
@@ -796,6 +1319,7 @@ inline CBaseEntity* CBaseEntity::Instance(edict_t* pent)
 {
 	if (!pent)
 		return CWorld::World;
+    
 	return (CBaseEntity*)GET_PRIVATE(pent);
 }
 

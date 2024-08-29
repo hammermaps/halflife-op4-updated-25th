@@ -591,71 +591,71 @@ void CONSOLE_ECHO_LOGGED( char * pszMsg, ... )
 //------------------------------------------------------------------------------------------------------------
 void BotPrecache( void )
 {
-	s_iBeamSprite = PRECACHE_MODEL( "sprites/smoke.spr" );
-	PRECACHE_SOUND( "buttons/bell1.wav" );
-	PRECACHE_SOUND( "buttons/blip1.wav" );
-	PRECACHE_SOUND( "buttons/blip2.wav" );
-	PRECACHE_SOUND( "buttons/button11.wav" );
-	PRECACHE_SOUND( "buttons/latchunlocked2.wav" );
-	PRECACHE_SOUND( "buttons/lightswitch2.wav" );
-	PRECACHE_SOUND( "ambience/quail1.wav" );
+	s_iBeamSprite = PrecacheModel( "sprites/smoke.spr" );
+	PrecacheSound( "buttons/bell1.wav" );
+	PrecacheSound( "buttons/blip1.wav" );
+	PrecacheSound( "buttons/blip2.wav" );
+	PrecacheSound( "buttons/button11.wav" );
+	PrecacheSound( "buttons/latchunlocked2.wav" );
+	PrecacheSound( "buttons/lightswitch2.wav" );
+	PrecacheSound( "ambience/quail1.wav" );
 
 	/// @todo This is for the Tutor - move it somewhere sane
-	PRECACHE_SOUND( "events/tutor_msg.wav" );
-	PRECACHE_SOUND( "events/enemy_died.wav" );
-	PRECACHE_SOUND( "events/friend_died.wav" );
+	PrecacheSound( "events/tutor_msg.wav" );
+	PrecacheSound( "events/enemy_died.wav" );
+	PrecacheSound( "events/friend_died.wav" );
 
 	/// @todo This is for the Career mode UI - move it somewhere sane
-	PRECACHE_SOUND( "events/task_complete.wav" );
+	PrecacheSound( "events/task_complete.wav" );
 
 #ifdef TERRORSTRIKE
 	/// @todo Zombie mode experiment
-	PRECACHE_SOUND( "zombie/attack1.wav" );
-	PRECACHE_SOUND( "zombie/attack2.wav" );
-	PRECACHE_SOUND( "zombie/attack3.wav" );
-	PRECACHE_SOUND( "zombie/attack4.wav" );
-	PRECACHE_SOUND( "zombie/attack5.wav" );
-	PRECACHE_SOUND( "zombie/bark1.wav" );
-	PRECACHE_SOUND( "zombie/bark2.wav" );
-	PRECACHE_SOUND( "zombie/bark3.wav" );
-	PRECACHE_SOUND( "zombie/bark4.wav" );
-	PRECACHE_SOUND( "zombie/bark5.wav" );
-	PRECACHE_SOUND( "zombie/bark6.wav" );
-	PRECACHE_SOUND( "zombie/bark7.wav" );
-	PRECACHE_SOUND( "zombie/breathing1.wav" );
-	PRECACHE_SOUND( "zombie/breathing2.wav" );
-	PRECACHE_SOUND( "zombie/breathing3.wav" );
-	PRECACHE_SOUND( "zombie/breathing4.wav" );
-	PRECACHE_SOUND( "zombie/groan1.wav" );
-	PRECACHE_SOUND( "zombie/groan2.wav" );
-	PRECACHE_SOUND( "zombie/groan3.wav" );
-	PRECACHE_SOUND( "zombie/hiss1.wav" );
-	PRECACHE_SOUND( "zombie/hiss2.wav" );
-	PRECACHE_SOUND( "zombie/hiss3.wav" );
-	PRECACHE_SOUND( "ambience/the_horror2.wav" );
-	PRECACHE_SOUND( "scientist/scream20.wav" );
-	PRECACHE_SOUND( "zombie/human_hurt1.wav" );
-	PRECACHE_SOUND( "zombie/human_hurt2.wav" );
-	PRECACHE_SOUND( "zombie/human_hurt3.wav" );
-	PRECACHE_SOUND( "zombie/human_hurt4.wav" );
-	PRECACHE_SOUND( "zombie/shout_reloading1.wav" );
-	PRECACHE_SOUND( "zombie/shout_reloading2.wav" );
-	PRECACHE_SOUND( "zombie/shout_reloading3.wav" );
-	PRECACHE_SOUND( "zombie/deep_heartbeat.wav" );
-	PRECACHE_SOUND( "zombie/deep_heartbeat_fast.wav" );
-	PRECACHE_SOUND( "zombie/deep_heartbeat_very_fast.wav" );
-	PRECACHE_SOUND( "zombie/deep_heartbeat_stopping.wav" );
-	PRECACHE_SOUND( "zombie/zombie_step1.wav" );
-	PRECACHE_SOUND( "zombie/zombie_step2.wav" );
-	PRECACHE_SOUND( "zombie/zombie_step3.wav" );
-	PRECACHE_SOUND( "zombie/zombie_step4.wav" );
-	PRECACHE_SOUND( "zombie/zombie_step5.wav" );
-	PRECACHE_SOUND( "zombie/zombie_step6.wav" );
-	PRECACHE_SOUND( "zombie/zombie_step7.wav" );
-	PRECACHE_SOUND( "zombie/fear1.wav" );
-	PRECACHE_SOUND( "zombie/fear2.wav" );
-	PRECACHE_SOUND( "zombie/fear3.wav" );
-	PRECACHE_SOUND( "zombie/fear4.wav" );
+	PrecacheSound( "zombie/attack1.wav" );
+	PrecacheSound( "zombie/attack2.wav" );
+	PrecacheSound( "zombie/attack3.wav" );
+	PrecacheSound( "zombie/attack4.wav" );
+	PrecacheSound( "zombie/attack5.wav" );
+	PrecacheSound( "zombie/bark1.wav" );
+	PrecacheSound( "zombie/bark2.wav" );
+	PrecacheSound( "zombie/bark3.wav" );
+	PrecacheSound( "zombie/bark4.wav" );
+	PrecacheSound( "zombie/bark5.wav" );
+	PrecacheSound( "zombie/bark6.wav" );
+	PrecacheSound( "zombie/bark7.wav" );
+	PrecacheSound( "zombie/breathing1.wav" );
+	PrecacheSound( "zombie/breathing2.wav" );
+	PrecacheSound( "zombie/breathing3.wav" );
+	PrecacheSound( "zombie/breathing4.wav" );
+	PrecacheSound( "zombie/groan1.wav" );
+	PrecacheSound( "zombie/groan2.wav" );
+	PrecacheSound( "zombie/groan3.wav" );
+	PrecacheSound( "zombie/hiss1.wav" );
+	PrecacheSound( "zombie/hiss2.wav" );
+	PrecacheSound( "zombie/hiss3.wav" );
+	PrecacheSound( "ambience/the_horror2.wav" );
+	PrecacheSound( "scientist/scream20.wav" );
+	PrecacheSound( "zombie/human_hurt1.wav" );
+	PrecacheSound( "zombie/human_hurt2.wav" );
+	PrecacheSound( "zombie/human_hurt3.wav" );
+	PrecacheSound( "zombie/human_hurt4.wav" );
+	PrecacheSound( "zombie/shout_reloading1.wav" );
+	PrecacheSound( "zombie/shout_reloading2.wav" );
+	PrecacheSound( "zombie/shout_reloading3.wav" );
+	PrecacheSound( "zombie/deep_heartbeat.wav" );
+	PrecacheSound( "zombie/deep_heartbeat_fast.wav" );
+	PrecacheSound( "zombie/deep_heartbeat_very_fast.wav" );
+	PrecacheSound( "zombie/deep_heartbeat_stopping.wav" );
+	PrecacheSound( "zombie/zombie_step1.wav" );
+	PrecacheSound( "zombie/zombie_step2.wav" );
+	PrecacheSound( "zombie/zombie_step3.wav" );
+	PrecacheSound( "zombie/zombie_step4.wav" );
+	PrecacheSound( "zombie/zombie_step5.wav" );
+	PrecacheSound( "zombie/zombie_step6.wav" );
+	PrecacheSound( "zombie/zombie_step7.wav" );
+	PrecacheSound( "zombie/fear1.wav" );
+	PrecacheSound( "zombie/fear2.wav" );
+	PrecacheSound( "zombie/fear3.wav" );
+	PrecacheSound( "zombie/fear4.wav" );
 #endif // TERRORSTRIKE
 }
 

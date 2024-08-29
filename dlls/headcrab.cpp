@@ -111,8 +111,7 @@ DEFINE_CUSTOM_SCHEDULES(CHeadCrab){
 
 IMPLEMENT_CUSTOM_SCHEDULES(CHeadCrab, CBaseMonster);
 
-const char* CHeadCrab::pIdleSounds[] =
-	{
+const char* CHeadCrab::pIdleSounds[] = {
 		"headcrab/hc_idle1.wav",
 		"headcrab/hc_idle2.wav",
 		"headcrab/hc_idle3.wav",
@@ -274,7 +273,7 @@ void CHeadCrab::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/headcrab.mdl");
+	SetModel("models/headcrab.mdl");
 	UTIL_SetSize(pev, Vector(-12, -12, 0), Vector(12, 12, 24));
 
 	pev->solid = SOLID_SLIDEBOX;
@@ -295,14 +294,14 @@ void CHeadCrab::Spawn()
 //=========================================================
 void CHeadCrab::Precache()
 {
-	PRECACHE_SOUND_ARRAY(pIdleSounds);
-	PRECACHE_SOUND_ARRAY(pAlertSounds);
-	PRECACHE_SOUND_ARRAY(pPainSounds);
-	PRECACHE_SOUND_ARRAY(pAttackSounds);
-	PRECACHE_SOUND_ARRAY(pDeathSounds);
-	PRECACHE_SOUND_ARRAY(pBiteSounds);
+	PrecacheSoundArray(pIdleSounds,ARRAYSIZE(pIdleSounds));
+	PrecacheSoundArray(pAlertSounds,ARRAYSIZE(pAlertSounds));
+	PrecacheSoundArray(pPainSounds,ARRAYSIZE(pPainSounds));
+	PrecacheSoundArray(pAttackSounds,ARRAYSIZE(pAttackSounds));
+	PrecacheSoundArray(pDeathSounds,ARRAYSIZE(pDeathSounds));
+	PrecacheSoundArray(pBiteSounds,ARRAYSIZE(pBiteSounds));
 
-	PRECACHE_MODEL("models/headcrab.mdl");
+	PrecacheModel("models/headcrab.mdl");
 }
 
 
@@ -493,7 +492,7 @@ LINK_ENTITY_TO_CLASS(monster_babycrab, CBabyCrab);
 void CBabyCrab::Spawn()
 {
 	CHeadCrab::Spawn();
-	SET_MODEL(ENT(pev), "models/baby_headcrab.mdl");
+	SetModel("models/baby_headcrab.mdl");
 	pev->rendermode = kRenderTransTexture;
 	pev->renderamt = 192;
 	UTIL_SetSize(pev, Vector(-12, -12, 0), Vector(12, 12, 24));
@@ -503,7 +502,7 @@ void CBabyCrab::Spawn()
 
 void CBabyCrab::Precache()
 {
-	PRECACHE_MODEL("models/baby_headcrab.mdl");
+	PrecacheModel("models/baby_headcrab.mdl");
 	CHeadCrab::Precache();
 }
 

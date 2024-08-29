@@ -43,20 +43,20 @@ void CShockRifle::Precache()
 {
 	BaseClass::Precache();
 
-	PRECACHE_MODEL("models/v_shock.mdl");
-	PRECACHE_MODEL("models/w_shock_rifle.mdl");
-	PRECACHE_MODEL("models/p_shock.mdl");
-	m_iSpriteTexture = PRECACHE_MODEL("sprites/shockwave.spr");
-	PRECACHE_MODEL("sprites/lgtning.spr");
+	PrecacheModel("models/v_shock.mdl");
+	PrecacheModel("models/w_shock_rifle.mdl");
+	PrecacheModel("models/p_shock.mdl");
+	m_iSpriteTexture = PrecacheModel("sprites/shockwave.spr");
+	PrecacheModel("sprites/lgtning.spr");
 
-	PRECACHE_SOUND("weapons/shock_fire.wav");
-	PRECACHE_SOUND("weapons/shock_draw.wav");
-	PRECACHE_SOUND("weapons/shock_recharge.wav");
-	PRECACHE_SOUND("weapons/shock_discharge.wav");
+	PrecacheSound("weapons/shock_fire.wav");
+	PrecacheSound("weapons/shock_draw.wav");
+	PrecacheSound("weapons/shock_recharge.wav");
+	PrecacheSound("weapons/shock_discharge.wav");
 
 	UTIL_PrecacheOther("shock_beam");
 
-	m_usShockRifle = PRECACHE_EVENT(1, "events/shock.sc");
+	m_usShockRifle = PrecacheEvent(1, "events/shock.sc");
 }
 
 void CShockRifle::Spawn()
@@ -68,7 +68,7 @@ void CShockRifle::Spawn()
 
 	Precache();
 
-	SET_MODEL(edict(), "models/w_shock_rifle.mdl");
+	SetModel("models/w_shock_rifle.mdl");
 
 	m_iDefaultAmmo = SHOCKRIFLE_DEFAULT_GIVE;
 

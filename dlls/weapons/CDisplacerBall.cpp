@@ -77,12 +77,12 @@ LINK_ENTITY_TO_CLASS(displacer_ball, CDisplacerBall);
 
 void CDisplacerBall::Precache()
 {
-	PRECACHE_MODEL("sprites/exit1.spr");
-	PRECACHE_MODEL("sprites/lgtning.spr");
-	m_iTrail = PRECACHE_MODEL("sprites/disp_ring.spr");
+	PrecacheModel("sprites/exit1.spr");
+	PrecacheModel("sprites/lgtning.spr");
+	m_iTrail = PrecacheModel("sprites/disp_ring.spr");
 
-	PRECACHE_SOUND("weapons/displacer_impact.wav");
-	PRECACHE_SOUND("weapons/displacer_teleport.wav");
+	PrecacheSound("weapons/displacer_impact.wav");
+	PrecacheSound("weapons/displacer_teleport.wav");
 }
 
 void CDisplacerBall::Spawn()
@@ -92,7 +92,7 @@ void CDisplacerBall::Spawn()
 	pev->movetype = MOVETYPE_FLY;
 	pev->solid = SOLID_BBOX;
 
-	SET_MODEL(edict(), "sprites/exit1.spr");
+	SetModel("sprites/exit1.spr");
 
 	UTIL_SetOrigin(pev, pev->origin);
 

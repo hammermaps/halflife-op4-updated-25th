@@ -38,22 +38,22 @@ LINK_ENTITY_TO_CLASS(weapon_displacer, CDisplacer);
 
 void CDisplacer::Precache()
 {
-	PRECACHE_MODEL("models/v_displacer.mdl");
-	PRECACHE_MODEL("models/w_displacer.mdl");
-	PRECACHE_MODEL("models/p_displacer.mdl");
+	PrecacheModel("models/v_displacer.mdl");
+	PrecacheModel("models/w_displacer.mdl");
+	PrecacheModel("models/p_displacer.mdl");
 
-	PRECACHE_SOUND("weapons/displacer_fire.wav");
-	PRECACHE_SOUND("weapons/displacer_self.wav");
-	PRECACHE_SOUND("weapons/displacer_spin.wav");
-	PRECACHE_SOUND("weapons/displacer_spin2.wav");
+	PrecacheSound("weapons/displacer_fire.wav");
+	PrecacheSound("weapons/displacer_self.wav");
+	PrecacheSound("weapons/displacer_spin.wav");
+	PrecacheSound("weapons/displacer_spin2.wav");
 
-	PRECACHE_SOUND("buttons/button11.wav");
+	PrecacheSound("buttons/button11.wav");
 
-	m_iSpriteTexture = PRECACHE_MODEL("sprites/shockwave.spr");
+	m_iSpriteTexture = PrecacheModel("sprites/shockwave.spr");
 
 	UTIL_PrecacheOther("displacer_ball");
 
-	m_usFireDisplacer = PRECACHE_EVENT(1, "events/displacer.sc");
+	m_usFireDisplacer = PrecacheEvent(1, "events/displacer.sc");
 }
 
 void CDisplacer::Spawn()
@@ -64,7 +64,7 @@ void CDisplacer::Spawn()
 
 	m_iId = WEAPON_DISPLACER;
 
-	SET_MODEL(edict(), "models/w_displacer.mdl");
+	SetModel("models/w_displacer.mdl");
 
 	m_iDefaultAmmo = DISPLACER_DEFAULT_GIVE;
 

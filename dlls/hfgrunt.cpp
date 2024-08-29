@@ -982,7 +982,7 @@ void CHFGrunt::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/hgrunt.mdl");
+	SetModel("models/hgrunt.mdl");
 	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = SOLID_SLIDEBOX;
@@ -1047,28 +1047,28 @@ void CHFGrunt::Spawn()
 //=========================================================
 void CHFGrunt::Precache()
 {
-	PRECACHE_MODEL("models/hgrunt.mdl");
+	PrecacheModel("models/hgrunt.mdl");
 
-	PRECACHE_SOUND("hgrunt/gr_mgun1.wav");
-	PRECACHE_SOUND("hgrunt/gr_mgun2.wav");
+	PrecacheSound("hgrunt/gr_mgun1.wav");
+	PrecacheSound("hgrunt/gr_mgun2.wav");
 
-	PRECACHE_SOUND("hgrunt/gr_die1.wav");
-	PRECACHE_SOUND("hgrunt/gr_die2.wav");
-	PRECACHE_SOUND("hgrunt/gr_die3.wav");
+	PrecacheSound("hgrunt/gr_die1.wav");
+	PrecacheSound("hgrunt/gr_die2.wav");
+	PrecacheSound("hgrunt/gr_die3.wav");
 
-	PRECACHE_SOUND("hgrunt/gr_pain1.wav");
-	PRECACHE_SOUND("hgrunt/gr_pain2.wav");
-	PRECACHE_SOUND("hgrunt/gr_pain3.wav");
-	PRECACHE_SOUND("hgrunt/gr_pain4.wav");
-	PRECACHE_SOUND("hgrunt/gr_pain5.wav");
+	PrecacheSound("hgrunt/gr_pain1.wav");
+	PrecacheSound("hgrunt/gr_pain2.wav");
+	PrecacheSound("hgrunt/gr_pain3.wav");
+	PrecacheSound("hgrunt/gr_pain4.wav");
+	PrecacheSound("hgrunt/gr_pain5.wav");
 
-	PRECACHE_SOUND("hgrunt/gr_reload1.wav");
+	PrecacheSound("hgrunt/gr_reload1.wav");
 
-	PRECACHE_SOUND("weapons/glauncher.wav");
+	PrecacheSound("weapons/glauncher.wav");
 
-	PRECACHE_SOUND("weapons/sbarrel1.wav");
+	PrecacheSound("weapons/sbarrel1.wav");
 
-	PRECACHE_SOUND("zombie/claw_miss2.wav"); // because we use the basemonster SWIPE animation event
+	PrecacheSound("zombie/claw_miss2.wav"); // because we use the basemonster SWIPE animation event
 
 	// get voice pitch
 	if (RANDOM_LONG(0, 1))
@@ -1076,8 +1076,8 @@ void CHFGrunt::Precache()
 	else
 		m_voicePitch = 100;
 
-	m_iBrassShell = PRECACHE_MODEL("models/shell.mdl"); // brass shell
-	m_iShotgunShell = PRECACHE_MODEL("models/shotgunshell.mdl");
+	m_iBrassShell = PrecacheModel("models/shell.mdl"); // brass shell
+	m_iShotgunShell = PrecacheModel("models/shotgunshell.mdl");
 }
 
 //=========================================================
@@ -2358,7 +2358,7 @@ void CHFGruntRepel::Spawn()
 void CHFGruntRepel::Precache()
 {
 	UTIL_PrecacheOther("monster_human_friendly_grunt");
-	m_iSpriteTexture = PRECACHE_MODEL("sprites/rope.spr");
+	m_iSpriteTexture = PrecacheModel("sprites/rope.spr");
 }
 
 void CHFGruntRepel::RepelUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
@@ -2425,8 +2425,8 @@ LINK_ENTITY_TO_CLASS(monster_fhgrunt_dead, CDeadHFGrunt);
 //=========================================================
 void CDeadHFGrunt::Spawn()
 {
-	PRECACHE_MODEL("models/hgrunt.mdl");
-	SET_MODEL(ENT(pev), "models/hgrunt.mdl");
+	PrecacheModel("models/hgrunt.mdl");
+	SetModel("models/hgrunt.mdl");
 
 	pev->effects = 0;
 	pev->yaw_speed = 8;

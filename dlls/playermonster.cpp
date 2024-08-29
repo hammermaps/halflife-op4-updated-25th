@@ -90,7 +90,7 @@ void CPlayerMonster :: Spawn()
 {
 	Precache( );
 
-	SET_MODEL(ENT(pev), "models/player.mdl");
+	SetModel("models/player.mdl");
 	UTIL_SetSize(pev, VEC_HULL_MIN, VEC_HULL_MAX);
 
 	pev->solid			= SOLID_SLIDEBOX;
@@ -114,7 +114,7 @@ void CPlayerMonster :: Spawn()
 //=========================================================
 void CPlayerMonster :: Precache()
 {
-	PRECACHE_MODEL("models/player.mdl");
+	PrecacheModel("models/player.mdl");
 }	
 
 //=========================================================

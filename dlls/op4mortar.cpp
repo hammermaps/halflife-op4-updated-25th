@@ -57,10 +57,10 @@ LINK_ENTITY_TO_CLASS(mortar_shell, CMortarShell);
 
 void CMortarShell::Precache()
 {
-	PRECACHE_MODEL("models/mortarshell.mdl");
-	m_iTrail = PRECACHE_MODEL("sprites/wep_smoke_01.spr");
-	PRECACHE_SOUND("weapons/gauss2.wav");
-	PRECACHE_SOUND("weapons/ofmortar.wav");
+	PrecacheModel("models/mortarshell.mdl");
+	m_iTrail = PrecacheModel("sprites/wep_smoke_01.spr");
+	PrecacheSound("weapons/gauss2.wav");
+	PrecacheSound("weapons/ofmortar.wav");
 }
 
 void CMortarShell::Spawn()
@@ -70,7 +70,7 @@ void CMortarShell::Spawn()
 	pev->movetype = MOVETYPE_BOUNCE;
 	pev->solid = SOLID_BBOX;
 
-	SET_MODEL(edict(), "models/mortarshell.mdl");
+	SetModel("models/mortarshell.mdl");
 
 	UTIL_SetSize(pev, g_vecZero, g_vecZero);
 	UTIL_SetOrigin(pev, pev->origin);
@@ -368,10 +368,10 @@ bool COp4Mortar::KeyValue(KeyValueData* pkvd)
 
 void COp4Mortar::Precache()
 {
-	PRECACHE_MODEL("models/mortar.mdl");
+	PrecacheModel("models/mortar.mdl");
 	UTIL_PrecacheOther("mortar_shell");
-	PRECACHE_SOUND("weapons/mortarhit.wav");
-	PRECACHE_SOUND("player/pl_grate1.wav");
+	PrecacheSound("weapons/mortarhit.wav");
+	PrecacheSound("player/pl_grate1.wav");
 }
 
 void COp4Mortar::Spawn()
@@ -380,7 +380,7 @@ void COp4Mortar::Spawn()
 
 	UTIL_SetOrigin(pev, pev->origin);
 
-	SET_MODEL(edict(), "models/mortar.mdl");
+	SetModel("models/mortar.mdl");
 
 	pev->health = 1;
 	pev->sequence = LookupSequence("idle");
@@ -841,7 +841,7 @@ void COp4MortarController::Spawn()
 
 	UTIL_SetOrigin(pev, pev->origin);
 
-	SET_MODEL(edict(), STRING(pev->model));
+	SetModel(STRING(pev->model));
 
 	m_direction = 1;
 	m_lastpush = gpGlobals->time;

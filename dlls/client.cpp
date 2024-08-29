@@ -1010,128 +1010,127 @@ void StartFrame()
 	}
 }
 
-
+/**
+ * @brief Precaches all necessary client resources such as sounds and models.
+ */
 void ClientPrecache()
 {
-	// setup precaches always needed
-	PRECACHE_SOUND("player/sprayer.wav"); // spray paint sound for PreAlpha
+    // Setup precaches always needed
+    UTIL_PrecacheSound("player/sprayer.wav"); // Spray paint sound for PreAlpha
 
-	// PRECACHE_SOUND("player/pl_jumpland2.wav");		// UNDONE: play 2x step sound
+    // PrecacheSound("player/pl_jumpland2.wav"); // UNDONE: play 2x step sound
 
-	PRECACHE_SOUND("player/pl_fallpain2.wav");
-	PRECACHE_SOUND("player/pl_fallpain3.wav");
+    UTIL_PrecacheSound("player/pl_fallpain2.wav");
+    UTIL_PrecacheSound("player/pl_fallpain3.wav");
 
-	PRECACHE_SOUND("player/pl_step1.wav"); // walk on concrete
-	PRECACHE_SOUND("player/pl_step2.wav");
-	PRECACHE_SOUND("player/pl_step3.wav");
-	PRECACHE_SOUND("player/pl_step4.wav");
+    UTIL_PrecacheSound("player/pl_step1.wav"); // Walk on concrete
+    UTIL_PrecacheSound("player/pl_step2.wav");
+    UTIL_PrecacheSound("player/pl_step3.wav");
+    UTIL_PrecacheSound("player/pl_step4.wav");
 
-	PRECACHE_SOUND("common/npc_step1.wav"); // NPC walk on concrete
-	PRECACHE_SOUND("common/npc_step2.wav");
-	PRECACHE_SOUND("common/npc_step3.wav");
-	PRECACHE_SOUND("common/npc_step4.wav");
+    UTIL_PrecacheSound("common/npc_step1.wav"); // NPC walk on concrete
+    UTIL_PrecacheSound("common/npc_step2.wav");
+    UTIL_PrecacheSound("common/npc_step3.wav");
+    UTIL_PrecacheSound("common/npc_step4.wav");
 
-	PRECACHE_SOUND("player/pl_metal1.wav"); // walk on metal
-	PRECACHE_SOUND("player/pl_metal2.wav");
-	PRECACHE_SOUND("player/pl_metal3.wav");
-	PRECACHE_SOUND("player/pl_metal4.wav");
+    UTIL_PrecacheSound("player/pl_metal1.wav"); // Walk on metal
+    UTIL_PrecacheSound("player/pl_metal2.wav");
+    UTIL_PrecacheSound("player/pl_metal3.wav");
+    UTIL_PrecacheSound("player/pl_metal4.wav");
 
-	PRECACHE_SOUND("player/pl_dirt1.wav"); // walk on dirt
-	PRECACHE_SOUND("player/pl_dirt2.wav");
-	PRECACHE_SOUND("player/pl_dirt3.wav");
-	PRECACHE_SOUND("player/pl_dirt4.wav");
+    UTIL_PrecacheSound("player/pl_dirt1.wav"); // Walk on dirt
+    UTIL_PrecacheSound("player/pl_dirt2.wav");
+    UTIL_PrecacheSound("player/pl_dirt3.wav");
+    UTIL_PrecacheSound("player/pl_dirt4.wav");
 
-	PRECACHE_SOUND("player/pl_duct1.wav"); // walk in duct
-	PRECACHE_SOUND("player/pl_duct2.wav");
-	PRECACHE_SOUND("player/pl_duct3.wav");
-	PRECACHE_SOUND("player/pl_duct4.wav");
+    UTIL_PrecacheSound("player/pl_duct1.wav"); // Walk in duct
+    UTIL_PrecacheSound("player/pl_duct2.wav");
+    UTIL_PrecacheSound("player/pl_duct3.wav");
+    UTIL_PrecacheSound("player/pl_duct4.wav");
 
-	PRECACHE_SOUND("player/pl_grate1.wav"); // walk on grate
-	PRECACHE_SOUND("player/pl_grate2.wav");
-	PRECACHE_SOUND("player/pl_grate3.wav");
-	PRECACHE_SOUND("player/pl_grate4.wav");
+    UTIL_PrecacheSound("player/pl_grate1.wav"); // Walk on grate
+    UTIL_PrecacheSound("player/pl_grate2.wav");
+    UTIL_PrecacheSound("player/pl_grate3.wav");
+    UTIL_PrecacheSound("player/pl_grate4.wav");
 
-	PRECACHE_SOUND("player/pl_slosh1.wav"); // walk in shallow water
-	PRECACHE_SOUND("player/pl_slosh2.wav");
-	PRECACHE_SOUND("player/pl_slosh3.wav");
-	PRECACHE_SOUND("player/pl_slosh4.wav");
+    UTIL_PrecacheSound("player/pl_slosh1.wav"); // Walk in shallow water
+    UTIL_PrecacheSound("player/pl_slosh2.wav");
+    UTIL_PrecacheSound("player/pl_slosh3.wav");
+    UTIL_PrecacheSound("player/pl_slosh4.wav");
 
-	PRECACHE_SOUND("player/pl_tile1.wav"); // walk on tile
-	PRECACHE_SOUND("player/pl_tile2.wav");
-	PRECACHE_SOUND("player/pl_tile3.wav");
-	PRECACHE_SOUND("player/pl_tile4.wav");
-	PRECACHE_SOUND("player/pl_tile5.wav");
+    UTIL_PrecacheSound("player/pl_tile1.wav"); // Walk on tile
+    UTIL_PrecacheSound("player/pl_tile2.wav");
+    UTIL_PrecacheSound("player/pl_tile3.wav");
+    UTIL_PrecacheSound("player/pl_tile4.wav");
+    UTIL_PrecacheSound("player/pl_tile5.wav");
 
-	PRECACHE_SOUND("player/pl_swim1.wav"); // breathe bubbles
-	PRECACHE_SOUND("player/pl_swim2.wav");
-	PRECACHE_SOUND("player/pl_swim3.wav");
-	PRECACHE_SOUND("player/pl_swim4.wav");
+    UTIL_PrecacheSound("player/pl_swim1.wav"); // Breathe bubbles
+    UTIL_PrecacheSound("player/pl_swim2.wav");
+    UTIL_PrecacheSound("player/pl_swim3.wav");
+    UTIL_PrecacheSound("player/pl_swim4.wav");
 
-	PRECACHE_SOUND("player/pl_ladder1.wav"); // climb ladder rung
-	PRECACHE_SOUND("player/pl_ladder2.wav");
-	PRECACHE_SOUND("player/pl_ladder3.wav");
-	PRECACHE_SOUND("player/pl_ladder4.wav");
+    UTIL_PrecacheSound("player/pl_ladder1.wav"); // Climb ladder rung
+    UTIL_PrecacheSound("player/pl_ladder2.wav");
+    UTIL_PrecacheSound("player/pl_ladder3.wav");
+    UTIL_PrecacheSound("player/pl_ladder4.wav");
 
-	PRECACHE_SOUND("player/pl_wade1.wav"); // wade in water
-	PRECACHE_SOUND("player/pl_wade2.wav");
-	PRECACHE_SOUND("player/pl_wade3.wav");
-	PRECACHE_SOUND("player/pl_wade4.wav");
+    UTIL_PrecacheSound("player/pl_wade1.wav"); // Wade in water
+    UTIL_PrecacheSound("player/pl_wade2.wav");
+    UTIL_PrecacheSound("player/pl_wade3.wav");
+    UTIL_PrecacheSound("player/pl_wade4.wav");
 
-	PRECACHE_SOUND("player/pl_snow1.wav"); // walk on snow
-	PRECACHE_SOUND("player/pl_snow2.wav");
-	PRECACHE_SOUND("player/pl_snow3.wav");
-	PRECACHE_SOUND("player/pl_snow4.wav");
+    UTIL_PrecacheSound("player/pl_snow1.wav"); // Walk on snow
+    UTIL_PrecacheSound("player/pl_snow2.wav");
+    UTIL_PrecacheSound("player/pl_snow3.wav");
+    UTIL_PrecacheSound("player/pl_snow4.wav");
 
-	PRECACHE_SOUND("debris/wood1.wav"); // hit wood texture
-	PRECACHE_SOUND("debris/wood2.wav");
-	PRECACHE_SOUND("debris/wood3.wav");
+    UTIL_PrecacheSound("debris/wood1.wav"); // Hit wood texture
+    UTIL_PrecacheSound("debris/wood2.wav");
+    UTIL_PrecacheSound("debris/wood3.wav");
 
-	PRECACHE_SOUND("plats/train_use1.wav"); // use a train
-    PRECACHE_SOUND("plats/vehicle_ignition.wav"); // use a vehicle
+    UTIL_PrecacheSound("plats/train_use1.wav"); // Use a train
+    UTIL_PrecacheSound("plats/vehicle_ignition.wav"); // Use a vehicle
 
-	PRECACHE_SOUND("buttons/spark5.wav"); // hit computer texture
-	PRECACHE_SOUND("buttons/spark6.wav");
-	PRECACHE_SOUND("debris/glass1.wav");
-	PRECACHE_SOUND("debris/glass2.wav");
-	PRECACHE_SOUND("debris/glass3.wav");
+    UTIL_PrecacheSound("buttons/spark5.wav"); // Hit computer texture
+    UTIL_PrecacheSound("buttons/spark6.wav");
+    UTIL_PrecacheSound("debris/glass1.wav");
+    UTIL_PrecacheSound("debris/glass2.wav");
+    UTIL_PrecacheSound("debris/glass3.wav");
 
-	PRECACHE_SOUND(SOUND_FLASHLIGHT_ON);
-	PRECACHE_SOUND(SOUND_FLASHLIGHT_OFF);
+    UTIL_PrecacheSound(SOUND_FLASHLIGHT_ON);
+    UTIL_PrecacheSound(SOUND_FLASHLIGHT_OFF);
 
-	// player gib sounds
-	PRECACHE_SOUND("common/bodysplat.wav");
+    // Player gib sounds
+    UTIL_PrecacheSound("common/bodysplat.wav");
 
-	// player pain sounds
-	PRECACHE_SOUND("player/pl_pain2.wav");
-	PRECACHE_SOUND("player/pl_pain4.wav");
-	PRECACHE_SOUND("player/pl_pain5.wav");
-	PRECACHE_SOUND("player/pl_pain6.wav");
-	PRECACHE_SOUND("player/pl_pain7.wav");
+    // Player pain sounds
+    UTIL_PrecacheSound("player/pl_pain2.wav");
+    UTIL_PrecacheSound("player/pl_pain4.wav");
+    UTIL_PrecacheSound("player/pl_pain5.wav");
+    UTIL_PrecacheSound("player/pl_pain6.wav");
+    UTIL_PrecacheSound("player/pl_pain7.wav");
 
-	PRECACHE_MODEL("models/player.mdl");
+    UTIL_PrecacheModel("models/player.mdl");
 
-	// hud sounds
+    // HUD sounds
+    UTIL_PrecacheSound("common/wpn_hudoff.wav");
+    UTIL_PrecacheSound("common/wpn_hudon.wav");
+    UTIL_PrecacheSound("common/wpn_moveselect.wav");
+    UTIL_PrecacheSound("common/wpn_select.wav");
+    UTIL_PrecacheSound("common/wpn_denyselect.wav");
 
-	PRECACHE_SOUND("common/wpn_hudoff.wav");
-	PRECACHE_SOUND("common/wpn_hudon.wav");
-	PRECACHE_SOUND("common/wpn_moveselect.wav");
-	PRECACHE_SOUND("common/wpn_select.wav");
-	PRECACHE_SOUND("common/wpn_denyselect.wav");
+    // Geiger sounds
+    UTIL_PrecacheSound("player/geiger6.wav");
+    UTIL_PrecacheSound("player/geiger5.wav");
+    UTIL_PrecacheSound("player/geiger4.wav");
+    UTIL_PrecacheSound("player/geiger3.wav");
+    UTIL_PrecacheSound("player/geiger2.wav");
+    UTIL_PrecacheSound("player/geiger1.wav");
 
+    UTIL_PrecacheSound("ctf/pow_big_jump.wav");
 
-	// geiger sounds
-
-	PRECACHE_SOUND("player/geiger6.wav");
-	PRECACHE_SOUND("player/geiger5.wav");
-	PRECACHE_SOUND("player/geiger4.wav");
-	PRECACHE_SOUND("player/geiger3.wav");
-	PRECACHE_SOUND("player/geiger2.wav");
-	PRECACHE_SOUND("player/geiger1.wav");
-
-	PRECACHE_SOUND("ctf/pow_big_jump.wav");
-
-	if (giPrecacheGrunt)
-		UTIL_PrecacheOther("monster_human_grunt");
+    if (giPrecacheGrunt)
+        UTIL_PrecacheOther("monster_human_grunt");
 }
 
 /*

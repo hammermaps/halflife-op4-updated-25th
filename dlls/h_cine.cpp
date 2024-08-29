@@ -104,8 +104,8 @@ LINK_ENTITY_TO_CLASS(monster_cine3_barney, CCine3Barney);
 
 void CLegacyCineMonster::CineSpawn(const char* szModel)
 {
-	PRECACHE_MODEL(szModel);
-	SET_MODEL(ENT(pev), szModel);
+	PrecacheModel(szModel);
+	SetModel(szModel);
 	UTIL_SetSize(pev, Vector(-16, -16, 0), Vector(16, 16, 64));
 
 	pev->solid = SOLID_SLIDEBOX;

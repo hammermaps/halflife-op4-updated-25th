@@ -591,7 +591,7 @@ void CAGrunt::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/agrunt.mdl");
+	SetModel("models/agrunt.mdl");
 	UTIL_SetSize(pev, Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	pev->solid = SOLID_SLIDEBOX;
@@ -617,19 +617,19 @@ void CAGrunt::Spawn()
 //=========================================================
 void CAGrunt::Precache()
 {
-	PRECACHE_MODEL("models/agrunt.mdl");
+	PrecacheModel("models/agrunt.mdl");
 
-	PRECACHE_SOUND_ARRAY(pAttackHitSounds);
-	PRECACHE_SOUND_ARRAY(pAttackMissSounds);
-	PRECACHE_SOUND_ARRAY(pIdleSounds);
-	PRECACHE_SOUND_ARRAY(pDieSounds);
-	PRECACHE_SOUND_ARRAY(pPainSounds);
-	PRECACHE_SOUND_ARRAY(pAttackSounds);
-	PRECACHE_SOUND_ARRAY(pAlertSounds);
+	PrecacheSoundArray(pAttackHitSounds,ARRAYSIZE(pAttackHitSounds));
+	PrecacheSoundArray(pAttackMissSounds,ARRAYSIZE(pAttackMissSounds));
+	PrecacheSoundArray(pIdleSounds,ARRAYSIZE(pIdleSounds));
+	PrecacheSoundArray(pDieSounds,ARRAYSIZE(pDieSounds));
+	PrecacheSoundArray(pPainSounds,ARRAYSIZE(pPainSounds));
+	PrecacheSoundArray(pAttackSounds, ARRAYSIZE(pAttackSounds));
+	PrecacheSoundArray(pAlertSounds, ARRAYSIZE(pAlertSounds));
 
-	PRECACHE_SOUND("hassault/hw_shoot1.wav");
+	PrecacheSound("hassault/hw_shoot1.wav");
 
-	iAgruntMuzzleFlash = PRECACHE_MODEL("sprites/muz4.spr");
+	iAgruntMuzzleFlash = PrecacheModel("sprites/muz4.spr");
 
 	UTIL_PrecacheOther("hornet");
 }

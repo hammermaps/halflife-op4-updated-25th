@@ -62,6 +62,8 @@ inline edict_t* FIND_ENTITY_BY_TARGET(edict_t* entStart, const char* pszName)
 #define SetBits(flBitVector, bits) ((flBitVector) = (int)(flBitVector) | (bits))
 #define ClearBits(flBitVector, bits) ((flBitVector) = (int)(flBitVector) & ~(bits))
 #define FBitSet(flBitVector, bit) (((int)(flBitVector) & (bit)) != 0)
+#define FBitClear(flBitVector, bit) (((int)(flBitVector) & (bit)) == 0)
+#define BitIfSetDel(flBitVector, bit) do { if (FBitSet(flBitVector, bit)) { ClearBits(flBitVector, bit); } } while(0)
 
 // Makes these more explicit, and easier to find
 #define FILE_GLOBAL static
@@ -154,8 +156,8 @@ inline bool FNullEnt(EOFFSET eoffset)
 {
 	return eoffset == 0;
 }
-inline bool FNullEnt(const edict_t* pent) { return pent == NULL || FNullEnt(OFFSET(pent)); }
-inline bool FNullEnt(entvars_t* pev) { return pev == NULL || FNullEnt(OFFSET(pev)); }
+inline bool FNullEnt(const edict_t* pent) { return pent == NULL || pent == nullptr || FNullEnt(OFFSET(pent)); }
+inline bool FNullEnt(entvars_t* pev) { return pev == NULL || pev == nullptr || FNullEnt(OFFSET(pev)); }
 
 // Testing strings for nullity
 #define iStringNull 0
@@ -328,6 +330,8 @@ inline void UTIL_CenterPrintAll(const char* msg_name, const char* param1 = NULL,
 	UTIL_ClientPrintAll(HUD_PRINTCENTER, msg_name, param1, param2, param3, param4);
 }
 
+extern char* UTIL_FileExtension(const char* in);
+
 class CBasePlayerItem;
 class CBasePlayer;
 
@@ -392,12 +396,6 @@ void DBG_AssertFunction(bool fExpr, const char* szExpr, const char* szFile, int 
 //
 // Un-comment only as needed
 //
-#define LANGUAGE_ENGLISH 0
-#define LANGUAGE_GERMAN 1
-#define LANGUAGE_FRENCH 2
-#define LANGUAGE_BRITISH 3
-
-inline DLL_GLOBAL int g_Language;
 
 #define AMBIENT_SOUND_STATIC 0 // medium radius attenuation
 #define AMBIENT_SOUND_EVERYWHERE 1
@@ -529,12 +527,6 @@ void EMIT_SOUND_SUIT(edict_t* entity, const char* sample);
 void EMIT_GROUPID_SUIT(edict_t* entity, int isentenceg);
 void EMIT_GROUPNAME_SUIT(edict_t* entity, const char* groupname);
 
-#define PRECACHE_SOUND_ARRAY(a)                \
-	{                                          \
-		for (int i = 0; i < ARRAYSIZE(a); i++) \
-			PRECACHE_SOUND((char*)a[i]);       \
-	}
-
 #define EMIT_SOUND_ARRAY_DYN(chan, array) \
 	EMIT_SOUND_DYN(ENT(pev), chan, array[RANDOM_LONG(0, ARRAYSIZE(array) - 1)], 1.0, ATTN_NORM, 0, RANDOM_LONG(95, 105));
 
@@ -571,6 +563,9 @@ CBaseEntity* UTIL_FindEntityForward(CBaseEntity* pMe);
 
 bool UTIL_IsMultiplayer();
 bool UTIL_IsCTF();
+
+extern int UTIL_PrecacheModel(const char* pszModelName);
+extern void UTIL_PrecacheSound(const char* pszSoundName);
 
 inline void WRITE_COORD_VECTOR(const Vector& vec)
 {

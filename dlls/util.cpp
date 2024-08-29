@@ -20,6 +20,8 @@
 
 */
 
+#include <cstring> // For strlen and strcpy
+#include <cstdlib> // For malloc
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
@@ -27,6 +29,7 @@
 #include <time.h>
 #include "shake.h"
 #include "decals.h"
+#include "filesystem_utils.h"
 #include "player.h"
 #include "weapons.h"
 #include "gamerules.h"
@@ -1173,10 +1176,6 @@ void UTIL_BloodStream(const Vector& origin, const Vector& direction, int color, 
 	if (!UTIL_ShouldShowBlood(color))
 		return;
 
-	if (g_Language == LANGUAGE_GERMAN && color == BLOOD_COLOR_RED)
-		color = 0;
-
-
 	MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, origin);
 	WRITE_BYTE(TE_BLOODSTREAM);
 	WRITE_COORD(origin.x);
@@ -1197,9 +1196,6 @@ void UTIL_BloodDrips(const Vector& origin, const Vector& direction, int color, i
 
 	if (color == DONT_BLEED || amount == 0)
 		return;
-
-	if (g_Language == LANGUAGE_GERMAN && color == BLOOD_COLOR_RED)
-		color = 0;
 
 	if (g_pGameRules->IsMultiplayer())
 	{
@@ -1602,9 +1598,8 @@ bool UTIL_IsValidEntity(edict_t* pent)
 
 void UTIL_PrecacheOther(const char* szClassname)
 {
-	edict_t* pent;
 
-	pent = CREATE_NAMED_ENTITY(MAKE_STRING(szClassname));
+    edict_t* pent = CREATE_NAMED_ENTITY(MAKE_STRING(szClassname));
 	if (FNullEnt(pent))
 	{
 		ALERT(at_console, "NULL Ent in UTIL_PrecacheOther\n");
@@ -1614,6 +1609,7 @@ void UTIL_PrecacheOther(const char* szClassname)
 	CBaseEntity* pEntity = CBaseEntity::Instance(VARS(pent));
 	if (pEntity)
 		pEntity->Precache();
+    
 	REMOVE_ENTITY(pent);
 }
 
@@ -2308,9 +2304,9 @@ int CRestore::ReadField(void* pBaseData, TYPEDESCRIPTION* pFields, int fieldCoun
 							if (!FStringNull(string) && m_precache)
 							{
 								if (pTest->fieldType == FIELD_MODELNAME)
-									PRECACHE_MODEL((char*)STRING(string));
+									g_engfuncs.pfnPrecacheModel((char*)STRING(string));
 								else if (pTest->fieldType == FIELD_SOUNDNAME)
-									PRECACHE_SOUND((char*)STRING(string));
+									g_engfuncs.pfnPrecacheSound((char*)STRING(string));
 							}
 						}
 						break;
@@ -2582,4 +2578,108 @@ bool UTIL_IsMultiplayer()
 bool UTIL_IsCTF()
 {
 	return g_pGameRules->IsCTF();
+}
+
+char* UTIL_FileExtension(const char* in)
+{
+    static char exten[8];
+    int i = 0;
+
+    // Move to the extension part
+    while (*in && *in != '.')
+        in++;
+    if (!*in)
+        return "";
+
+    // Copy the extension
+    in++;
+    while (i < 7 && *in)
+        exten[i++] = *in++;
+    exten[i] = '\0';
+
+    return exten;
+}
+
+/**
+ * @brief Precaches a model if it exists.
+ * 
+ * @param pszModelName The name of the model to be precached.
+ */
+int UTIL_PrecacheModel(const char* pszModelName)
+{
+    if (!pszModelName || !*pszModelName) {
+        ALERT(at_console, "Warning: modelname not specified\n");
+        return g_engfuncs.pfnPrecacheModel("models/null.mdl");
+    }
+
+    // Verify file exists
+    if(g_pFileSystem->FileExists(pszModelName))
+    {
+        FileHandle_t file = g_pFileSystem->Open(pszModelName, "r");
+        if (file != FILESYSTEM_INVALID_HANDLE && g_pFileSystem->Size(file) > 0)
+        {
+            g_pFileSystem->Close(file);
+            return g_engfuncs.pfnPrecacheModel(pszModelName);
+        }
+    }
+
+    char* ext = UTIL_FileExtension(pszModelName);
+    if (FStrEq(ext, "mdl"))
+    {
+        // This is a model
+        ALERT(at_console, "Warning: model \"%s\" not found!\n", pszModelName);
+        return g_engfuncs.pfnPrecacheModel("models/error.mdl");
+    }
+
+    if (FStrEq(ext, "spr"))
+    {
+        // This is a sprite
+        ALERT(at_console, "Warning: sprite \"%s\" not found!\n", pszModelName);
+        return g_engfuncs.pfnPrecacheModel("sprites/error.spr");
+    }
+
+    // Unknown format
+    ALERT(at_console, "Warning: invalid name \"%s\"!\n", pszModelName);
+    return g_engfuncs.pfnPrecacheModel("models/null.mdl");
+}
+
+/**
+ * @brief Precaches a sound if it exists.
+ * 
+ * @param pszSoundName The name of the sound to be precached.
+ */
+void UTIL_PrecacheSound(const char* pszSoundName)
+{
+    if (!pszSoundName || !*pszSoundName)
+        return;
+
+    //NOTE: Engine function as predicted for sound folder
+    char path[256];
+    const char* sound = pszSoundName;		//sounds from model events can contains a symbol '*'.
+    //remove this for sucessfully loading a sound	
+    if (sound[0] == '*') sound++;	//only for fake path, engine needs this prefix!
+    sprintf(path, "sound/%s", sound);
+
+    // Verify file exists
+    if(g_pFileSystem->FileExists(path))
+    {
+        FileHandle_t file = g_pFileSystem->Open(path, "r");
+        if (file != FILESYSTEM_INVALID_HANDLE && g_pFileSystem->Size(file) > 0)
+        {
+            g_pFileSystem->Close(file);
+            g_engfuncs.pfnPrecacheSound(pszSoundName);
+            return;
+        }
+    }
+
+    char* ext = UTIL_FileExtension(pszSoundName);
+    if (FStrEq(ext, "wav"))
+    {
+        // This is a sound
+        ALERT(at_console, "Warning: sound \"%s\" not found!\n", path);
+        return;
+    }
+
+    // Unknown format
+    ALERT(at_console, "Warning: invalid name \"%s\"!\n", pszSoundName);
 }

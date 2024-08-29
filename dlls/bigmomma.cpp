@@ -658,7 +658,7 @@ void CBigMomma::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/big_mom.mdl");
+	SetModel("models/big_mom.mdl");
 	UTIL_SetSize(pev, Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	pev->solid = SOLID_SLIDEBOX;
@@ -677,28 +677,28 @@ void CBigMomma::Spawn()
 //=========================================================
 void CBigMomma::Precache()
 {
-	PRECACHE_MODEL("models/big_mom.mdl");
+	PrecacheModel("models/big_mom.mdl");
 
-	PRECACHE_SOUND_ARRAY(pChildDieSounds);
-	PRECACHE_SOUND_ARRAY(pSackSounds);
-	PRECACHE_SOUND_ARRAY(pDeathSounds);
-	PRECACHE_SOUND_ARRAY(pAttackSounds);
-	PRECACHE_SOUND_ARRAY(pAttackHitSounds);
-	PRECACHE_SOUND_ARRAY(pBirthSounds);
-	PRECACHE_SOUND_ARRAY(pAlertSounds);
-	PRECACHE_SOUND_ARRAY(pPainSounds);
-	PRECACHE_SOUND_ARRAY(pFootSounds);
+	PrecacheSoundArray(pChildDieSounds, ARRAYSIZE(pChildDieSounds));
+	PrecacheSoundArray(pSackSounds, ARRAYSIZE(pSackSounds));
+	PrecacheSoundArray(pDeathSounds, ARRAYSIZE(pDeathSounds));
+	PrecacheSoundArray(pAttackSounds, ARRAYSIZE(pAttackSounds));
+	PrecacheSoundArray(pAttackHitSounds, ARRAYSIZE(pAttackHitSounds));
+	PrecacheSoundArray(pBirthSounds, ARRAYSIZE(pBirthSounds));
+	PrecacheSoundArray(pAlertSounds, ARRAYSIZE(pAlertSounds));
+	PrecacheSoundArray(pPainSounds, ARRAYSIZE(pPainSounds));
+	PrecacheSoundArray(pFootSounds, ARRAYSIZE(pFootSounds));
 
 	UTIL_PrecacheOther(BIG_CHILDCLASS);
 
 	// TEMP: Squid
-	PRECACHE_MODEL("sprites/mommaspit.spr");				// spit projectile.
-	gSpitSprite = PRECACHE_MODEL("sprites/mommaspout.spr"); // client side spittle.
-	gSpitDebrisSprite = PRECACHE_MODEL("sprites/mommablob.spr");
+	PrecacheModel("sprites/mommaspit.spr");				// spit projectile.
+	gSpitSprite = PrecacheModel("sprites/mommaspout.spr"); // client side spittle.
+	gSpitDebrisSprite = PrecacheModel("sprites/mommablob.spr");
 
-	PRECACHE_SOUND("bullchicken/bc_acid1.wav");
-	PRECACHE_SOUND("bullchicken/bc_spithit1.wav");
-	PRECACHE_SOUND("bullchicken/bc_spithit2.wav");
+	PrecacheSound("bullchicken/bc_acid1.wav");
+	PrecacheSound("bullchicken/bc_spithit1.wav");
+	PrecacheSound("bullchicken/bc_spithit2.wav");
 }
 
 
@@ -1155,7 +1155,7 @@ void CBMortar::Spawn()
 	pev->rendermode = kRenderTransAlpha;
 	pev->renderamt = 255;
 
-	SET_MODEL(ENT(pev), "sprites/mommaspit.spr");
+	SetModel("sprites/mommaspit.spr");
 	pev->frame = 0;
 	pev->scale = 0.5;
 

@@ -51,18 +51,10 @@ void CGib::LimitVelocity()
 
 void CGib::SpawnStickyGibs(entvars_t* pevVictim, Vector vecOrigin, int cGibs)
 {
-	int i;
-
-	if (g_Language == LANGUAGE_GERMAN)
-	{
-		// no sticky gibs in germany right now!
-		return;
-	}
-
-	for (i = 0; i < cGibs; i++)
+    for (int i = 0; i < cGibs; i++)
 	{
 		CGib* pGib = GetClassPtr((CGib*)NULL);
-
+        pGib->Precache(); //Sounds are precached in CMaterialEntity::Precache
 		pGib->Spawn("models/stickygib.mdl");
 		pGib->pev->body = RANDOM_LONG(0, 2);
 
@@ -110,7 +102,9 @@ void CGib::SpawnStickyGibs(entvars_t* pevVictim, Vector vecOrigin, int cGibs)
 
 			pGib->pev->movetype = MOVETYPE_TOSS;
 			pGib->pev->solid = SOLID_BBOX;
+		    
 			UTIL_SetSize(pGib->pev, Vector(0, 0, 0), Vector(0, 0, 0));
+		    
 			pGib->SetTouch(&CGib::StickyGibTouch);
 			pGib->SetThink(NULL);
 		}
@@ -121,17 +115,9 @@ void CGib::SpawnStickyGibs(entvars_t* pevVictim, Vector vecOrigin, int cGibs)
 void CGib::SpawnHeadGib(entvars_t* pevVictim)
 {
 	CGib* pGib = GetClassPtr((CGib*)NULL);
-
-	if (g_Language == LANGUAGE_GERMAN)
-	{
-		pGib->Spawn("models/germangibs.mdl"); // throw one head
-		pGib->pev->body = 0;
-	}
-	else
-	{
-		pGib->Spawn("models/hgibs.mdl"); // throw one head
-		pGib->pev->body = 0;
-	}
+    pGib->Precache(); //Sounds are precached in CMaterialEntity::Precache
+    pGib->Spawn("models/hgibs.mdl"); // throw one head
+    pGib->pev->body = 0;
 
 	if (pevVictim)
 	{
@@ -142,9 +128,7 @@ void CGib::SpawnHeadGib(entvars_t* pevVictim)
 		if (RANDOM_LONG(0, 100) <= 5 && pentPlayer)
 		{
 			// 5% chance head will be thrown at player's face.
-			entvars_t* pevPlayer;
-
-			pevPlayer = VARS(pentPlayer);
+            entvars_t* pevPlayer = VARS(pentPlayer);
 			pGib->pev->velocity = ((pevPlayer->origin + pevPlayer->view_ofs) - pGib->pev->origin).Normalize() * 300;
 			pGib->pev->velocity.z += 100;
 		}
@@ -152,8 +136,7 @@ void CGib::SpawnHeadGib(entvars_t* pevVictim)
 		{
 			pGib->pev->velocity = Vector(RANDOM_FLOAT(-100, 100), RANDOM_FLOAT(-100, 100), RANDOM_FLOAT(200, 300));
 		}
-
-
+	    
 		pGib->pev->avelocity.x = RANDOM_FLOAT(100, 200);
 		pGib->pev->avelocity.y = RANDOM_FLOAT(100, 300);
 
@@ -188,37 +171,27 @@ void CGib::SpawnRandomGibs(entvars_t* pevVictim, int cGibs, const GibData& gibDa
 
 	auto currentBody = 0;
 
-	int cSplat;
-
-	for (cSplat = 0; cSplat < cGibs; cSplat++)
+    for (int cSplat = 0; cSplat < cGibs; cSplat++)
 	{
 		CGib* pGib = GetClassPtr((CGib*)NULL);
+        pGib->Precache(); //Sounds are precached in CMaterialEntity::Precache
+        pGib->Spawn(gibData.ModelName);
 
-		if (g_Language == LANGUAGE_GERMAN)
-		{
-			pGib->Spawn("models/germangibs.mdl");
-			pGib->pev->body = RANDOM_LONG(0, GERMAN_GIB_COUNT - 1);
-		}
-		else
-		{
-			pGib->Spawn(gibData.ModelName);
+        if (pLimitTracking)
+        {
+            if (pLimitTracking[currentBody] >= gibData.Limits[currentBody].MaxGibs)
+            {
+                ++currentBody;
+            }
 
-			if (pLimitTracking)
-			{
-				if (pLimitTracking[currentBody] >= gibData.Limits[currentBody].MaxGibs)
-				{
-					++currentBody;
-				}
+            pGib->pev->body = currentBody;
 
-				pGib->pev->body = currentBody;
-
-				++pLimitTracking[currentBody];
-			}
-			else
-			{
-				pGib->pev->body = RANDOM_LONG(gibData.FirstSubModel, gibData.SubModelCount - 1);
-			}
-		}
+            ++pLimitTracking[currentBody];
+        }
+        else
+        {
+            pGib->pev->body = RANDOM_LONG(gibData.FirstSubModel, gibData.SubModelCount - 1);
+        }
 
 		if (pevVictim)
 		{
@@ -273,7 +246,6 @@ void CGib::SpawnRandomGibs(entvars_t* pevVictim, int cGibs, bool human)
 {
 	SpawnRandomGibs(pevVictim, cGibs, human ? HumanGibs : AlienGibs);
 }
-
 
 bool CBaseMonster::HasHumanGibs()
 {
@@ -736,8 +708,7 @@ void CGib::WaitTillLand()
 //
 void CGib::BounceGibTouch(CBaseEntity* pOther)
 {
-	Vector vecSpot;
-	TraceResult tr;
+    TraceResult tr;
 
 	//if ( RANDOM_LONG(0,1) )
 	//	return;// don't bleed everytime
@@ -752,9 +723,9 @@ void CGib::BounceGibTouch(CBaseEntity* pOther)
 	}
 	else
 	{
-		if (g_Language != LANGUAGE_GERMAN && m_cBloodDecals > 0 && m_bloodColor != DONT_BLEED)
+		if (m_cBloodDecals > 0 && m_bloodColor != DONT_BLEED)
 		{
-			vecSpot = pev->origin + Vector(0, 0, 8); //move up a bit, and trace down.
+            Vector vecSpot = pev->origin + Vector(0, 0, 8); //move up a bit, and trace down.
 			UTIL_TraceLine(vecSpot, vecSpot + Vector(0, 0, -24), ignore_monsters, ENT(pev), &tr);
 
 			UTIL_BloodDecalTrace(&tr, m_bloodColor);
@@ -764,12 +735,10 @@ void CGib::BounceGibTouch(CBaseEntity* pOther)
 
 		if (m_material != matNone && RANDOM_LONG(0, 2) == 0)
 		{
-			float volume;
-			float zvel = fabs(pev->velocity.z);
+            float zvel = fabs(pev->velocity.z);
+			float volume = 0.8 * V_min(1.0, ((float)zvel) / 450.0);
 
-			volume = 0.8 * V_min(1.0, ((float)zvel) / 450.0);
-
-			CBreakable::MaterialSoundRandom(edict(), (Materials)m_material, volume);
+		    MaterialSoundRandom(edict(), (Materials)m_material, volume);
 		}
 	}
 }
@@ -818,7 +787,7 @@ void CGib::Spawn(const char* szGibModel)
 	pev->solid = SOLID_SLIDEBOX; /// hopefully this will fix the VELOCITY TOO LOW crap
 	pev->classname = MAKE_STRING("gib");
 
-	SET_MODEL(ENT(pev), szGibModel);
+	SetModel(szGibModel);
 	UTIL_SetSize(pev, Vector(0, 0, 0), Vector(0, 0, 0));
 
 	pev->nextthink = gpGlobals->time + 4;

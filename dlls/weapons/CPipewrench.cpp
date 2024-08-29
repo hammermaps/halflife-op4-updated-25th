@@ -43,7 +43,7 @@ void CPipewrench::Spawn()
 	pev->classname = MAKE_STRING("weapon_pipewrench");
 	Precache();
 	m_iId = WEAPON_PIPEWRENCH;
-	SET_MODEL(edict(), "models/w_pipe_wrench.mdl");
+	SetModel("models/w_pipe_wrench.mdl");
 	m_iClip = WEAPON_NOCLIP;
 	m_iSwingMode = SWING_NONE;
 
@@ -52,26 +52,26 @@ void CPipewrench::Spawn()
 
 void CPipewrench::Precache()
 {
-	PRECACHE_MODEL("models/v_pipe_wrench.mdl");
-	PRECACHE_MODEL("models/w_pipe_wrench.mdl");
-	PRECACHE_MODEL("models/p_pipe_wrench.mdl");
+	PrecacheModel("models/v_pipe_wrench.mdl");
+	PrecacheModel("models/w_pipe_wrench.mdl");
+	PrecacheModel("models/p_pipe_wrench.mdl");
 	// Shepard - The commented sounds below are unused
 	// in Opposing Force, if you wish to use them,
 	// uncomment all the appropriate lines.
-	/*PRECACHE_SOUND("weapons/pwrench_big_hit1.wav");
-	PRECACHE_SOUND("weapons/pwrench_big_hit2.wav");*/
-	PRECACHE_SOUND("weapons/pwrench_big_hitbod1.wav");
-	PRECACHE_SOUND("weapons/pwrench_big_hitbod2.wav");
-	PRECACHE_SOUND("weapons/pwrench_big_miss.wav");
-	PRECACHE_SOUND("weapons/pwrench_hit1.wav");
-	PRECACHE_SOUND("weapons/pwrench_hit2.wav");
-	PRECACHE_SOUND("weapons/pwrench_hitbod1.wav");
-	PRECACHE_SOUND("weapons/pwrench_hitbod2.wav");
-	PRECACHE_SOUND("weapons/pwrench_hitbod3.wav");
-	PRECACHE_SOUND("weapons/pwrench_miss1.wav");
-	PRECACHE_SOUND("weapons/pwrench_miss2.wav");
+	/*PrecacheSound("weapons/pwrench_big_hit1.wav");
+	PrecacheSound("weapons/pwrench_big_hit2.wav");*/
+	PrecacheSound("weapons/pwrench_big_hitbod1.wav");
+	PrecacheSound("weapons/pwrench_big_hitbod2.wav");
+	PrecacheSound("weapons/pwrench_big_miss.wav");
+	PrecacheSound("weapons/pwrench_hit1.wav");
+	PrecacheSound("weapons/pwrench_hit2.wav");
+	PrecacheSound("weapons/pwrench_hitbod1.wav");
+	PrecacheSound("weapons/pwrench_hitbod2.wav");
+	PrecacheSound("weapons/pwrench_hitbod3.wav");
+	PrecacheSound("weapons/pwrench_miss1.wav");
+	PrecacheSound("weapons/pwrench_miss2.wav");
 
-	m_usPipewrench = PRECACHE_EVENT(1, "events/pipewrench.sc");
+	m_usPipewrench = PrecacheEvent(1, "events/pipewrench.sc");
 }
 
 bool CPipewrench::Deploy()

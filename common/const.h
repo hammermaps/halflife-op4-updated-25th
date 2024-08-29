@@ -21,44 +21,42 @@
 // Most came from server.h
 
 // edict->flags
-#define FL_FLY (1 << 0)	 // Changes the SV_Movestep() behavior to not need to be on ground
-#define FL_SWIM (1 << 1) // Changes the SV_Movestep() behavior to not need to be on ground (but stay in water)
-#define FL_CONVEYOR (1 << 2)
-#define FL_CLIENT (1 << 3)
-#define FL_INWATER (1 << 4)
-#define FL_MONSTER (1 << 5)
-#define FL_GODMODE (1 << 6)
-#define FL_NOTARGET (1 << 7)
-#define FL_SKIPLOCALHOST (1 << 8)  // Don't send entity to local host, it's predicting this entity itself
-#define FL_ONGROUND (1 << 9)	   // At rest / on the ground
-#define FL_PARTIALGROUND (1 << 10) // not all corners are valid
-#define FL_WATERJUMP (1 << 11)	   // player jumping out of water
-#define FL_FROZEN (1 << 12)		   // Player is frozen for 3rd person camera
-#define FL_FAKECLIENT (1 << 13)	   // JAC: fake client, simulated server side; don't send network messages to them
-#define FL_DUCKING (1 << 14)	   // Player flag -- Player is fully crouched
-#define FL_FLOAT (1 << 15)		   // Apply floating force to this entity when in water
-#define FL_GRAPHED (1 << 16)	   // worldgraph has this ent listed as something that blocks a connection
-
-// UNDONE: Do we need these?
-#define FL_IMMUNE_WATER (1 << 17)
-#define FL_IMMUNE_SLIME (1 << 18)
-#define FL_IMMUNE_LAVA (1 << 19)
-
-#define FL_PROXY (1 << 20)		  // This is a spectator proxy
-#define FL_ALWAYSTHINK (1 << 21)  // Brush model flag -- call think every frame regardless of nextthink - ltime (for constantly changing velocity/path)
-#define FL_BASEVELOCITY (1 << 22) // Base velocity has been applied this frame (used to convert base velocity into momentum)
-#define FL_MONSTERCLIP (1 << 23)  // Only collide in with monsters who have FL_MONSTERCLIP set
-#define FL_ONTRAIN (1 << 24)	  // Player is _controlling_ a train, so movement commands should be ignored on client during prediction.
-#define FL_WORLDBRUSH (1 << 25)	  // Not moveable/removeable brush entity (really part of the world, but represented as an entity for transparency or something)
-#define FL_SPECTATOR (1 << 26)	  // This client is a spectator, don't run touch functions, etc.
-#define FL_CUSTOMENTITY (1 << 29) // This is a custom entity
-#define FL_KILLME (1 << 30)		  // This entity is marked for death -- This allows the engine to kill ents at the appropriate time
-#define FL_DORMANT (1 << 31)	  // Entity is dormant, no updates to client
-
+enum Flags
+{
+    FL_FLY = 1 << 0,	 // Changes the SV_Movestep() behavior to not need to be on ground
+    FL_SWIM = 1 << 1,	 // Changes the SV_Movestep() behavior to not need to be on ground (but stay in water)
+    FL_CONVEYOR = 1 << 2,
+    FL_CLIENT = 1 << 3,
+    FL_INWATER = 1 << 4,
+    FL_MONSTER = 1 << 5,
+    FL_GODMODE = 1 << 6,
+    FL_NOTARGET = 1 << 7,
+    FL_SKIPLOCALHOST = 1 << 8,  // Don't send entity to local host, it's predicting this entity itself
+    FL_ONGROUND = 1 << 9,	   // At rest / on the ground
+    FL_PARTIALGROUND = 1 << 10, // not all corners are valid
+    FL_WATERJUMP = 1 << 11,	   // player jumping out of water
+    FL_FROZEN = 1 << 12,		   // Player is frozen for 3rd person camera
+    FL_FAKECLIENT = 1 << 13,	   // JAC: fake client, simulated server side; don't send network messages to them
+    FL_DUCKING = 1 << 14,	   // Player flag -- Player is fully crouched
+    FL_FLOAT = 1 << 15,		   // Apply floating force to this entity when in water
+    FL_GRAPHED = 1 << 16,	   // worldgraph has this ent listed as something that blocks a connection
+    FL_IMMUNE_WATER = 1 << 17,
+    FL_IMMUNE_SLIME = 1 << 18,
+    FL_IMMUNE_LAVA = 1 << 19,
+    FL_PROXY = 1 << 20,		  // This is a spectator proxy
+    FL_ALWAYSTHINK = 1 << 21,  // Brush model flag -- call think every frame regardless of nextthink - ltime (for constantly changing velocity/path)
+    FL_BASEVELOCITY = 1 << 22, // Base velocity has been applied this frame (used to convert base velocity into momentum)
+    FL_MONSTERCLIP = 1 << 23,  // Only collide in with monsters who have FL_MONSTERCLIP set
+    FL_ONTRAIN = 1 << 24,	  // Player is _controlling_ a train, so movement commands should be ignored on client during prediction.
+    FL_WORLDBRUSH = 1 << 25,  // Not moveable/removeable brush entity (really part of the world, but represented as an entity for transparency or something)
+    FL_SPECTATOR = 1 << 26,	  // This client is a spectator, don't run touch functions, etc.
+    FL_CUSTOMENTITY = 1 << 29, // This is a custom entity
+    FL_KILLME = 1 << 30,	  // This entity is marked for death -- This allows the engine to kill ents at the appropriate time
+    FL_DORMANT = 1 << 31,	  // Entity is dormant, no updates to client
+};
 
 // Goes into globalvars_t.trace_flags
 #define FTRACE_SIMPLEBOX (1 << 0) // Traceline with a simple box
-
 
 // walkmove modes
 #define WALKMOVE_NORMAL 0	 // normal walkmove
@@ -66,54 +64,68 @@
 #define WALKMOVE_CHECKONLY 2 // move, but don't touch triggers
 
 // edict->movetype values
-#define MOVETYPE_NONE 0 // never moves
-//#define	MOVETYPE_ANGLENOCLIP	1
-//#define	MOVETYPE_ANGLECLIP		2
-#define MOVETYPE_WALK 3			  // Player only - moving on the ground
-#define MOVETYPE_STEP 4			  // gravity, special edge handling -- monsters use this
-#define MOVETYPE_FLY 5			  // No gravity, but still collides with stuff
-#define MOVETYPE_TOSS 6			  // gravity/collisions
-#define MOVETYPE_PUSH 7			  // no clip to world, push and crush
-#define MOVETYPE_NOCLIP 8		  // No gravity, no collisions, still do velocity/avelocity
-#define MOVETYPE_FLYMISSILE 9	  // extra size to monsters
-#define MOVETYPE_BOUNCE 10		  // Just like Toss, but reflect velocity when contacting surfaces
-#define MOVETYPE_BOUNCEMISSILE 11 // bounce w/o gravity
-#define MOVETYPE_FOLLOW 12		  // track movement of aiment
-#define MOVETYPE_PUSHSTEP 13	  // BSP model that needs physics/world collisions (uses nearest hull for world collision)
+enum MoveTypes
+{
+    MOVETYPE_NONE = 0, // never moves
+    //MOVETYPE_ANGLENOCLIP	= 1,
+    //MOVETYPE_ANGLECLIP = 2,
+    MOVETYPE_WALK = 3,		 // Player only - moving on the ground
+    MOVETYPE_STEP = 4,		 // gravity, special edge handling -- monsters use this
+    MOVETYPE_FLY = 5,		 // No gravity, but still collides with stuff
+    MOVETYPE_TOSS = 6,		 // gravity/collisions
+    MOVETYPE_PUSH = 7,		 // no clip to world, push and crush
+    MOVETYPE_NOCLIP = 8,	 // No gravity, no collisions, still do velocity/avelocity
+    MOVETYPE_FLYMISSILE = 9, // extra size to monsters
+    MOVETYPE_BOUNCE = 10,	 // Just like Toss, but reflect velocity when contacting surfaces
+    MOVETYPE_BOUNCEMISSILE = 11, // bounce w/o gravity
+    MOVETYPE_FOLLOW = 12,		 // track movement of aiment
+    MOVETYPE_PUSHSTEP = 13,	 // BSP model that needs physics/world collisions (uses nearest hull for world collision)
+};
 
 // edict->solid values
 // NOTE: Some movetypes will cause collisions independent of SOLID_NOT/SOLID_TRIGGER when the entity moves
 // SOLID only effects OTHER entities colliding with this one when they move - UGH!
-#define SOLID_NOT 0		 // no interaction with other objects
-#define SOLID_TRIGGER 1	 // touch on edge, but not blocking
-#define SOLID_BBOX 2	 // touch on edge, block
-#define SOLID_SLIDEBOX 3 // touch on edge, but not an onground
-#define SOLID_BSP 4		 // bsp clip, touch on edge, block
+enum SolidType
+{
+    SOLID_NOT = 0,		 // no interaction with other objects
+    SOLID_TRIGGER = 1,	 // touch on edge, but not blocking
+    SOLID_BBOX = 2,		 // touch on edge, block
+    SOLID_SLIDEBOX = 3,	 // touch on edge, but not an onground
+    SOLID_BSP = 4,		 // bsp clip, touch on edge, block
+};
 
 // edict->deadflag values
-#define DEAD_NO 0	 // alive
-#define DEAD_DYING 1 // playing death animation or still falling off of a ledge waiting to hit ground
-#define DEAD_DEAD 2	 // dead. lying still.
-#define DEAD_RESPAWNABLE 3
-#define DEAD_DISCARDBODY 4
+enum DeadFlag
+{
+    DEAD_NO = 0,	 // alive
+    DEAD_DYING = 1, // playing death animation or still falling off of a ledge waiting to hit ground
+    DEAD_DEAD = 2,	 // dead. lying still.
+    DEAD_RESPAWNABLE = 3,
+    DEAD_DISCARDBODY = 4
+};
 
-#define DAMAGE_NO 0
-#define DAMAGE_YES 1
-#define DAMAGE_AIM 2
+enum TakeDamageMode
+{
+    DAMAGE_NO = 0,
+    DAMAGE_YES = 1,
+    DAMAGE_AIM = 2
+};
 
 // entity effects
-#define EF_BRIGHTFIELD 1	// swirling cloud of particles
-#define EF_MUZZLEFLASH 2	// single frame ELIGHT on entity attachment 0
-#define EF_BRIGHTLIGHT 4	// DLIGHT centered at entity origin
-#define EF_DIMLIGHT 8		// player flashlight
-#define EF_INVLIGHT 16		// get lighting from ceiling
-#define EF_NOINTERP 32		// don't interpolate the next frame
-#define EF_LIGHT 64			// rocket flare glow sprite
-#define EF_NODRAW 128		// don't draw entity
-#define EF_NIGHTVISION 256	// player nightvision
-#define EF_SNIPERLASER 512	// sniper laser effect
-#define EF_FIBERCAMERA 1024 // fiber camera
-
+enum EntityEffects
+{
+    EF_BRIGHTFIELD = 1,	// swirling cloud of particles
+    EF_MUZZLEFLASH = 2,	// single frame ELIGHT on entity attachment 0
+    EF_BRIGHTLIGHT = 4,	// DLIGHT centered at entity origin
+    EF_DIMLIGHT = 8,	// player flashlight
+    EF_INVLIGHT = 16,	// get lighting from ceiling
+    EF_NOINTERP = 32,	// don't interpolate the next frame
+    EF_LIGHT = 64,		// rocket flare glow sprite
+    EF_NODRAW = 128,	// don't draw entity
+    EF_NIGHTVISION = 256,	// player nightvision
+    EF_SNIPERLASER = 512,	// sniper laser effect
+    EF_FIBERCAMERA = 1024 // fiber camera
+};
 
 // entity flags
 #define EFLAG_SLERP 1 // do studio interpolation of this entity
@@ -567,18 +579,19 @@
 // byte ( color ) this is an index into an array of color vectors in the engine. (0 - )
 // byte ( length * 10 )
 
-
-
-#define MSG_BROADCAST 0		 // unreliable to all
-#define MSG_ONE 1			 // reliable to one (msg_entity)
-#define MSG_ALL 2			 // reliable to all
-#define MSG_INIT 3			 // write to the init string
-#define MSG_PVS 4			 // Ents in PVS of org
-#define MSG_PAS 5			 // Ents in PAS of org
-#define MSG_PVS_R 6			 // Reliable to PVS
-#define MSG_PAS_R 7			 // Reliable to PAS
-#define MSG_ONE_UNRELIABLE 8 // Send to one client, but don't put in reliable stream, put in unreliable datagram ( could be dropped )
-#define MSG_SPEC 9			 // Sends to all spectator proxies
+enum MassageType
+{
+    MSG_BROADCAST = 0,		 // unreliable to all
+    MSG_ONE = 1,			 // reliable to one (msg_entity)
+    MSG_ALL = 2,			 // reliable to all
+    MSG_INIT = 3,			 // write to the init string
+    MSG_PVS = 4,			 // Ents in PVS of org
+    MSG_PAS = 5,			 // Ents in PAS of org
+    MSG_PVS_R = 6,			 // Reliable to PVS
+    MSG_PAS_R = 7,			 // Reliable to PAS
+    MSG_ONE_UNRELIABLE = 8, // Send to one client, but don't put in reliable stream, put in unreliable datagram ( could be dropped )
+    MSG_SPEC = 9			 // Sends to all spectator proxies
+};
 
 // contents of a spot in the world
 #define CONTENTS_EMPTY -1
@@ -613,16 +626,19 @@
 #define CONTENT_SKY -6
 
 // channels
-#define CHAN_AUTO 0
-#define CHAN_WEAPON 1
-#define CHAN_VOICE 2
-#define CHAN_ITEM 3
-#define CHAN_BODY 4
-#define CHAN_STREAM 5			  // allocate stream channel from the static or dynamic area
-#define CHAN_STATIC 6			  // allocate channel from the static area
-#define CHAN_NETWORKVOICE_BASE 7  // voice data coming across the network
-#define CHAN_NETWORKVOICE_END 500 // network voice data reserves slots (CHAN_NETWORKVOICE_BASE through CHAN_NETWORKVOICE_END).
-#define CHAN_BOT 501			  // channel used for bot chatter.
+enum SoundChannels
+{
+    CHAN_AUTO = 0,
+    CHAN_WEAPON = 1,
+    CHAN_VOICE = 2,
+    CHAN_ITEM = 3,
+    CHAN_BODY = 4,
+    CHAN_STREAM = 5,			  // allocate stream channel from the static or dynamic area
+    CHAN_STATIC = 6,			  // allocate channel from the static area
+    CHAN_NETWORKVOICE_BASE = 7,  // voice data coming across the network
+    CHAN_NETWORKVOICE_END = 500, // network voice data reserves slots (CHAN_NETWORKVOICE_BASE through CHAN_NETWORKVOICE_END).
+    CHAN_BOT = 501			  // channel used for bot chatter.
+};
 
 // attenuation values
 #define ATTN_NONE 0
@@ -681,7 +697,7 @@ constexpr int NUM_HULLS = 4;
 #define TE_BOUNCE_SHOTSHELL 2
 
 // Rendering constants
-enum
+enum RenderMode
 {
 	kRenderNormal,		 // src
 	kRenderTransColor,	 // c*a+dest*(1-a)
@@ -691,7 +707,7 @@ enum
 	kRenderTransAdd,	 // src*a+dest
 };
 
-enum
+enum RenderFx
 {
 	kRenderFxNone = 0,
 	kRenderFxPulseSlow,

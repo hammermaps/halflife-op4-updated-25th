@@ -45,15 +45,15 @@ void CRopeSegment::Precache()
 {
 	BaseClass::Precache();
 
-	PRECACHE_MODEL(const_cast<char*>(STRING(m_iszModelName)));
-	PRECACHE_SOUND("items/grab_rope.wav");
+	PrecacheModel(const_cast<char*>(STRING(m_iszModelName)));
+	PrecacheSound("items/grab_rope.wav");
 }
 
 void CRopeSegment::Spawn()
 {
 	Precache();
 
-	SET_MODEL(edict(), STRING(m_iszModelName));
+	SetModel(STRING(m_iszModelName));
 
 	pev->movetype = MOVETYPE_NOCLIP;
 	pev->solid = SOLID_TRIGGER;

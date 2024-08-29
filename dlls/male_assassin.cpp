@@ -952,7 +952,7 @@ void CMOFAssassin::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/massn.mdl");
+	SetModel("models/massn.mdl");
 	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = SOLID_SLIDEBOX;
@@ -1025,22 +1025,22 @@ void CMOFAssassin::Spawn()
 //=========================================================
 void CMOFAssassin::Precache()
 {
-	PRECACHE_MODEL("models/massn.mdl");
+	PrecacheModel("models/massn.mdl");
 
-	PRECACHE_SOUND("hgrunt/gr_mgun1.wav");
-	PRECACHE_SOUND("hgrunt/gr_mgun2.wav");
+	PrecacheSound("hgrunt/gr_mgun1.wav");
+	PrecacheSound("hgrunt/gr_mgun2.wav");
 
-	PRECACHE_SOUND("hgrunt/gr_die1.wav");
-	PRECACHE_SOUND("hgrunt/gr_die2.wav");
-	PRECACHE_SOUND("hgrunt/gr_die3.wav");
+	PrecacheSound("hgrunt/gr_die1.wav");
+	PrecacheSound("hgrunt/gr_die2.wav");
+	PrecacheSound("hgrunt/gr_die3.wav");
 
-	PRECACHE_SOUND("hgrunt/gr_reload1.wav");
+	PrecacheSound("hgrunt/gr_reload1.wav");
 
-	PRECACHE_SOUND("weapons/glauncher.wav");
+	PrecacheSound("weapons/glauncher.wav");
 
-	PRECACHE_SOUND("weapons/sbarrel1.wav");
+	PrecacheSound("weapons/sbarrel1.wav");
 
-	PRECACHE_SOUND("zombie/claw_miss2.wav"); // because we use the basemonster SWIPE animation event
+	PrecacheSound("zombie/claw_miss2.wav"); // because we use the basemonster SWIPE animation event
 
 	// get voice pitch
 	if (RANDOM_LONG(0, 1))
@@ -1048,7 +1048,7 @@ void CMOFAssassin::Precache()
 	else
 		m_voicePitch = 100;
 
-	m_iBrassShell = PRECACHE_MODEL("models/shell.mdl"); // brass shell
+	m_iBrassShell = PrecacheModel("models/shell.mdl"); // brass shell
 }
 
 //=========================================================
@@ -2234,7 +2234,7 @@ void CMOFAssassinRepel::Spawn()
 void CMOFAssassinRepel::Precache()
 {
 	UTIL_PrecacheOther("monster_male_assassin");
-	m_iSpriteTexture = PRECACHE_MODEL("sprites/rope.spr");
+	m_iSpriteTexture = PrecacheModel("sprites/rope.spr");
 }
 
 void CMOFAssassinRepel::RepelUse(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
@@ -2301,8 +2301,8 @@ LINK_ENTITY_TO_CLASS(monster_massassin_dead, CDeadMOFAssassin);
 //=========================================================
 void CDeadMOFAssassin::Spawn()
 {
-	PRECACHE_MODEL("models/massn.mdl");
-	SET_MODEL(ENT(pev), "models/massn.mdl");
+	PrecacheModel("models/massn.mdl");
+	SetModel("models/massn.mdl");
 
 	pev->effects = 0;
 	pev->yaw_speed = 8;

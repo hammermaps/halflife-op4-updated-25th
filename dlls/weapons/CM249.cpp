@@ -41,20 +41,20 @@ LINK_ENTITY_TO_CLASS(weapon_m249, CM249);
 
 void CM249::Precache()
 {
-	PRECACHE_MODEL("models/v_saw.mdl");
-	PRECACHE_MODEL("models/w_saw.mdl");
-	PRECACHE_MODEL("models/p_saw.mdl");
+	PrecacheModel("models/v_saw.mdl");
+	PrecacheModel("models/w_saw.mdl");
+	PrecacheModel("models/p_saw.mdl");
 
-	m_iShell = PRECACHE_MODEL("models/saw_shell.mdl");
-	m_iLink = PRECACHE_MODEL("models/saw_link.mdl");
-	m_iSmoke = PRECACHE_MODEL("sprites/wep_smoke_01.spr");
-	m_iFire = PRECACHE_MODEL("sprites/xfire.spr");
+	m_iShell = PrecacheModel("models/saw_shell.mdl");
+	m_iLink = PrecacheModel("models/saw_link.mdl");
+	m_iSmoke = PrecacheModel("sprites/wep_smoke_01.spr");
+	m_iFire = PrecacheModel("sprites/xfire.spr");
 
-	PRECACHE_SOUND("weapons/saw_reload.wav");
-	PRECACHE_SOUND("weapons/saw_reload2.wav");
-	PRECACHE_SOUND("weapons/saw_fire1.wav");
+	PrecacheSound("weapons/saw_reload.wav");
+	PrecacheSound("weapons/saw_reload2.wav");
+	PrecacheSound("weapons/saw_fire1.wav");
 
-	m_usFireM249 = PRECACHE_EVENT(1, "events/m249.sc");
+	m_usFireM249 = PrecacheEvent(1, "events/m249.sc");
 }
 
 void CM249::Spawn()
@@ -65,7 +65,7 @@ void CM249::Spawn()
 
 	m_iId = WEAPON_M249;
 
-	SET_MODEL(edict(), "models/w_saw.mdl");
+	SetModel("models/w_saw.mdl");
 
 	m_iDefaultAmmo = M249_DEFAULT_GIVE;
 
@@ -366,15 +366,15 @@ public:
 
 	void Precache() override
 	{
-		PRECACHE_MODEL("models/w_saw_clip.mdl");
-		PRECACHE_SOUND("items/9mmclip1.wav");
+		PrecacheModel("models/w_saw_clip.mdl");
+		PrecacheSound("items/9mmclip1.wav");
 	}
 
 	void Spawn() override
 	{
 		Precache();
 
-		SET_MODEL(edict(), "models/w_saw_clip.mdl");
+		SetModel("models/w_saw_clip.mdl");
 
 		BaseClass::Spawn();
 	}

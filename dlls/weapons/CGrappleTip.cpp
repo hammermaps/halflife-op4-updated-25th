@@ -94,7 +94,7 @@ const char* const grapple_fixed[] =
 
 void CGrappleTip::Precache()
 {
-	PRECACHE_MODEL("models/shock_effect.mdl");
+	PrecacheModel("models/shock_effect.mdl");
 }
 
 void CGrappleTip::Spawn()
@@ -104,7 +104,7 @@ void CGrappleTip::Spawn()
 	pev->movetype = MOVETYPE_FLY;
 	pev->solid = SOLID_BBOX;
 
-	SET_MODEL(edict(), "models/shock_effect.mdl");
+	SetModel("models/shock_effect.mdl");
 
 	UTIL_SetSize(pev, g_vecZero, g_vecZero);
 

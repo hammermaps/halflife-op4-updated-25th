@@ -120,7 +120,7 @@ void CGMan::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/gman.mdl");
+	SetModel("models/gman.mdl");
 	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = SOLID_SLIDEBOX;
@@ -138,7 +138,7 @@ void CGMan::Spawn()
 //=========================================================
 void CGMan::Precache()
 {
-	PRECACHE_MODEL("models/gman.mdl");
+	PrecacheModel("models/gman.mdl");
 }
 
 

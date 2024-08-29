@@ -52,15 +52,15 @@ IMPLEMENT_SAVERESTORE( CHealthKit, CItem);
 void CHealthKit::Spawn()
 {
 	Precache();
-	SET_MODEL(ENT(pev), "models/w_medkit.mdl");
+	SetModel("models/w_medkit.mdl");
 
 	CItem::Spawn();
 }
 
 void CHealthKit::Precache()
 {
-	PRECACHE_MODEL("models/w_medkit.mdl");
-	PRECACHE_SOUND("items/smallmedkit1.wav");
+	PrecacheModel("models/w_medkit.mdl");
+	PrecacheSound("items/smallmedkit1.wav");
 }
 
 bool CHealthKit::MyTouch(CBasePlayer* pPlayer)
@@ -163,16 +163,16 @@ void CWallHealth::Spawn()
 
 	UTIL_SetOrigin(pev, pev->origin); // set size and link into world
 	UTIL_SetSize(pev, pev->mins, pev->maxs);
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SetModel(STRING(pev->model));
 	m_iJuice = gSkillData.healthchargerCapacity;
 	pev->frame = 0;
 }
 
 void CWallHealth::Precache()
 {
-	PRECACHE_SOUND("items/medshot4.wav");
-	PRECACHE_SOUND("items/medshotno1.wav");
-	PRECACHE_SOUND("items/medcharge4.wav");
+	PrecacheSound("items/medshot4.wav");
+	PrecacheSound("items/medshotno1.wav");
+	PrecacheSound("items/medcharge4.wav");
 }
 
 

@@ -199,7 +199,7 @@ void COFFuncTank::Spawn()
 
 	pev->movetype = MOVETYPE_PUSH; // so it doesn't get pushed by anything
 	pev->solid = SOLID_BSP;
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SetModel(STRING(pev->model));
 
 	m_yawCenter = pev->angles.y;
 	m_pitchCenter = pev->angles.x;
@@ -219,18 +219,17 @@ void COFFuncTank::Spawn()
 	m_hEnemy = nullptr;
 }
 
-
 void COFFuncTank::Precache()
 {
 	if (!FStringNull(m_iszSpriteSmoke))
-		PRECACHE_MODEL((char*)STRING(m_iszSpriteSmoke));
+		PrecacheModel(STRING(m_iszSpriteSmoke));
+    
 	if (!FStringNull(m_iszSpriteFlash))
-		PRECACHE_MODEL((char*)STRING(m_iszSpriteFlash));
+		PrecacheModel(STRING(m_iszSpriteFlash));
 
 	if (!FStringNull(pev->noise))
-		PRECACHE_SOUND((char*)STRING(pev->noise));
+		PrecacheSound(STRING(pev->noise));
 }
-
 
 bool COFFuncTank::KeyValue(KeyValueData* pkvd)
 {
@@ -1171,7 +1170,7 @@ void COFFuncTankControls::Spawn()
 	pev->solid = SOLID_TRIGGER;
 	pev->movetype = MOVETYPE_NONE;
 	pev->effects |= EF_NODRAW;
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SetModel(STRING(pev->model));
 
 	UTIL_SetSize(pev, pev->mins, pev->maxs);
 	UTIL_SetOrigin(pev, pev->origin);

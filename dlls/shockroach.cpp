@@ -281,7 +281,7 @@ void COFShockRoach::Spawn()
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), "models/w_shock_rifle.mdl");
+	SetModel("models/w_shock_rifle.mdl");
 	UTIL_SetSize(pev, Vector(-12, -12, 0), Vector(12, 12, 4));
 
 	pev->solid = SOLID_SLIDEBOX;
@@ -305,16 +305,16 @@ void COFShockRoach::Spawn()
 //=========================================================
 void COFShockRoach::Precache()
 {
-	PRECACHE_SOUND_ARRAY(pIdleSounds);
-	PRECACHE_SOUND_ARRAY(pAlertSounds);
-	PRECACHE_SOUND_ARRAY(pPainSounds);
-	PRECACHE_SOUND_ARRAY(pAttackSounds);
-	PRECACHE_SOUND_ARRAY(pDeathSounds);
-	PRECACHE_SOUND_ARRAY(pBiteSounds);
+	PrecacheSoundArray(pIdleSounds, ARRAYSIZE(pIdleSounds));
+	PrecacheSoundArray(pAlertSounds, ARRAYSIZE(pAlertSounds));
+	PrecacheSoundArray(pPainSounds, ARRAYSIZE(pPainSounds));
+	PrecacheSoundArray(pAttackSounds, ARRAYSIZE(pAttackSounds));
+	PrecacheSoundArray(pDeathSounds, ARRAYSIZE(pDeathSounds));
+	PrecacheSoundArray(pBiteSounds, ARRAYSIZE(pBiteSounds));
 
-	PRECACHE_SOUND("shockroach/shock_walk.wav");
+	PrecacheSound("shockroach/shock_walk.wav");
 
-	PRECACHE_MODEL("models/w_shock_rifle.mdl");
+	PrecacheModel("models/w_shock_rifle.mdl");
 }
 
 
